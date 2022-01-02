@@ -5,7 +5,9 @@ import com.epam.library.controller.PathFile;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.entity.Library;
 import com.epam.library.service.BookDtoService;
+import com.epam.library.service.LibraryService;
 import com.epam.library.service.ServiceException;
+import com.epam.library.service.ServiceFactory;
 import com.epam.library.service.impl.BookDtoServiceImpl;
 import com.epam.library.service.impl.LibraryServiceImpl;
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class GoToOrderCommand implements Command {
 
@@ -27,13 +30,14 @@ public class GoToOrderCommand implements Command {
         try {
             logger.info("Preparing to order a book.");
             HttpSession session = req.getSession();
-            BookDtoService bookDtoService = new BookDtoServiceImpl();
-            LibraryServiceImpl libraryService = new LibraryServiceImpl();
-            List<Library> cities = libraryService.getLibraries();
+            BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
+            LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
+            List<Library> cities = libraryService.showAll();
             BookDto bookDTO;
             String bookId = req.getParameter("bookId");
             if (bookId != "") {
-                bookDTO = bookDtoService.showBook(Long.parseLong(bookId));
+                Optional<BookDto> optional = bookDtoService.showBookById(bookId);
+                bookDTO = optional.get();
                 req.setAttribute("cities", cities);
                 req.setAttribute("book", bookDTO);
                 session.setAttribute("bookId", bookDTO.getBookDtoId());

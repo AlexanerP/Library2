@@ -23,9 +23,7 @@ public class GoToLoanCardUserCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
             System.out.println("GoToLoanCardCommand");
-            HttpSession session = req.getSession();
             LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();
-            User user = (User) session.getAttribute("user");
             String userId = req.getParameter("userId");
             List<LoanCardDto> cardsList = new ArrayList<>();
             if (userId != null && userId !="") {

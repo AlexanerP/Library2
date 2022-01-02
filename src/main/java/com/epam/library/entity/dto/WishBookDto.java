@@ -12,6 +12,8 @@ public class WishBookDto {
     private long bookId;
     private long userId;
     private String title;
+    private int quantity;
+    private int borrow;
     private String publisher;
     private String description;
     private String year;
@@ -27,14 +29,6 @@ public class WishBookDto {
         this.wishBooksId = wishBooksId;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     public long getBookId() {
         return bookId;
     }
@@ -43,12 +37,36 @@ public class WishBookDto {
         this.bookId = bookId;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getBorrow() {
+        return borrow;
+    }
+
+    public void setBorrow(int borrow) {
+        this.borrow = borrow;
     }
 
     public String getPublisher() {
@@ -119,25 +137,31 @@ public class WishBookDto {
         if (userId != that.userId) {
             return false;
         }
-        if (!title.equals(that.title)) {
+        if (quantity != that.quantity) {
             return false;
         }
-        if (!publisher.equals(that.publisher)) {
+        if (borrow != that.borrow) {
             return false;
         }
-        if (!description.equals(that.description)) {
+        if (title != null ? !title.equals(that.title) : that.title != null) {
             return false;
         }
-        if (!year.equals(that.year)) {
+        if (publisher != null ? !publisher.equals(that.publisher) : that.publisher != null) {
             return false;
         }
-        if (!added.equals(that.added)) {
+        if (description != null ? !description.equals(that.description) : that.description != null) {
             return false;
         }
-        if (!isbn.equals(that.isbn)) {
+        if (year != null ? !year.equals(that.year) : that.year != null){
             return false;
         }
-        return shelf.equals(that.shelf);
+        if (added != null ? !added.equals(that.added) : that.added != null) {
+            return false;
+        }
+        if (isbn != null ? !isbn.equals(that.isbn) : that.isbn != null) {
+            return false;
+        }
+        return shelf != null ? shelf.equals(that.shelf) : that.shelf == null;
     }
 
     @Override
@@ -146,6 +170,8 @@ public class WishBookDto {
         result = 31 * result + (int) (bookId ^ (bookId >>> 32));
         result = 31 * result + (int) (userId ^ (userId >>> 32));
         result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + quantity;
+        result = 31 * result + borrow;
         result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (year != null ? year.hashCode() : 0);
@@ -164,6 +190,8 @@ public class WishBookDto {
                 .append("', title='").append(title)
                 .append("', isbn='").append(isbn)
                 .append("', publisher='").append(publisher)
+                .append("', quantity='").append(quantity)
+                .append("', borrow='").append(borrow)
                 .append("', year='").append(year)
                 .append("', shelf='").append(shelf)
                 .append("', description=").append(description)

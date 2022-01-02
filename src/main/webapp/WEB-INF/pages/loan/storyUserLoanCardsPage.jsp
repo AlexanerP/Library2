@@ -12,31 +12,35 @@
     <title>История выдачи книг</title>
 </head>
 <body>
-<button type="button" name="back" onclick="history.back()">Назад</button>
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
+    </tr>
+</table>
 <div align="center"><h1>История выдачи книг</h1></div>
 <div align="center"><h3><c:out value="${secondName} ${lastName}"></c:out></h3></div>
 <br><br><br>
     <div align="center">
-        <form action="Controller">
-<%--            <input type="hidden" name="command" value="GoToStoryLoanCardUser">--%>
+        <form>
+            <c:if test="${not empty loanCards}">
             <table cellpadding="5">
                 <tr>
                     <td>#</td>
-                    <td>Book ID</td>
-                    <td>Title</td>
+                    <td>ID книги</td>
+                    <td>Название</td>
                     <td>ISBN</td>
-                    <td>Taking book</td>
-                    <td>Deadline book</td>
-                    <td>Return book</td>
+                    <td>Взятие книги</td>
+                    <td>Срок возврата книги</td>
+                    <td>Книга возвращена</td>
                     <td>Библиотека</td>
-                    <td>Type use</td>
-                    <td>Status</td>
+                    <td>Тип использования</td>
+                    <td>Статус</td>
                 </tr>
-                <c:if test="${loanCards != null}">
                     <c:forEach var="card" items="${loanCards}" varStatus="status">
                         <tr>
                             <td><c:out value="${status.index + 1}"></c:out></td>
-                            <td><a href="?command=GoToBookDetails&bookId=${card.bookId}">${card.bookId}</a></td>
+                            <td><c:out value="${card.bookId}"></c:out></td>
                             <td><c:out value="${card.title}"></c:out></td>
                             <td><c:out value="${card.isbn}"></c:out></td>
                             <td><c:out value="${card.takingBook}"></c:out></td>

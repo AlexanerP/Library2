@@ -20,4 +20,6 @@ public interface LibraryDAO {
 
     List<Library> getLibraries() throws DAOException;
 
+    List<Library> getLibrariesByStatus(LibraryStatus status) throws DAOException;
+
 }

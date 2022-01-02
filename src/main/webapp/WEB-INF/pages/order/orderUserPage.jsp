@@ -9,10 +9,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Заказы полдьзователя</title>
+    <title>Заказы пользователя</title>
 </head>
 <body>
-<button type="button" name="back" onclick="history.back()">Назад</button>
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
+    </tr>
+</table>
 <div align="center"><h1>Заказы пользователя</h1></div>
 <div align="center"><h3><c:out value="${secondName} ${lastName}"></c:out></h3></div>
 <div align="center">
@@ -36,10 +41,10 @@
             <c:forEach var="orders" items="${orders}" varStatus="status">
                 <tr>
                     <td><c:out value="${status.index + 1}"></c:out></td>
-                    <td> ${orders.orderDtoId}</td>
-                    <td><a href="?command=UserCatalog&userId=${orders.userId}"><c:out value="${orders.userId}"></c:out></a></td>
+                    <td><c:out value="${orders.orderDtoId}"></c:out></td>
+                    <td><c:out value="${orders.userId}"></c:out></td>
                     <td><c:out value="${orders.email}"></c:out></td>
-                    <td><a href="?command=GoToBookDetails&bookId=${orders.bookId}"><c:out value="${orders.bookId}"></c:out></a></td></td>
+                    <td><c:out value="${orders.bookId}"></c:out></td></td>
                     <td><c:out value="${orders.title}"></c:out></td>
                     <td><c:out value="${orders.isbn}"></c:out></td>
                     <td><c:out value="${orders.year}"></c:out></td>

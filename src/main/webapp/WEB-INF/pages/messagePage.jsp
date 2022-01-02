@@ -12,9 +12,12 @@
     <title>Title</title>
 </head>
 <body>
+<button type="button" name="back" onclick="history.back()">Назад</button>
 <h1>Message text</h1>
 <c:out value="">${requestScope.message}</c:out>
 <h1>Respobse</h1>
 <c:out value="">${responseScope.message}</c:out>
+<c:if test="${empty message}"><p>Message empty</p></c:if>
+<c:if test="${not empty message}"><p>Message not empty</p></c:if>
 </body>
 </html>

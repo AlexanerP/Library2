@@ -22,9 +22,16 @@ public class WishBookServiceImpl implements WishBookService {
             bookDTO.setIsbn("Wish Book");
             bookDTO.setPublisher("publisher");
             bookDTO.setYear("2000");
+            bookDTO.setQuantity(7);
+            bookDTO.setBorrow(3);
 
             books.add(bookDTO);
         }
         return books;
+    }
+
+    @Override
+    public boolean delete(String bookId, long userId) throws ServiceException {
+        return false;
     }
 }

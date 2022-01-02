@@ -11,12 +11,13 @@
     <title>Registartion</title>
 </head>
 <body>
-<br>
-<br>
-<br>
-<br>
-<br>
-<form action="Controller" method="get">
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+    </tr>
+</table>
+<div align="center"><h1>Регистрация</h1></div>
+<form action="Controller" method="post">
     <input type="hidden" name="command" value="Registration">
     <div align="center">
         <table>

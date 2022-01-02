@@ -5,6 +5,7 @@ import com.epam.library.controller.PathFile;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.BookDtoService;
 import com.epam.library.service.ServiceException;
+import com.epam.library.service.ServiceFactory;
 import com.epam.library.service.impl.BookDtoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,34 +25,37 @@ public class ShowCatalogByPageCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             logger.info("Show catalog by page.");
-            BookDtoService bookDtoService = new BookDtoServiceImpl();
+            BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             String next = req.getParameter("next");
             String back = req.getParameter("back");
             String pageLine = req.getParameter("jumpPage");
             List<BookDto> bookResult;
             Integer page = 0;
-            if (pageLine != null) {
-                if (pageLine.length() >= 1) {
-                    page = Integer.parseInt(pageLine);
- System.out.println("Page" + page);
-                } else {
-                    page = 1;
-                }
-            } else {
-                page = Integer.parseInt(req.getParameter("pageCatalog"));
-            }
+            int limit = 20;
+//            if (pageLine != null) {
+//                if (pageLine.length() >= 1) {
+//                    page = Integer.parseInt(pageLine);
+//                } else {
+//                    page = 1;
+//                }
+//            } else {
+//                page = Integer.parseInt(req.getParameter("pageCatalog"));
+//            }
 
             if (next != null) {
                 page++;
             } else if (back != null) {
                 page--;
             } else if (pageLine != null) {
-//                page = Math.abs(Integer.parseInt(req.getParameter("jumpPage")));
-                page = Math.abs(page);
+//               if (pageLine.length() >= 1) {
+                    page = Integer.parseInt(pageLine);
+//                } else {
+//                    page = 1;
+//                }
             } else {
                 page = 1;
             }
-            bookResult = bookDtoService.showByPage(page);
+            bookResult = bookDtoService.showByPage(page, limit);
             req.setAttribute("pageCatalog", page);
             req.setAttribute("bookList", bookResult);
 

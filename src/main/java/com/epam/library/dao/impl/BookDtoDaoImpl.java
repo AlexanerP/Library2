@@ -264,27 +264,19 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
     }
 
     @Override
-    public Optional<BookDto> getBookByIsbn(String isbn) throws DAOException {
+    public List<BookDto> getBookByIsbn(String isbn) throws DAOException {
         logger.info("Receiving a book by ISBN.");
         BookDtoMapper mapper = new BookDtoMapper();
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
-        List<BookDto> entity = new ArrayList<>();
+        List<BookDto> books = new ArrayList<>();
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
             prStatement = createPreparedStatement(connection, GET_BOOK_BY_ISBN_QUERY, isbn);
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
-                entity.add(mapper.map(resultSet));
+                books.add(mapper.map(resultSet));
             }
-
-            if(entity.size() == 1) {
-                logger.info("BookDto by ISBN received.");
-                return Optional.of(entity.get(0));
-            } else if (entity.size() == 0) {
-                return Optional.empty();
-            } else {
-                throw new DAOException("Find more 1 BookDto.");
-            }
+            return books;
         } catch (SQLException sqlE) {
             logger.error("Error while receiving a book by ISBN.");
             throw new DAOException("Error while receiving a book by ISBN.", sqlE);

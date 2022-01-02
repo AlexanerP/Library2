@@ -12,7 +12,12 @@
     <title>Title</title>
 </head>
 <body>
-<button type="button" name="Назад" onclick="history.back()">back</button>
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
+    </tr>
+</table>
 <div align="center"><h1>Мои избранные книги</h1></div>
 <form action="Controller">
     <input type="hidden" name="command" value="GoToOrder">
@@ -27,6 +32,7 @@
             <th>Год</th>
             <th>Полка</th>
             <th>Заказать книгу</th>
+            <th>Удалить из списка</th>
         </tr>
         <c:forEach var="wishBook" items="${books}" varStatus="status">
             <tr>
@@ -41,6 +47,7 @@
                 <td><c:if test="${wishBook.borrow < wishBook.quantity}">
                     <a href="?command=GoToOrder&bookId=${wishBook.bookId}">Заказать книгу</a>
                 </c:if></td>
+                <td><a href="?command=ActionWishBook&bookId=${wishBook.bookId}">Удалить книгу</a></td>
             </tr>
         </c:forEach>
     </table>

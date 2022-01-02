@@ -119,9 +119,6 @@ public class Book implements Serializable {
         if (bookId != book.bookId) {
             return false;
         }
-        if (libraryId != book.libraryId) {
-            return false;
-        }
         if (quantity != book.quantity) {
             return false;
         }
@@ -138,6 +135,9 @@ public class Book implements Serializable {
             return false;
         }
         if (!description.equals(book.description)) {
+            return false;
+        }
+        if (libraryId != book.libraryId) {
             return false;
         }
         if (!year.equals(book.year)) {

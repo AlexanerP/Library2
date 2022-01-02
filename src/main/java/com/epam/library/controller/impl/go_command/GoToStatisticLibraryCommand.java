@@ -25,11 +25,11 @@ public class GoToStatisticLibraryCommand implements Command {
             UserService userService = ServiceFactory.getInstance().getUserService();
             BookService bookService = ServiceFactory.getInstance().getBookService();
 
-            long countUsers = userService.getCountUsers();
+            long countUsers = userService.showCountUsers();
             long countBooks = bookService.getCountBooks();
 
-            List<User> usersBlocked = userService.showUserByStatus(UserStatus.BLOCKED);
-            List<User> usersActive = userService.showUserByStatus(UserStatus.ACTIVE);
+            List<User> usersBlocked = userService.showUserByStatus(UserStatus.BLOCKED.name());
+            List<User> usersActive = userService.showUserByStatus(UserStatus.ACTIVE.name());
 
             req.setAttribute("countUsers", countUsers);
             req.setAttribute("countBooks", countBooks);

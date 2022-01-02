@@ -27,6 +27,11 @@ public class BookDto implements Serializable {
     public BookDto() {
     }
 
+    public BookDto(String title, String isbn) {
+        this.title = title;
+        this.isbn = isbn;
+    }
+
     public long getBookDtoId() {
         return bookDtoId;
     }

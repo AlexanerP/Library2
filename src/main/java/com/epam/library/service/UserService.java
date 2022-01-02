@@ -12,17 +12,25 @@ public interface UserService {
 
     Optional<User> verification(String email, String password) throws ServiceException;
 
-    boolean registration(String email, String password, String secondName, String lastName) throws ServiceException;
+    boolean create(String email, String password, String secondName, String lastName) throws ServiceException;
 
     List<User> getUsers() throws ServiceException;
 
-    long getCountUsers() throws ServiceException;
+    long showCountUsers() throws ServiceException;
 
-    List<User> showUserByStatus(UserStatus status) throws ServiceException;
+    List<User> showUserByStatus(String status) throws ServiceException;
 
-    List<User> showUserByRole(UserRole role) throws ServiceException;
+    List<User> showUserByRole(String role) throws ServiceException;
 
-    Optional<User> showUserByEmail(String email) throws ServiceException;
+    List<User> showUserByEmail(String email) throws ServiceException;
 
-    Optional<User> showUserById(long id) throws ServiceException;
+    Optional<User> showUserById(String userId) throws ServiceException;
+
+    boolean update(String email, String secondName, String lastName, String userId) throws ServiceException;
+
+    boolean updatePassword(String password, String userId) throws ServiceException;
+
+    boolean updateStatus(String userId, String status) throws ServiceException;
+
+    boolean updateRole(String userId, String role) throws ServiceException;
 }

@@ -1,87 +1,128 @@
 <%--
   Created by IntelliJ IDEA.
   User: Александр
-  Date: 12.12.2021
-  Time: 21:56
+  Date: 27.12.2021
+  Time: 20:29
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Catalog book</title>
 </head>
 <body>
-<div align="center"><h1>Просмотр каталога</h1></div>
-
-<button type="button" name="Назад" onclick="history.back()">back</button>
-<br><br><br>
-<form action="Controller">
-    <input type="hidden" name="command" value="ShowCatalogByPage">
-    </div>
-    <table border="1" align="center">
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
+    </tr>
+</table>
+<div align="center"><h1>Каталог книг</h1></div>
+<form>
+    <input type="hidden" name="command" value="CatalogBook">
+    <table>
         <tr>
-            <th>#</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>ISBN</th>
-            <th>Publisher</th>
-            <th>Year</th>
-            <th>Shelf</th>
-            <th>Order this Item</th>
-            <th>Add to Wishlist</th>
+            <td>Введите ID книги: </td>
+            <td><input type="number" name="bookId" min="1"></td>
+            <td><input type="submit" value="Поиск"></td>
         </tr>
-        <c:forEach var="bookDTO" items="${bookList}">
-            <tr>
-                <td><c:out value="${bookDTO.bookDtoId}"></c:out></td>
-                <td><c:out value="${bookDTO.title}"></c:out></td>
-                <td>
-                    <c:forEach var="author" items="${bookDTO.authors}">
-                        <c:out value="${author.name}"></c:out>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach var="genre" items="${bookDTO.genres}">
-                        <c:out value="${genre.category}"></c:out>
-                    </c:forEach>
-                </td>
-                <td><c:out value="${bookDTO.isbn}"></c:out></td>
-                <td><c:out value="${bookDTO.publisher}"></c:out></td>
-                <td><c:out value="${bookDTO.year}"></c:out></td>
-                <td><c:out value="${bookDTO.shelf}"></c:out></td>
-
-                <td><c:if test="${bookDTO.borrow < bookDTO.quantity}">
-                    <a href="?command=GoToRequestMaterials&bookId=${bookDTO.bookDtoId}">Заказать</a>
-                    </a>
-                </c:if></td>
-                <td><a href="?command=GoToWishList&bookId=${bookDTO.bookDtoId}">Добавить в избранные</a></td>
-            </tr>
-        </c:forEach>
+    </table>
+</form>
+<form>
+    <input type="hidden" name="command" value="CatalogBook">
+    <table>
+        <tbody>
         <tr>
-            <th colspan="10">
-                <p align="center">"Page"</p>
-                <c:out value="${pageCatalog}"></c:out>
-            </th>
+            <td>Введите название книги: </td>
+            <td><input type="text" name="title"></td>
         </tr>
+        <tr>
+            <td>Введите ISBN: </td>
+            <td><input type="text" name="isbn"></td>
+        </tr>
+        <tr>
+            <td>Введите имя автора: </td>
+            <td><input type="text" name="author"></td>
+        </tr>
+        <tr>
+            <td>Введите жанр: </td>
+            <td><input type="text" name="genre"></td>
+        </tr>
+        </tbody>
         <tfoot>
-        <tr>
-            <th align="center">
-                <a href="?command=ShowCatalogByPage&pageCatalog=${pageCatalog}&back=back">back</a>
-            </th>
-            <th colspan="8" align="center">
-                <input type="number" name="jumpPage" value="jump" placeholder="Page"><input type="submit" value="Перейти">
-<%--                <a href="?command=ShowCatalogByPage&pageBook=jumpPage&jump=jump">jump</a>--%>
-            </th>
-            <th align="center">
-                <a href="?command=ShowCatalogByPage&pageCatalog=${pageCatalog}&next=next">next</a>
-            </th>
-        </tr>
+            <td><input type="submit" value="Поиск"></td>
+            <td><input type="reset" value="Сбросить"></td>
         </tfoot>
     </table>
 </form>
+<form>
+    <input type="hidden" name="command" value="CatalogBook">
+    <table>
+        <tr>
+            <td>Показать все книги: </td>
+            <td><input type="submit" value="Поиск" name="all"></td>
+        </tr>
+    </table>
+</form>
+
+<div align="center">
+    <c:if test="${not empty books}">
+    <c:if test="${not empty books}">
+        <p>Количество найденных результатов - <c:out value="${booksSize}"/></p>
+    </c:if>
+    <table border="1" align="center">
+        <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Жанр</th>
+            <th>ISBN</th>
+            <th>Издательство</th>
+            <th>Год</th>
+            <th>Полка</th>
+            <th>Дата добавления</th>
+            <th>Библиотека</th>
+            <th>Количество</th>
+            <th>На выдаче</th>
+            <th>Описание</th>
+            <th>Обновить</th>
+        </tr>
+        <c:forEach var="books" items="${books}" varStatus="status">
+        <tr>
+            <td><c:out value="${status.index + 1}"></c:out></td>
+            <td><c:out value="${books.bookDtoId}"></c:out></td>
+            <td><c:out value="${books.title}"></c:out></td>
+            <td>
+                <c:forEach var="author" items="${books.authors}">
+                    <c:out value="${author.name}"></c:out>
+                </c:forEach>
+            </td>
+            <td>
+                <c:forEach var="genre" items="${books.genres}">
+                    <c:out value="${genre.category}"></c:out>
+                </c:forEach>
+            </td>
+            <td><c:out value="${books.isbn}"></c:out></td>
+            <td><c:out value="${books.publisher}"></c:out></td>
+            <td><c:out value="${books.year}"></c:out></td>
+            <td><c:out value="${books.shelf}"></c:out></td>
+            <td><c:out value="${books.added}"></c:out></td>
+            <td><c:out value="${books.cityLibrary}"></c:out></td>
+            <td><c:out value="${books.quantity}"></c:out></td>
+            <td><c:out value="${books.borrow}"></c:out></td>
+            <td><c:out value="${books.description}"></c:out></td>
+            <td>
+                <c:if test="${books.bookDtoId != 0}">
+                        <p><a href="?command=GoToUpdateBook&bookId=${books.bookDtoId}">Обновить</a></p>
+                </c:if>
+            </td>
+            </c:forEach>
+            </c:if>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>

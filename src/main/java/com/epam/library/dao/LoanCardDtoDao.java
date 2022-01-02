@@ -12,6 +12,8 @@ public interface LoanCardDtoDao {
 
     boolean update(LoanCardDto card) throws DAOException;
 
+    boolean updateReturnDate(LoanCardDto card) throws DAOException;
+
     boolean updateStatus(long cardId, LoanCardStatus status) throws DAOException;
 
     List<LoanCardDto> getCardsByIdUser(long id) throws DAOException;

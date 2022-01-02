@@ -12,9 +12,14 @@
     <title>Заказ книги</title>
 </head>
 <body>
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
+    </tr>
+</table>
 <h1>Заказ книги</h1>
-<button type="button" name="back" onclick="history.back()">Назад</button>
-<form action="Controller" method="get">
+<form>
     <input type="hidden" name="command" value="Order">
     <div align="center">
         <table>
@@ -47,6 +52,22 @@
                 </td>
             </tr>
             <tr>
+                <td>Жанр:</td>
+                <td>
+                    <c:forEach var="genre" items="${book.genres}">
+                        <c:out value="${genre.category}"></c:out>
+                    </c:forEach>
+                </td>
+            </tr>
+            <tr>
+                <td>Полка:</td>
+                <td><c:out value="${book.shelf}"></c:out></td>
+            </tr>
+            <tr>
+                <td>Описание:</td>
+                <td><c:out value="${book.description}"></c:out></td>
+            </tr>
+            <tr>
                 <td>Select library (city)</td>
                 <td>
                     <select name="city">
@@ -62,7 +83,7 @@
             </tr>
             <tr><tr>
             <div align="center">
-                <td><input type="submit" value="Push"></td>
+                <a href="?command=Order&bookId${book.bookDtoId}">Заказать</a>
             </div>
         </tr></tr>
         </table>

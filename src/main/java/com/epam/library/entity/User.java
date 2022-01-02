@@ -7,10 +7,8 @@ import java.time.LocalDate;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 5090094475097001520L;
 
     private long userId;
-    private String libraryCity;
     private UserRole role;
     private String password;
     private String secondName;
@@ -34,14 +32,6 @@ public class User implements Serializable {
 
     public void setUserId(long userId) {
         this.userId = userId;
-    }
-
-    public String getLibraryCity() {
-        return libraryCity;
-    }
-
-    public void setLibraryCity(String libraryCity) {
-        this.libraryCity = libraryCity;
     }
 
     public UserRole getRole() {
@@ -125,9 +115,6 @@ public class User implements Serializable {
         if (countViolations != user.countViolations) {
             return false;
         }
-        if (libraryCity != null ? !libraryCity.equals(user.libraryCity) : user.libraryCity != null) {
-            return false;
-        }
         if (role != user.role) {
             return false;
         }
@@ -153,7 +140,6 @@ public class User implements Serializable {
     public int hashCode() {
         int result = 1;
         result = 31 * result + Long.hashCode(userId);
-        result = 31 * result + (libraryCity != null ? libraryCity.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (secondName != null ? secondName.hashCode() : 0);
@@ -168,12 +154,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         StringBuffer line = new StringBuffer();
-        line.append("User{").append("userId='").append(userId).append("', libraryCity='").append(libraryCity)
-                .append("', role='").append(role).append("', password='").append(password)
-                .append("', secondName='").append(secondName).append("', lastName='")
-                .append(lastName).append("', email='").append(email).append("', dateRegistration='")
-                .append(dateRegistration).append("', countViolations='")
-                .append(countViolations).append("', status='").append(status).append('}');
+        line.append("User{").append("userId='").append(userId)
+                .append("', role='").append(role)
+                .append("', password='").append(password)
+                .append("', secondName='").append(secondName)
+                .append("', lastName='").append(lastName)
+                .append("', email='").append(email)
+                .append("', dateRegistration='").append(dateRegistration)
+                .append("', countViolations='").append(countViolations)
+                .append("', status='").append(status).append('}');
         return line.toString();
     }
 }

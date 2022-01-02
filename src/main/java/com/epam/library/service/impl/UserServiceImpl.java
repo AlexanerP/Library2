@@ -1,125 +1,289 @@
 package com.epam.library.service.impl;
 
+import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.UserDAO;
 import com.epam.library.entity.User;
 import com.epam.library.entity.UserRole;
 import com.epam.library.entity.UserStatus;
 import com.epam.library.service.ServiceException;
+import com.epam.library.service.ServiceFactory;
+import com.epam.library.service.ServiceValidator;
 import com.epam.library.service.UserService;
+import com.epam.library.utill.Chiper.Cipher;
+import com.epam.library.utill.UtilFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public Optional<User> verification(String email, String password) throws ServiceException {
-        System.out.println("Connection DB verification");
-        User user1 = new User();
-        user1.setUserId(1L);
-        user1.setLibraryCity("Minsk");
-        user1.setRole(UserRole.ADMIN);
-        user1.setSecondName("Din W");
-        user1.setLastName("Sa");
-        user1.setEmail("email@gmail.com");
-        user1.setStatus(UserStatus.ACTIVE);
-        return Optional.of(user1);
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            Cipher cipher = UtilFactory.getInstance().getCipher();
+            String passwordCipher = cipher.getCipherString(password.trim());
+            return userDAO.getUserByEmailAndPassword(email.trim(), passwordCipher);
+        }catch (DAOException e) {
+            logger.error("Error in services during user verification.");
+            throw new ServiceException("Error in services during user verification.", e);
+        }
     }
 
     @Override
-    public boolean registration(String email, String password, String secondName, String lastName) throws ServiceException {
-        System.out.println("email/" + email + " password/" + password + ". secondName/"+ secondName + ". LastName/" + lastName);
+    public boolean create(String email, String password, String secondName, String lastName) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            Cipher cipher = UtilFactory.getInstance().getCipher();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (validator.isPassword(password.trim()) && validator.isLength(secondName)
+                    && validator.isLength(lastName) && validator.isEmail(email.trim())) {
+                String passwordCipher = cipher.getCipherString(password.trim());
+                User user = new User();
+                user.setPassword(passwordCipher);
+                user.setEmail(email);
+                user.setSecondName(secondName);
+                user.setLastName(lastName);
+                user.setStatus(UserStatus.ACTIVE);
+                user.setRole(UserRole.USER);
+                user.setCountViolations(0);
+                return userDAO.create(user);
+            } else {
+                throw new ServiceException("Invalid values during registration.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services during registration.");
+            throw new ServiceException("Error in services during registration.", e);
+        }
+    }
+
+    @Override
+    public List<User> getUsers() throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            return userDAO.getUsers();
+        }catch (DAOException e) {
+            logger.error("Services error when getting a list of all users.");
+            throw new ServiceException("Services error when getting a list of all users.", e);
+        }
+    }
+
+    @Override
+    public long showCountUsers() throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            long activeCount = userDAO.getCount(UserStatus.ACTIVE);
+            long blockedCount = userDAO.getCount(UserStatus.BLOCKED);
+            long deleteCount = userDAO.getCount(UserStatus.DELETE);
+
+            return activeCount + blockedCount + deleteCount;
+        }catch (DAOException e) {
+            logger.error("Error in services when getting the number of users.");
+            throw new ServiceException("Error in services when getting the number of users.", e);
+        }
+    }
+
+    @Override
+    public List<User> showUserByStatus(String status) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            List<User> users;
+            if (status.equalsIgnoreCase(UserStatus.ACTIVE.name()) || status.equalsIgnoreCase(UserStatus.BLOCKED.name())
+                || status.equalsIgnoreCase(UserStatus.DELETE.name())) {
+                users = userDAO.getUsersByStatus(UserStatus.valueOf(status.toUpperCase()));
+                return users;
+            } else {
+                throw new ServiceException("Unknown user status.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when getting the number of users by status.");
+            throw new ServiceException("Error in services when getting the number of users by status.", e);
+        }
+    }
+
+    @Override
+    public List<User> showUserByRole(String role) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            List<User> users;
+            if (role.equalsIgnoreCase(UserRole.USER.name()) || role.equalsIgnoreCase(UserRole.ADMIN.name())
+                    || role.equalsIgnoreCase(UserRole.MANAGER.name())) {
+                users = userDAO.getUsersByRole(UserRole.valueOf(role.toUpperCase()));
+                return users;
+            } else {
+                throw new ServiceException("Unknown user role.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when getting the number of users by role.");
+            throw new ServiceException("Error in services when getting the number of users by role.", e);
+        }
+    }
+
+    @Override
+    public List<User> showUserByEmail(String email) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (validator.isEmail(email.trim())) {
+                return userDAO.getUserByEmail(email.trim());
+            }else {
+                throw new ServiceException("Invalid email value.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when fetching users by email");
+            throw new ServiceException("Error in services when fetching users by email", e);
+        }
+    }
+
+    @Override
+    public Optional<User> showUserById(String userId) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (validator.isNumber(userId)) {
+                return userDAO.getUserById(Long.parseLong(userId.trim()));
+            } else {
+                throw new ServiceException("Trying to get a user by an ID that is not a number.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when getting users by ID.");
+            throw new ServiceException("Error in services when getting users by ID.", e);
+        }
+    }
+
+    @Override
+    public boolean update(String email, String secondName, String lastName, String userId) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (validator.isLength(secondName) && validator.isLength(lastName)
+                    && validator.isEmail(email.trim()) && validator.isNumber(userId)) {
+                Optional<User> optionalUser = userDAO.getUserById(Long.parseLong(userId.trim()));
+                if (optionalUser.isPresent()) {
+                    User user = new User();
+                    user.setEmail(email != "" ? email : optionalUser.get().getEmail());
+                    user.setSecondName(secondName != "" ? secondName : optionalUser.get().getSecondName());
+                    user.setLastName(lastName != "" ? lastName : optionalUser.get().getLastName());
+                    int result =  userDAO.update(user);
+                    if (result == 1) {
+                        return true;
+                    }
+                } else {
+                    throw new ServiceException("User by ID not found");
+                }
+            } else {
+                throw new ServiceException("Invalid values.");
+            }
+        }catch (DAOException e) {
+            logger.error("An error occurred while updating the user in services.", e);
+            throw new ServiceException("An error occurred while updating the user in services.");
+        }
         return false;
     }
 
     @Override
-    public List<User> getUsers() throws ServiceException{
-        System.out.println("Connection DB getUsers");
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            User user = new User();
-            user.setUserId(Long.valueOf(i));
-            user.setSecondName("second name");
-            user.setLastName("last name");
-            user.setEmail("email");
-            user.setCountViolations(5);
-            user.setDateRegistration(LocalDate.now());
-            user.setRole(UserRole.ADMIN);
-            user.setStatus(UserStatus.ACTIVE);
-            users.add(user);
+    public boolean updateStatus(String userId, String status) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (validator.isNumber(userId)) {
+                if (status.equalsIgnoreCase(UserStatus.ACTIVE.name()) || status.equalsIgnoreCase(UserStatus.BLOCKED.name())
+                    || status.equalsIgnoreCase(UserStatus.DELETE.name())) {
+                    Optional<User> optionalUser = userDAO.getUserById(Long.parseLong(userId.trim()));
+                    if (optionalUser.isPresent()) {
+                        User user = optionalUser.get();
+                        user.setStatus(UserStatus.valueOf(status.toUpperCase()));
+                        int result = userDAO.update(user);
+                        if (result == 1) {
+                            return true;
+                        }
+                    } else {
+                        throw new ServiceException("User by ID not found");
+                    }
+
+                } else {
+                    throw new ServiceException("Unknown user status.");
+                }
+            }else {
+                throw new ServiceException("Invalid ID value.");
+            }
+
+        }catch (DAOException e) {
+            logger.error("Error in status update services.");
+            throw new ServiceException("Error in status update services.", e);
         }
-        return users;
+        return false;
     }
 
     @Override
-    public long getCountUsers() throws ServiceException {
-        return 77;
+    public boolean updatePassword(String password, String userId) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            Cipher cipher = UtilFactory.getInstance().getCipher();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (validator.isPassword(password.trim())) {
+                if (validator.isNumber(userId)) {
+                    Optional<User> optionalUser = userDAO.getUserById(Long.parseLong(userId.trim()));
+                    if (optionalUser.isPresent()) {
+                        User user = optionalUser.get();
+                        user.setPassword(cipher.getCipherString(password));
+                        System.out.println(user.getPassword());
+                        int result = userDAO.update(user);
+                        if (result == 1) {
+                            return true;
+                        }
+                    } else {
+                        throw new ServiceException("User by ID not found");
+                    }
+                } else {
+                    throw new ServiceException("Invalid values for ID.");
+                }
+            } else {
+                throw new ServiceException("Invalid values for password.");
+            }
+    }catch (DAOException e) {
+        logger.error("Error in services during registration.");
+        throw new ServiceException("Error in services during registration.", e);
+    }
+        return false;
     }
 
     @Override
-    public List<User> showUserByStatus(UserStatus status) throws ServiceException{
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < 110; i++) {
-            User user = new User();
-            user.setUserId(Long.valueOf(i));
-            user.setSecondName("second name");
-            user.setLastName("last name");
-            user.setEmail("status");
-            user.setCountViolations(5);
-            user.setDateRegistration(LocalDate.now());
-            user.setRole(UserRole.ADMIN);
-            user.setStatus(UserStatus.valueOf(status.name()));
-            users.add(user);
+    public boolean updateRole(String userId, String role) throws ServiceException {
+        try {
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (validator.isNumber(userId)) {
+                if (role.equalsIgnoreCase(UserRole.USER.name()) || role.equalsIgnoreCase(UserRole.ADMIN.name())
+                        || role.equalsIgnoreCase(UserRole.MANAGER.name())) {
+                    Optional<User> optionalUser = userDAO.getUserById(Long.parseLong(userId.trim()));
+                    if (optionalUser.isPresent()) {
+                        User user = optionalUser.get();
+                        user.setRole(UserRole.valueOf(role.toUpperCase()));
+                        int result = userDAO.update(user);
+                        if (result == 1) {
+                            return true;
+                        }
+                    } else {
+                        throw new ServiceException("User by ID not found");
+                    }
+
+                } else {
+                    throw new ServiceException("Unknown user role.");
+                }
+            }else {
+                throw new ServiceException("Invalid ID value.");
+            }
+
+        }catch (DAOException e) {
+            logger.error("Error in status update services.");
+            throw new ServiceException("Error in status update services.", e);
         }
-        return users;
-    }
-
-    @Override
-    public List<User> showUserByRole(UserRole role) throws ServiceException {
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < 110; i++) {
-            User user = new User();
-            user.setUserId(Long.valueOf(i));
-            user.setSecondName("second name");
-            user.setLastName("last name");
-            user.setEmail("status");
-            user.setCountViolations(5);
-            user.setDateRegistration(LocalDate.now());
-            user.setRole(UserRole.ADMIN);
-            user.setStatus(UserStatus.ACTIVE);
-            users.add(user);
-        }
-        return users;
-    }
-
-    @Override
-    public Optional<User> showUserByEmail(String email) throws ServiceException {
-        User user = new User();
-        user.setUserId(Long.valueOf(555));
-        user.setSecondName("second name");
-        user.setLastName("last name");
-        user.setEmail("ID");
-        user.setCountViolations(5);
-        user.setDateRegistration(LocalDate.now());
-        user.setRole(UserRole.ADMIN);
-        user.setStatus(UserStatus.ACTIVE);
-        return Optional.of(user);
-    }
-
-    @Override
-    public Optional<User> showUserById(long id) throws ServiceException {
-
-            User user = new User();
-            user.setUserId(Long.valueOf(55));
-            user.setSecondName("second name");
-            user.setLastName("last name");
-            user.setEmail("ID");
-            user.setCountViolations(5);
-            user.setDateRegistration(LocalDate.now());
-            user.setRole(UserRole.ADMIN);
-            user.setStatus(UserStatus.ACTIVE);
-        return Optional.of(user);
+        return false;
     }
 }

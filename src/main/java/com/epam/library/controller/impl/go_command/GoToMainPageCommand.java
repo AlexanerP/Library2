@@ -2,9 +2,7 @@ package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.PathFile;
-import com.epam.library.entity.Genre;
-import com.epam.library.entity.User;
-import com.epam.library.entity.UserStatus;
+import com.epam.library.entity.*;
 import com.epam.library.service.*;
 import com.epam.library.service.impl.BookServiceImpl;
 import com.epam.library.service.impl.GenreServiceImpl;
@@ -53,7 +51,9 @@ public class GoToMainPageCommand implements Command {
 //            req.setAttribute("countOrders", countOrders);
 //            req.setAttribute("countUsersBlocked", usersBlocked.size());
 //            req.setAttribute("countUsersActive", usersActive.size());
-
+            LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
+            List<Library> libraries = libraryService.showByStatus(LibraryStatus.OPENED.name());
+            req.setAttribute("libraries", libraries);
             session.setAttribute("user", user);
             req.setAttribute("genres", genres);
 

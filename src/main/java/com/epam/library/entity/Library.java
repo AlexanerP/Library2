@@ -8,9 +8,19 @@ public class Library implements Serializable {
     private int libraryId;
     private String city;
     private String street;
+    private LibraryStatus status;
 
-    public Library(String city) {
+    public Library(int libraryId, String city, String street, LibraryStatus status) {
+        this.libraryId = libraryId;
         this.city = city;
+        this.street = street;
+        this.status = status;
+    }
+
+    public Library(int libraryId, String city, String street) {
+        this.libraryId = libraryId;
+        this.city = city;
+        this.street = street;
     }
 
     public Library() {
@@ -40,6 +50,14 @@ public class Library implements Serializable {
         this.street = street;
     }
 
+    public LibraryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LibraryStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -54,10 +72,13 @@ public class Library implements Serializable {
         if (libraryId != library.libraryId) {
             return false;
         }
-        if (city != null ? !city.equals(library.city) : library.city != null) {
+        if (!city.equals(library.city)) {
             return false;
         }
-        return street != null ? street.equals(library.street) : library.street == null;
+        if (!street.equals(library.street)) {
+            return false;
+        }
+        return status == library.status;
     }
 
     @Override
@@ -65,6 +86,7 @@ public class Library implements Serializable {
         int result = libraryId;
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (street != null ? street.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
@@ -73,7 +95,8 @@ public class Library implements Serializable {
         StringBuffer line = new StringBuffer();
         line.append("Library{").append("libraryId='").append(libraryId)
                 .append("', city='").append(city)
-                .append("', street='").append(street).append('}');
+                .append("', street='").append(street)
+                .append(", status='").append(status).append('}');
         return line.toString();
     }
 }

@@ -21,15 +21,16 @@ public class OrderCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            System.out.println("OrderCommand /");
+System.out.println("OrderCommand /");
             HttpSession session = req.getSession();
-            Long bookId = (Long) session.getAttribute("bookId");
+            String bookId = req.getParameter("bookId");
+System.out.println("bookId /" + bookId);
             User user = (User) session.getAttribute("user");
             String city = req.getParameter("city");
             OrderDtoService orderDtoService = new OrderDtoServiceImpl();
             System.out.println("BookID/ " + bookId);
             if (user != null && bookId != null && city !="") {
-                if (orderDtoService.create(bookId, user.getUserId(), city)) {
+                if (orderDtoService.create(Long.parseLong(bookId), user.getUserId(), city)) {
                     resp.sendRedirect("Controller?command=GoToMessagePage&message=" + "Order success.");
                 }
             } else {

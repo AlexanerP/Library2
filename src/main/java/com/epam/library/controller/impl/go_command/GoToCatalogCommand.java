@@ -24,16 +24,17 @@ public class GoToCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-  System.out.println("GoToCatalogCommand");
             logger.info("Go to catalog. Getting data to view on the first page.");
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             int page = 1;
-            List<BookDto> bookList = bookDtoService.showByPage(page);
+            int limit = 20;
+            List<BookDto> bookList = bookDtoService.showByPage(page, limit);
             req.setAttribute("bookList", bookList);
             req.setAttribute("pageCatalog", page);
             req.getRequestDispatcher(PathFile.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("An error occurred while getting data for viewing on the first page. No data received", e);
+            //error page
         }
     }
 }

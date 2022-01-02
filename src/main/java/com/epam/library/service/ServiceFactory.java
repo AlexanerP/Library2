@@ -15,6 +15,9 @@ public class ServiceFactory {
     private AuthorService authorService = new AuthorServiceImpl();
     private GenreService genreService = new GenreServiceImpl();
     private LoanCardService loanCardService = new LoanCardServiceImpl();
+    private LibraryService libraryService = new LibraryServiceImpl();
+    private ServiceValidator serviceValidator = new ServiceValidator();
+
 
     public static ServiceFactory getInstance() {
         return instance;
@@ -54,5 +57,13 @@ public class ServiceFactory {
 
     public LoanCardService getLoanCardService() {
         return loanCardService;
+    }
+
+    public LibraryService getLibraryService() {
+        return libraryService;
+    }
+
+    public ServiceValidator getServiceValidator() {
+        return serviceValidator;
     }
 }

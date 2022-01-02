@@ -84,7 +84,7 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
             prStatement = createPreparedStatement(connection, ADD_USER_QUERY, user.getPassword(), user.getSecondName(),
                     user.getLastName(), user.getCountViolations(), user.getEmail(),
-                    user.getRole().getValue(),  user.getStatus().name());
+                    user.getRole().name(),  user.getStatus().name());
           return prStatement.execute();
         } catch (SQLException sqlE) {
             logger.error("Failed to create user. User - {}.", user.toString());
@@ -99,27 +99,12 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
         logger.info("User update.");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
-            prStatement = createPreparedStatement(connection, UPDATE_USER_QUERY, user.getRole().getValue(),
+            prStatement = createPreparedStatement(connection, UPDATE_USER_QUERY, user.getRole().name(),
                     user.getStatus().name(), user.getSecondName(), user.getLastName(), user.getEmail(),
                     user.getCountViolations(), user.getUserId());
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Failed to update user. User - {}", user.toString());
-            throw new DAOException(sqlE);
-        } finally {
-            closePreparedStatement(prStatement);
-        }
-    }
-
-    @Override
-    public int updateStatus(long id, UserStatus status) throws DAOException {
-        logger.info("Updating user status by id.");
-        PreparedStatement prStatement = null;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
-            prStatement = createPreparedStatement(connection, UPDATE_STATUS_BY_ID_QUERY, status.name(), id);
-            return prStatement.executeUpdate();
-        } catch (SQLException sqlE) {
-            logger.error("Failed to update user status by id. Id - {}, status - {}", id, status.name());
             throw new DAOException(sqlE);
         } finally {
             closePreparedStatement(prStatement);
@@ -159,18 +144,19 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
     }
 
     @Override
-    public boolean isUserByEmail(String email) throws DAOException {
+    public List<User> getUserByEmail(String email) throws DAOException {
         logger.info("There is an email in the system.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
+        UserMapper mapper = new UserMapper();
+        List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
             prStatement = createPreparedStatement(connection, EXIST_EMAIL_QUERY, email);
             resultSet = prStatement.executeQuery();
-            boolean flag = false;
             while (resultSet.next()) {
-                flag = true;
+                users.add(mapper.map(resultSet));
             }
-            return flag;
+            return users;
         } catch (SQLException sqlE) {
             logger.error("An error occurred while receiving email from the database.");
             throw new DAOException(sqlE);
@@ -181,15 +167,15 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
     }
 
     @Override
-    public Optional<User> getUserByEmailAndPassword(User user) throws DAOException {
+    public Optional<User> getUserByEmailAndPassword(String email, String password) throws DAOException {
         logger.info("Verification user. Getting user by login, password and status.");
         UserMapper mapper = new UserMapper();
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         List<User> entity = new ArrayList<>();
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, GET_USER_BY_EMAIL_PASSWORD_STATUS_QUERY, user.getEmail(),
-                    user.getPassword(), UserStatus.ACTIVE.name(), UserStatus.BLOCKED.name());
+            prStatement = createPreparedStatement(connection, GET_USER_BY_EMAIL_PASSWORD_STATUS_QUERY, email,
+                    password, UserStatus.ACTIVE.name(), UserStatus.BLOCKED.name());
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
                 entity.add(mapper.map(resultSet));
@@ -215,9 +201,9 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
     }
 
     @Override
-    public int delete(Long id) throws DAOException {
+    public int delete(User user) throws DAOException {
         logger.info("Start the removal process.");
-        return updateStatus(id, UserStatus.DELETE);
+        return update(user);
     }
 
     @Override
@@ -277,7 +263,7 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
-            prStatement = createPreparedStatement(connection, GET_ALL_USERS_BY_ROLE_QUERY, role.getValue());
+            prStatement = createPreparedStatement(connection, GET_ALL_USERS_BY_ROLE_QUERY, role.name());
             resultSet = prStatement.executeQuery();
 
             UserMapper mapper = new UserMapper();

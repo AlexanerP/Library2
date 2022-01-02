@@ -23,22 +23,37 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(LibraryDAOImpl.class);
 
-    private final static String ADD_LIBRARY_QUERY = String.format("INSERT INTO %s(%s, %s) values(?, ?);",
-            TableName.LIBRARY, ColumnName.LIBRARY_CITY, ColumnName.LIBRARY_STREET);
+    private final static String ADD_LIBRARY_QUERY = String.format("INSERT INTO %s(%s, %s, %s) values(?, ?, " +
+                    "(Select %s from %s where %s=?));", TableName.LIBRARY, ColumnName.LIBRARY_CITY,
+            ColumnName.LIBRARY_STREET, ColumnName.LIBRARY_ID_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS,
+            TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_STATUS);
 
-    private final static String UPDATE_QUERY = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=?;",
-            TableName.LIBRARY, ColumnName.LIBRARY_CITY, ColumnName.LIBRARY_STREET, ColumnName.LIBRARY_ID_LIBRARY);
+    private final static String UPDATE_QUERY = String.format("UPDATE %s SET %s=?, %s=?, %s=(Select %s from %s " +
+                    "WHERE %s=?) WHERE %s=?;", TableName.LIBRARY, ColumnName.LIBRARY_CITY, ColumnName.LIBRARY_STREET,
+            ColumnName.LIBRARY_ID_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS, TableName.LIBRARY_STATUS,
+            ColumnName.LIBRARY_STATUS_STATUS, ColumnName.LIBRARY_ID_LIBRARY);
 
     private final static String UPDATE_STREET_QUERY = String.format("UPDATE %s SET %s=? WHERE %s=?;", TableName.LIBRARY,
             ColumnName.LIBRARY_STREET, ColumnName.LIBRARY_ID_LIBRARY);
 
-    private final static String GET_CITY_BY_ID_QUERY = String.format("SELECT * FROM %s WHERE %s=?;", TableName.LIBRARY,
+    private final static String GET_LIBRARY_BY_ID_QUERY = String.format("SELECT * FROM %s LEFT JOIN %s on(%s.%s=%s.%s) " +
+                    "WHERE %s=?;", TableName.LIBRARY, TableName.LIBRARY_STATUS, TableName.LIBRARY,
+            ColumnName.LIBRARY_ID_STATUS, TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS,
             ColumnName.LIBRARY_ID_LIBRARY);
 
-    private final static String GET_CITY_BY_NAME_QUERY = String.format("SELECT * FROM %s WHERE %s=?;", TableName.LIBRARY,
+    private final static String GET_LIBRARY_BY_NAME_QUERY = String.format("SELECT * FROM %s LEFT JOIN %s on(%s.%s=%s.%s) " +
+                    "WHERE %s=?;", TableName.LIBRARY, TableName.LIBRARY_STATUS, TableName.LIBRARY,
+            ColumnName.LIBRARY_ID_STATUS, TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS,
             ColumnName.LIBRARY_CITY);
 
-    private final static String GET_ALL_CITY_QUERY = String.format("SELECT * FROM %s;", TableName.LIBRARY);
+    private final static String GET_LIBRARY_BY_STATUS_QUERY = String.format("SELECT * FROM %s LEFT JOIN %s on(%s.%s=%s.%s) " +
+                    "WHERE %s.%s=?;", TableName.LIBRARY, TableName.LIBRARY_STATUS, TableName.LIBRARY,
+            ColumnName.LIBRARY_ID_STATUS, TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS,
+            TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_STATUS);
+
+    private final static String GET_ALL_CITY_QUERY = String.format("SELECT * FROM %s LEFT JOIN %s on(%s.%s=%s.%s)",
+            TableName.LIBRARY, TableName.LIBRARY_STATUS, TableName.LIBRARY, ColumnName.LIBRARY_ID_STATUS,
+            TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS);
 
     @Override
     public boolean create(Library library) throws DAOException {
@@ -46,14 +61,14 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
             prStatement = createPreparedStatement(connection, ADD_LIBRARY_QUERY, library.getCity(),
-                    library.getStreet());
+                    library.getStreet(), library.getStatus().name());
             prStatement.execute();
 
             return true;
 
         } catch (SQLException sqlE) {
             logger.error("Failed to create library. Library - {}.", library.toString());
-            throw new DAOException(sqlE);
+            throw new DAOException("Failed to create library.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
@@ -65,11 +80,11 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
             prStatement = createPreparedStatement(connection, UPDATE_QUERY, library.getCity(), library.getStreet(),
-                    library.getLibraryId());
+                    library.getStatus().name(), library.getLibraryId());
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Failed to update library. Library - {}", library.toString());
-            throw new DAOException(sqlE);
+            throw new DAOException("Failed to update library.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
@@ -77,17 +92,14 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
 
     @Override
     public int updateStreet(Long id, String street) throws DAOException {
-        logger.info("Start of updating city address.");
+        logger.info("Start of updating city address (street).");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
             prStatement = createPreparedStatement(connection, UPDATE_STREET_QUERY, street, id);
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
-            logger.error("Library address update error. Street - {}, id - {}", street, id);
-            for (Throwable e : sqlE) {
-                logger.error(e.toString());
-            }
-            throw new DAOException(sqlE);
+            logger.error("Library address (street) update error. Street - {}, id - {}", street, id);
+            throw new DAOException("Library address (street) update error.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
@@ -95,13 +107,13 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
 
     @Override
     public Optional<Library> getLibraryById(Long id) throws DAOException {
-        logger.info("Receiving a city by id.");
+        logger.info("Receiving a library by id.");
         LibraryMapper mapper = new LibraryMapper();
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         List<Library> entity = new ArrayList<>();
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, GET_CITY_BY_ID_QUERY, id);
+            prStatement = createPreparedStatement(connection, GET_LIBRARY_BY_ID_QUERY, id);
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
                 entity.add(mapper.map(resultSet));
@@ -112,11 +124,11 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new UnsupportedOperationException("Find more 1 user.");
+                throw new DAOException("Find more 1 library.");
             }
         } catch (SQLException sqlE) {
-            logger.error("Find more 1 city. Find - {}", entity.toString());
-            throw new DAOException(sqlE);
+            logger.error("Find more 1 library. Find - {}", entity.toString());
+            throw new DAOException("Find more 1 library.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -125,28 +137,28 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
 
     @Override
     public Optional<Library> getLibraryByCity(String city) throws DAOException {
-        logger.info("Receiving a city by name.");
+        logger.info("Receiving a library by city.");
         LibraryMapper mapper = new LibraryMapper();
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         List<Library> entity = new ArrayList<>();
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, GET_CITY_BY_NAME_QUERY, city);
+            prStatement = createPreparedStatement(connection, GET_LIBRARY_BY_NAME_QUERY, city);
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
                 entity.add(mapper.map(resultSet));
             }
             if (entity.size() == 1) {
-                logger.info("Library by name received.");
+                logger.info("Library by city received.");
                 return Optional.of(entity.get(0));
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new UnsupportedOperationException("Find more 1 user.");
+                throw new DAOException("Find more 1 library.");
             }
         } catch (SQLException sqlE) {
-            logger.error("Find more 1 city. Find - {}", entity.toString());
-            throw new DAOException(sqlE);
+            logger.error("Library in the city is not received.");
+            throw new DAOException("Library in the city is not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -155,8 +167,8 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
 
     @Override
     public List<Library> getLibraries() throws DAOException {
-        logger.info("Getting all cities.");
-        List<Library> cities = new ArrayList<>();
+        logger.info("Getting all Libraries.");
+        List<Library> libraries = new ArrayList<>();
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -164,16 +176,40 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
             resultSet = prStatement.executeQuery();
             LibraryMapper mapper = new LibraryMapper();
             while (resultSet.next()) {
-                cities.add(mapper.map(resultSet));
+                libraries.add(mapper.map(resultSet));
             }
         } catch (SQLException sqlE) {
-            logger.error("Cities not received.");
-            throw new DAOException(sqlE);
+            logger.error("Libraries not received.");
+            throw new DAOException("Libraries not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
         }
         logger.info("Library list received.");
-        return cities;
+        return libraries;
+    }
+
+    @Override
+    public List<Library> getLibrariesByStatus(LibraryStatus status) throws DAOException {
+        logger.info("Getting all Libraries by status.");
+        List<Library> libraries = new ArrayList<>();
+        PreparedStatement prStatement = null;
+        ResultSet resultSet = null;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
+            prStatement = createPreparedStatement(connection, GET_LIBRARY_BY_STATUS_QUERY, status.name());
+            resultSet = prStatement.executeQuery();
+            LibraryMapper mapper = new LibraryMapper();
+            while (resultSet.next()) {
+                libraries.add(mapper.map(resultSet));
+            }
+        } catch (SQLException sqlE) {
+            logger.error("Libraries by status not received.");
+            throw new DAOException("Libraries by status not received.", sqlE);
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(prStatement);
+        }
+        logger.info("Library list received.");
+        return libraries;
     }
 }

@@ -14,15 +14,13 @@ public interface UserDAO {
 
     int update(User user) throws DAOException;
 
-    int updateStatus(long id, UserStatus status) throws DAOException;
-
     Optional<User> getUserById(long id) throws DAOException;
 
-    boolean isUserByEmail(String email) throws DAOException;
+    List<User> getUserByEmail(String email) throws DAOException;
 
-    Optional<User> getUserByEmailAndPassword(User user) throws DAOException;
+    Optional<User> getUserByEmailAndPassword(String email, String password) throws DAOException;
 
-    int delete(Long id) throws DAOException;
+    int delete(User user) throws DAOException;
 
     List<User> getUsers() throws DAOException;
 

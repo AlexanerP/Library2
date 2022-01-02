@@ -11,7 +11,12 @@
     <title>Title</title>
 </head>
 <body>
-<button type="button" name="back" onclick="history.back()">Назад</button>
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
+    </tr>
+</table>
 <br><br><br>
 <table>
     <tr>
@@ -24,14 +29,30 @@
         <c:if test="${not empty user.role and user.role eq 'MANAGER'}">
             <p>
                 <tr>
-                    <td>Страница Директора</td>
-                    <td><a href="Controller?command=UserCatalog"><input type="submit" value="Catalog user"></a></td>
+                    <td>Действия с администраторами</td>
+                    <td><a href="Controller?command=ManagerCatalog"><input type="submit" value="Catalog user"></a></td>
+                </tr>
+                <tr>
+                    <td>Библиотеки</td>
+                    <td><a href="Controller?command=GoToLibrary"><input type="submit" value="Перейти"></a></td>
                 </tr>
             </p>
         </c:if>
         <tr>
-            <td>Поиск книги</td>
-            <td><a href="Controller?command=GoToSearchBooks"><input type="submit" value="Перейти"></a></td>
+            <td>Выдача книг</td>
+            <td><a href="Controller?command=GoToGiveOutBookUser"><input type="submit" value="Перейти"></a></td>
+        </tr>
+        <tr>
+            <td>Возврат книг</td>
+            <td><a href="Controller?command=GoToReturnBookCatalog"><input type="submit" value="Перейти"></a></td>
+        </tr>
+        <tr>
+            <td>Каталог книг</td>
+            <td><a href="Controller?command=CatalogBook"><input type="submit" value="Перейти"></a></td>
+        </tr>
+        <tr>
+            <td>Каталог карт выдачи</td>
+            <td><a href="Controller?command=GoToLoanCardCatalog"><input type="submit" value="Перейти"></a></td>
         </tr>
         <tr>
             <td>Каталог пользователей</td>
@@ -43,7 +64,7 @@
         </tr>
         <tr>
             <td>Каталог заказов</td>
-            <td><a href="Controller?command=GoToOrdersCatalog" target="_blank"><input type="submit" value="Requests Catalog"></a></td>
+            <td><a href="Controller?command=GoToOrderCatalog"><input type="submit" value="Requests Catalog"></a></td>
         </tr>
 <%--        <tr>--%>
 <%--            <td>Каталог пользователей</td>--%>

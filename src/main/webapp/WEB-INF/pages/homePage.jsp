@@ -12,10 +12,11 @@
     <title>Title</title>
 </head>
 <body>
+<p>
+    <a href="Controller?command=GoToMainPage"><input type="submit" value="На главную страницу"></a>
+</p>
 <div align="center"><h1>Welcome ${user.secondName}</h1></div>
 <br><br>
-<c:set var="role" scope="session"/>
-
 <div align="center">
     <table border="1" cellpadding="5">
         <c:if test="${not empty user.role and user.role eq 'ADMIN' or user.role eq 'MANAGER'}">
@@ -56,11 +57,11 @@
 <%--        </tr>--%>
         <tr>
             <td>Мои запросы</td>
-            <td><a href="Controller?command=GoToOrderUser&userId=${user.userId}" target="_blank"><input type="submit" value="Requests"></a></td>
+            <td><a href="Controller?command=GoToOrderUser&userId=${user.userId}"><input type="submit" value="Перейти"></a></td>
         </tr>
         <tr>
             <td>Мои избранные книги</td>
-            <td><a href="Controller?command=GoToWishBooksUserPage" target="_blank"><input type="submit" value="Requests"></a></td>
+            <td><a href="Controller?command=GoToWishBooksUserPage"><input type="submit" value="Перейти"></a></td>
         </tr>
 <%--        <tr>--%>
 <%--            <td>Personal card</td>--%>

@@ -11,6 +11,7 @@ public class TableName {
     public static final String ORDER = "orders";
     public static final String ORDER_STATUS = "order_statuses";
     public static final String LIBRARY = "libraries";
+    public static final String LIBRARY_STATUS = "library_statuses";
     public static final String AUTHORS = "authors";
     public static final String GENRES = "genres";
     public static final String LOAN_CARDS = "loan_cards";
@@ -25,6 +26,4 @@ public class TableName {
 
     public static final String L_H_LC = "library_has_loan_card";
     public static final String B_H_LC = "book_has_loan_cards";
-
-
 }

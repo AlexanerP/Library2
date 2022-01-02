@@ -1,7 +1,6 @@
 package com.epam.library.dao.constant;
 
 public final class ColumnName {
-
     private ColumnName() {}
 
     //User
@@ -37,6 +36,11 @@ public final class ColumnName {
     public static final String LIBRARY_ID_LIBRARY = "id_library";
     public static final String LIBRARY_STREET = "street";
     public static final String LIBRARY_CITY = "city";
+    public static final String LIBRARY_ID_STATUS = "id_status";
+
+    //Library status
+    public static final String LIBRARY_STATUS_ID_STATUS = "id_status";
+    public static final String LIBRARY_STATUS_STATUS = "status";
 
     //BookDto
     public static final String BOOK_ID_BOOK = "id_books";
@@ -58,6 +62,7 @@ public final class ColumnName {
     //Loan cards
     public static final String LOAN_CARD_ID_CARD = "id_loan_cards";
     public static final String LOAN_CARD_ID_BOOK = "id_book";
+    public static final String LOAN_CARD_ID_USER = "id_users";
     public static final String LOAN_CARD_ID_LIBRARY = "id_library";
     public static final String LOAN_CARD_TAKING_BOOK = "taking_book";
     public static final String LOAN_CARD_RETURN_BOOK = "return_book";
@@ -73,8 +78,8 @@ public final class ColumnName {
 
     //Wish_book
     public static final String WISH_BOOK_ID = "id_wish_books";
-    public static final String WISH_BOOK_ID_BOOK = "id_book";
-    public static final String WISH_BOOK_ID_USER = "id_user";
+    public static final String WISH_BOOK_ID_BOOK = "id_books";
+    public static final String WISH_BOOK_ID_USER = "id_users";
     public static final String WISH_BOOK_ADDED = "added";
 
     //Author
@@ -124,6 +129,7 @@ public final class ColumnName {
     //Chair
     public static final String CHAR_PERCENT = "%";
     public static final String CHAR_HATCH = "'";
+
 
 
 }

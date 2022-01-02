@@ -28,9 +28,8 @@ public class RegistrationCommand implements Command {
             String password = req.getParameter("password");
             String secondName = req.getParameter("second_name");
             String lastName = req.getParameter("last_name");
-            String passwordCipher = cipher.getCipherString(password);
             if (email != "" && password != "" && secondName != "" && lastName != ""){
-                boolean flagRegistration = userService.registration(email, passwordCipher, secondName, lastName);
+                boolean flagRegistration = userService.create(email, password, secondName, lastName);
                 if(flagRegistration) {
                     resp.sendRedirect("Controller?command=GoToMessagePage&message=" + "Registration was successful. " +
                             "Sign in to continue");

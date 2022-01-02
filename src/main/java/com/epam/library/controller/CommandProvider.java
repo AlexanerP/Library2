@@ -25,18 +25,20 @@ public final class CommandProvider {
         commands.put("GoToOrder", new GoToOrderCommand());
         commands.put("Order", new OrderCommand());
 
-        commands.put("GoToBookDetails", new GoToBookDetailsCommand());
+//        commands.put("GoToBookDetails", new GoToBookDetailsCommand());
+        commands.put("CatalogBook", new CatalogBookCommand());
 
         commands.put("GoToOrderUser", new GoToOrderUserCommand());
         commands.put("GoToWishBooksUserPage", new GoToWishBooksUserCommand());  //+
 
-        commands.put("OrderCatalog", new RequestCatalogCommand());
-        commands.put("GoToRequestsCatalog", new GoToRequestCatalogCommand());
+        commands.put("OrderCatalog", new OrderCatalogCommand());
+        commands.put("GoToOrderCatalog", new GoToOrderCatalogCommand());
 
         commands.put("GoToLoanCardUser", new GoToLoanCardUserCommand());
         commands.put("PersonalCard", new PersonalCardCommand());
 
         commands.put("GoToAddBook", new GoToAddBookPage());
+        commands.put("CreateBook", new CreateBookCommand());
 
         commands.put("GoToStoryLoanCardUser", new GoToStoryLoanCardCommand());
 
@@ -55,10 +57,36 @@ public final class CommandProvider {
 
         commands.put("GoToAdminPage", new GoToAdminPageCommand());
         commands.put("AdminPage", new AdminPageCommand());
+        commands.put("ManagerCatalog", new AdminCatalogPage());
+        commands.put("ActionAdminCommand", new ActionAdminCommand());
+        commands.put("GoToUpdateBook", new GoToUpdateBook());
+        commands.put("UpdateBook", new UpdateBookCommand());
+
+        commands.put("SignOut", new SingOutCommand());
+
+//        commands.put("GoToUserDetails", new GoToUserDetailsCommand());
 
 //        commands.put("AdminPage", new AdminPageCommand());
 
         commands.put("GoToStatistics", new GoToStatisticLibraryCommand());
+        commands.put("ActionOrder", new ActionOrderCommand());
+        commands.put("ActionUser", new ActionUserCommand());
+
+        commands.put("ActionLibrary", new ActionLibraryCommand());
+        commands.put("GoToLibrary", new GoToLibraryCommand());
+        commands.put("UpdateLibrary", new UpdateLibraryCommand());
+        commands.put("GoToUpdateLibrary", new GoToUpdateLibraryCommand());
+        commands.put("ActionGiveOutBook", new ActionGiveOutBookCommand());
+        commands.put("GiveOutBookUser", new GiveOutBookCatalogCommand());
+        commands.put("GoToGiveOutBookUser", new GoToGiveOutBookCatalogCommand());
+
+        commands.put("ReturnBookCatalog", new ReturnBookCatalogCommand());
+        commands.put("GoToReturnBookCatalog", new GoToReturnBookCatalogCommand());
+        commands.put("ActionReturnBook", new ActionReturnBookCommand());
+        commands.put("ActionWishBook", new ActionWishBookCommand());
+
+        commands.put("LoanCardCatalog", new LoanCardCatalogCommand());
+        commands.put("GoToLoanCardCatalog", new GoToLoanCardCatalogCommand());
     }
 
     public final Command getCommand(String command) {

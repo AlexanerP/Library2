@@ -11,7 +11,13 @@
     <title>Обновление данных пользователя</title>
 </head>
 <body>
-<h1>Update User</h1>
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
+        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
+    </tr>
+</table>
+<div align="center"><h1>Обновление личных данных</h1></div>
 <form action="Controller" method="post">
     <input type="hidden" name="command" value="UpdateUser">
     <div align="center">

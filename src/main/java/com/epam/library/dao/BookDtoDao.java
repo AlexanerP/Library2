@@ -12,7 +12,7 @@ public interface BookDtoDao {
 
     boolean update(BookDto bookDto) throws DAOException;
 
-    Optional<BookDto> getBookByIsbn(String isbn) throws DAOException;
+    List<BookDto> getBookByIsbn(String isbn) throws DAOException;
 
     Optional<BookDto> getBookById(long bookId) throws DAOException;
 

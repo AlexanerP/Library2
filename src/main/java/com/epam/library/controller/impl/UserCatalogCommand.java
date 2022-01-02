@@ -40,21 +40,21 @@ public class UserCatalogCommand implements Command {
             List<User> users = new ArrayList<>();
             if (showAdmin !="" && showAdmin != null) {
  System.out.println("showAdmin");
-               users = userService.showUserByRole(UserRole.ADMIN);
-               users = userService.showUserByRole(UserRole.MANAGER);
+               users = userService.showUserByRole(UserRole.ADMIN.name());
+               users = userService.showUserByRole(UserRole.MANAGER.name());
             } else if (showAll != "" && showAll != null) {
 System.out.println("showAll");
                 users = userService.getUsers();
             }else if (userId != "" && userId != null) {
 System.out.println("userId");
-                Optional userOptional = userService.showUserById(Math.abs(Long.parseLong(userId)));
+                Optional userOptional = userService.showUserById(userId);
                 User user = new User();
 //                user.setSecondName("4");
 //                String name = userOptional.flatMap(User::getSecondName).orElse("-");
                 users.add(user);
             }else if(email != "" && email != null) {
 System.out.println("email");
-                Optional userOptional = userService.showUserByEmail(email);
+                List<User> userByEmail = userService.showUserByEmail(email);
                 User user = new User();
                 users.add(user);
             }else {
@@ -64,6 +64,7 @@ System.out.println("email");
 //            if (showAll != null && userId != null && email != null && showAdmin != null)
     System.out.println("USER REDIRECT");
             req.setAttribute("users", users);
+            req.setAttribute("userSize", users.size());
             req.getRequestDispatcher(PathFile.USER_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
 

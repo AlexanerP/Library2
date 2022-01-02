@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RequestCatalogCommand implements Command {
+public class ActionReturnBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("RequestsCatalog");
-        req.getRequestDispatcher("WEB-INF/pages/requestCatalogPage.jsp").forward(req, resp);
+        String loanCardId = req.getParameter("loanCardId");
+        System.out.println("Возврат книги Запрос - " + loanCardId);
     }
 }
