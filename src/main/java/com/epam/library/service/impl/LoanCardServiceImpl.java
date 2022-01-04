@@ -1,217 +1,158 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.entity.BookTypeUse;
-import com.epam.library.entity.dto.LoanCardDto;
-import com.epam.library.entity.LoanCardStatus;
-import com.epam.library.service.LoanCardService;
-import com.epam.library.service.ServiceException;
+import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.LoanCardDao;
+import com.epam.library.entity.*;
+import com.epam.library.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class LoanCardServiceImpl implements LoanCardService {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoanCardServiceImpl.class);
+
+    private static final int MONTH_LOAN_BOOK = 2;
 
     @Override
-    public List<LoanCardDto> showCardsByUser(long idUser) {
-        System.out.println("LoanCardServiceImpl");
-        List<LoanCardDto> cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            LoanCardDto card = new LoanCardDto();
-            card.setLoanCardDtoId(1l);
-            card.setLastName("LAst name");
-            card.setSecondName("Second name");
-            card.setUserId(1l);
-            card.setBookId(1l);
-            card.setTitle("title");
-            card.setIsbn("isbn");
-            card.setTakingBook(LocalDate.now());
-            card.setReturnBook(LocalDate.now());
-            card.setDeadline(LocalDate.now());
-            card.setTypeUse(BookTypeUse.READ_ROOM);
-            card.setStatus(LoanCardStatus.OPEN);
+    public boolean create(String orderId, String typeUse) throws ServiceException {
+        try {
+            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            OrderService orderService = ServiceFactory.getInstance().getOrderService();
+            Optional<Order> optionalOrder = orderService.showById(orderId);
+            if (orderId != null && typeUse != null) {
+                if (validator.isLength(typeUse)) {
+                    if (optionalOrder.isPresent()) {
+                        if (typeUse.equalsIgnoreCase(BookTypeUse.READ_ROOM.name()) || typeUse.equalsIgnoreCase(BookTypeUse.TAKE_HOME.name())) {
+                            LoanCard loanCard = new LoanCard();
+                            loanCard.setBookId(optionalOrder.get().getBookId());
+                            loanCard.setUserId(optionalOrder.get().getUserId());
+                            loanCard.setCityLibrary(optionalOrder.get().getLibraryCity());
+                            loanCard.setTypeUse(BookTypeUse.valueOf(typeUse.toUpperCase()));
+                            loanCard.setTakingBook(LocalDate.now());
+                            loanCard.setStatus(LoanCardStatus.OPEN);
 
-            cards.add(card);
+                            LocalDate deadline = LocalDate.now();
 
-
+                            loanCard.setDeadline(deadline.plusMonths(MONTH_LOAN_BOOK));
+                            loanCard.setReturnBook("-");
+                            return loanCardDao.create(loanCard);
+                        } else {
+                            throw new ServiceException("Invalid type use values");
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    throw new ServiceException("Invalid type use values");
+                }
+            } else {
+                throw new ServiceException("The order ID or the type use value is empty.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when creating an issue card.");
+            throw new ServiceException("Error in services when creating an issue card.", e);
         }
-        System.out.println("Size - " + cards.size());
-        return cards;
     }
 
     @Override
-    public List<LoanCardDto> showCardsByStatus(LoanCardStatus status) throws ServiceException {
-        List<LoanCardDto> cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            LoanCardDto card = new LoanCardDto();
-            card.setLoanCardDtoId(1l);
-            card.setLastName("LAst name");
-            card.setSecondName("Second name");
-            card.setUserId(1l);
-            card.setBookId(1l);
-            card.setTitle("title");
-            card.setIsbn("isbn");
-            card.setTakingBook(LocalDate.now());
-            card.setReturnBook(LocalDate.now());
-            card.setDeadline(LocalDate.now());
-            card.setTypeUse(BookTypeUse.READ_ROOM);
-            card.setStatus(LoanCardStatus.OPEN);
+    public boolean update(String cardId, String typeUse, String status) throws ServiceException {
+        try {
+            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (cardId != null) {
+            if (validator.isNumber(cardId)) {
+                Optional<LoanCard> optionalLoanCard = loanCardDao.getCardById(Long.parseLong(cardId.trim()));
+                if (optionalLoanCard.isPresent()) {
+                    LoanCard loanCard = optionalLoanCard.get();
+                    if (typeUse != null) {
+                        if (typeUse.equalsIgnoreCase(BookTypeUse.READ_ROOM.name())
+                                || typeUse.equalsIgnoreCase(BookTypeUse.TAKE_HOME.name())) {
+                            loanCard.setTypeUse(BookTypeUse.valueOf(typeUse.toUpperCase()));
+                        } else {
+                            throw new ServiceException("Invalid status values");
+                        }
+                    }
+                    if (status != null) {
+                        if (status.equalsIgnoreCase(LoanCardStatus.OPEN.name())
+                                || status.equalsIgnoreCase(LoanCardStatus.CLOSED.name())) {
+                            loanCard.setStatus(LoanCardStatus.valueOf(status.toUpperCase()));
+                        } else {
+                            throw new ServiceException("Invalid status values");
+                        }
+                    }
+                    return loanCardDao.update(loanCard);
+                }  else {
+                    throw new ServiceException("The loan card ID value is empty.");
+                }
+                } else {
+                    throw new ServiceException("The card does not exist.");
+                }
+            }
 
-            cards.add(card);
-
-
+        } catch (DAOException e) {
+            logger.error("Error while updating the loan card.");
+            throw new ServiceException("Error while updating the loan card.", e);
         }
-        System.out.println("Size - " + cards.size());
-        return cards;
+        return false;
     }
 
     @Override
-    public List<LoanCardDto> showCardsByUser(String userId) throws ServiceException {
-        List<LoanCardDto> cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            LoanCardDto card = new LoanCardDto();
-            card.setLoanCardDtoId(1l);
-            card.setLastName("LAst name");
-            card.setSecondName("Second name");
-            card.setUserId(1l);
-            card.setBookId(1l);
-            card.setTitle("title");
-            card.setIsbn("isbn");
-            card.setTakingBook(LocalDate.now());
-            card.setReturnBook(LocalDate.now());
-            card.setDeadline(LocalDate.now());
-            card.setTypeUse(BookTypeUse.READ_ROOM);
-            card.setStatus(LoanCardStatus.OPEN);
-
-            cards.add(card);
-
-
+    public boolean closeLoanCard(String cardId) throws ServiceException {
+        try {
+            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (cardId != null) {
+                if (validator.isNumber(cardId)) {
+                    Optional<LoanCard> optionalLoanCard = loanCardDao.getCardById(Long.parseLong(cardId.trim()));
+                    if (optionalLoanCard.isPresent()) {
+                        if (optionalLoanCard.get().getStatus() == LoanCardStatus.OPEN) {
+                            LoanCard loanCard = optionalLoanCard.get();
+                            loanCard.setStatus(LoanCardStatus.CLOSED);
+                            loanCard.setReturnBook(LocalDate.now().toString());
+                            return loanCardDao.update(loanCard);
+                        } else {
+                            throw new ServiceException("Loan card closed.");
+                        }
+                    } else {
+                        throw new ServiceException("The card does not exist.");
+                    }
+                }
+            } else {
+                throw new ServiceException("The loan card ID value is empty.");
+            }
+        } catch (DAOException e) {
+            logger.error("Error in services when closing the loan card.");
+            throw new ServiceException("Error in services when closing the loan card.", e);
         }
-        System.out.println("Size - " + cards.size());
-        return cards;
+        return false;
     }
 
     @Override
-    public List<LoanCardDto> showCardsByBook(String bookId) throws ServiceException {
-        List<LoanCardDto> cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            LoanCardDto card = new LoanCardDto();
-            card.setLoanCardDtoId(1l);
-            card.setLastName("LAst name");
-            card.setSecondName("Second name");
-            card.setUserId(1l);
-            card.setBookId(1l);
-            card.setTitle("title");
-            card.setIsbn("isbn");
-            card.setTakingBook(LocalDate.now());
-            card.setReturnBook(LocalDate.now());
-            card.setDeadline(LocalDate.now());
-            card.setTypeUse(BookTypeUse.READ_ROOM);
-            card.setStatus(LoanCardStatus.OPEN);
-
-            cards.add(card);
-
-
+    public long showCountCards(String status) throws ServiceException {
+        try {
+            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (status != null) {
+                if (validator.isLength(status)) {
+                    if (status.equalsIgnoreCase(LoanCardStatus.OPEN.name())
+                            || status.equalsIgnoreCase(LoanCardStatus.CLOSED.name())) {
+                        return loanCardDao.getCountCardsByStatus(LoanCardStatus.valueOf(status.toUpperCase()));
+                    } else {
+                        throw new ServiceException("Invalid status values");
+                    }
+                }
+            } else {
+                throw new ServiceException("The status value is empty.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when receiving the number of loan cards.");
+            throw new ServiceException("Error in services when receiving the number of cards.", e);
         }
-        System.out.println("Size - " + cards.size());
-        return cards;
-    }
-
-    @Override
-    public List<LoanCardDto> showCardsByCityAndStatus(String city, LoanCardStatus status) throws ServiceException {
-        List<LoanCardDto> cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            LoanCardDto card = new LoanCardDto();
-            card.setLoanCardDtoId(1l);
-            card.setLastName("LAst name");
-            card.setSecondName("Second name");
-            card.setUserId(1l);
-            card.setBookId(1l);
-            card.setTitle("title");
-            card.setIsbn("isbn");
-            card.setTakingBook(LocalDate.now());
-            card.setReturnBook(LocalDate.now());
-            card.setDeadline(LocalDate.now());
-            card.setTypeUse(BookTypeUse.READ_ROOM);
-            card.setStatus(LoanCardStatus.OPEN);
-
-            cards.add(card);
-
-
-        }
-        System.out.println("Size - " + cards.size());
-        return cards;
-    }
-
-    @Override
-    public Optional<LoanCardDto> showCardsById(String loanCardId) throws ServiceException {
-        LoanCardDto card = new LoanCardDto();
-        card.setLoanCardDtoId(1l);
-        card.setLastName("LAst name");
-        card.setSecondName("Second name");
-        card.setUserId(1l);
-        card.setBookId(1l);
-        card.setTitle("title");
-        card.setIsbn("isbn");
-        card.setTakingBook(LocalDate.now());
-        card.setReturnBook(LocalDate.now());
-        card.setDeadline(LocalDate.now());
-        card.setTypeUse(BookTypeUse.READ_ROOM);
-        card.setStatus(LoanCardStatus.OPEN);
-        return Optional.of(card);
-    }
-
-    @Override
-    public List<LoanCardDto> showCardsByCity(String city) throws ServiceException {
-        List<LoanCardDto> cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            LoanCardDto card = new LoanCardDto();
-            card.setLoanCardDtoId(1l);
-            card.setLastName("LAst name");
-            card.setSecondName("Second name");
-            card.setUserId(1l);
-            card.setBookId(1l);
-            card.setTitle("title");
-            card.setIsbn("isbn");
-            card.setTakingBook(LocalDate.now());
-            card.setReturnBook(LocalDate.now());
-            card.setDeadline(LocalDate.now());
-            card.setTypeUse(BookTypeUse.READ_ROOM);
-            card.setStatus(LoanCardStatus.OPEN);
-
-            cards.add(card);
-
-
-        }
-        System.out.println("Size - " + cards.size());
-        return cards;
-    }
-
-    @Override
-    public List<LoanCardDto> showAll() throws ServiceException {
-        List<LoanCardDto> cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            LoanCardDto card = new LoanCardDto();
-            card.setLoanCardDtoId(1l);
-            card.setLastName("LAst name");
-            card.setSecondName("Second name");
-            card.setUserId(1l);
-            card.setBookId(1l);
-            card.setTitle("title");
-            card.setIsbn("isbn");
-            card.setTakingBook(LocalDate.now());
-            card.setReturnBook(LocalDate.now());
-            card.setDeadline(LocalDate.now());
-            card.setTypeUse(BookTypeUse.READ_ROOM);
-            card.setStatus(LoanCardStatus.OPEN);
-
-            cards.add(card);
-
-
-        }
-        System.out.println("Size - " + cards.size());
-        return cards;
+        return 0;
     }
 }

@@ -24,7 +24,7 @@
     <table>
         <tr>
             <td>Поиск по id</td>
-            <td><input type="number" name="userId"></td>
+            <td><input type="number" name="userId" min="1" placeholder="ID"></td>
             <td><input type="submit" value="Найти"></td>
         </tr>
     </table>
@@ -34,8 +34,40 @@
     <table>
         <tr>
             <td>Поиск по email</td>
-            <td><input type="text" name="email"></td>
+            <td><input type="text" name="email" placeholder="email"></td>
             <td><input type="submit" value="Найти"></td>
+        </tr>
+    </table>
+</form>
+<form action="Controller">
+    <input type="hidden" name="command" value="UserCatalog">
+    <table>
+        <tr>
+            <td>Показать по роли</td>
+            <td>
+                <select name="user_role">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                </select>
+            </td>
+            <td><input type="submit" value="Показать" name="role"></td>
+        </tr>
+    </table>
+</form>
+<form action="Controller">
+    <input type="hidden" name="command" value="UserCatalog">
+    <table>
+        <tr>
+            <td>Показать по статусу</td>
+            <td>
+                <select name="user_status">
+                    <option value="active">Активных</option>
+                    <option value="blocked">Заблокированных</option>
+                    <option value="delete">Удалённых</option>
+                </select>
+            </td>
+            <td><input type="submit" value="Показать" name="status"></td>
         </tr>
     </table>
 </form>
@@ -45,15 +77,6 @@
         <tr>
             <td>Показать всех пользователей</td>
             <td><input type="submit" value="Показать" name="allUser"></td>
-        </tr>
-    </table>
-</form>
-<form action="Controller">
-    <input type="hidden" name="command" value="UserCatalog">
-    <table>
-        <tr>
-            <td>Показать только администраторов</td>
-            <td><input type="submit" value="Показать" name="allAdmin"></td>
         </tr>
     </table>
 </form>
@@ -93,7 +116,7 @@
                         <a href="?command=ActionUser&userId=${user.userId}&status=delete">Delete</a>
                     </td>
                     <td>
-                        <a href="?command=GoToLoanCardUser&userId=${user.userId}">История книг</a>
+                        <a href="?command=GoToLoanCardCatalog&userId=${user.userId}">История книг</a>
                     </td>
                     <td>
                         <a href="?command=OrderCatalog&userId=${user.userId}">Заказы</a>

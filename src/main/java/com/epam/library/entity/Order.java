@@ -8,7 +8,7 @@ public class Order {
     private long bookId;
     private long adminId;
     private long userId;
-    private String libraryId;
+    private String libraryCity;
     private LocalDate date;
     private String comment;
     private OrderStatus status;
@@ -45,12 +45,12 @@ public class Order {
         this.userId = userId;
     }
 
-    public String getLibraryId() {
-        return libraryId;
+    public String getLibraryCity() {
+        return libraryCity;
     }
 
-    public void setLibraryId(String libraryId) {
-        this.libraryId = libraryId;
+    public void setLibraryCity(String libraryCity) {
+        this.libraryCity = libraryCity;
     }
 
     public LocalDate getDate() {
@@ -99,7 +99,7 @@ public class Order {
         if (userId != order.userId) {
             return false;
         }
-        if (!libraryId.equals(order.libraryId)){
+        if (!libraryCity.equals(order.libraryCity)){
             return false;
         }
         if (!date.equals(order.date)){
@@ -117,7 +117,7 @@ public class Order {
         result = 31 * result + (int) (bookId ^ (bookId >>> 32));
         result = 31 * result + (int) (adminId ^ (adminId >>> 32));
         result = 31 * result + (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (libraryId != null ? libraryId.hashCode() : 0);
+        result = 31 * result + (libraryCity != null ? libraryCity.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
@@ -131,7 +131,7 @@ public class Order {
                 .append("', bookId='").append(bookId)
                 .append("', adminId='").append(adminId)
                 .append("', userId='").append(userId)
-                .append("', libraryId='").append(libraryId)
+                .append("', setLibraryCity='").append(libraryCity)
                 .append("', date='").append(date)
                 .append("', comment='").append(comment)
                 .append("', status='").append(status).append('}');

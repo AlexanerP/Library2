@@ -7,7 +7,6 @@ import com.epam.library.entity.dto.OrderDto;
 import com.epam.library.service.OrderDtoService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
-import com.epam.library.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,19 +26,20 @@ public class GoToOrderUserCommand implements Command {
         try {
             logger.info("Getting orders for user.");
             OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
-            UserService userService = ServiceFactory.getInstance().getUserService();
-            String secondName = "Test";    //Optional.map
-            String lastName = "Test";    //Optional.map
-            String userId = req.getParameter("userId");
-            List<OrderDto> orders = orderDtoService.showOrdersUser(Long.parseLong(userId));
+            HttpSession session = req.getSession();
+            User user = (User) session.getAttribute("user");
+            String secondName = user.getSecondName();    //Optional.map
+            String lastName = user.getLastName();    //Optional.map
+            List<OrderDto> orders = orderDtoService.showOrdersUser(user.getUserId() + "");
 
             req.setAttribute("secondName", secondName);
             req.setAttribute("lastName", lastName);
             req.setAttribute("orders", orders);
             req.getRequestDispatcher(PathFile.ORDER_USER_PAGE).forward(req, resp);
         }catch (ServiceException e) {
-            logger.warn("", e);
-            resp.sendRedirect(PathFile.MESSAGE_PAGE);
+            logger.warn("Error while viewing user's orders.", e);
+//            resp.sendRedirect(PathFile.MESSAGE_PAGE);
+            e.printStackTrace();
         }
     }
 }

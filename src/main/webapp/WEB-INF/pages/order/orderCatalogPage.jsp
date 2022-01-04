@@ -25,7 +25,7 @@
     <table>
         <tr>
             <td>Поиск по ID пользователя</td>
-            <td><input type="number" name="userId"></td>
+            <td><input type="number" name="userId" min="1" placeholder="ID user"></td>
             <td><input type="submit" value="Найти"></td>
         </tr>
         <tr>
@@ -36,7 +36,7 @@
     <table>
         <tr>
             <td>Поиск по ID заказа</td>
-            <td><input type="number" name="orderId"></td>
+            <td><input type="number" name="orderId" min="1" placeholder="ID order"></td>
             <td><input type="submit" value="Найти"></td>
         </tr>
         <tr>
@@ -48,8 +48,8 @@
             <td>Поиск по городу</td>
             <td>
                 <select name="city">
-                    <c:forEach var="cities" items="${cities}">
-                        <option value="${cities.city}"><c:out value="${cities.city}"></c:out></option>
+                    <c:forEach var="libraries" items="${libraries}">
+                        <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
                     </c:forEach>
                 </select>
             </td>
@@ -82,8 +82,8 @@
             <td>Показать по городу и статусу</td>
             <td>
                 <select name="city">
-                    <c:forEach var="cities" items="${cities}">
-                        <option value="${cities.city}"><c:out value="${cities.city}"></c:out></option>
+                    <c:forEach var="libraries" items="${libraries}">
+                        <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
                     </c:forEach>
                 </select>
                 <select name="status">
@@ -102,57 +102,59 @@
     <table>
         <tr>
             <td>Показать все заказы</td>
-            <td><input type="submit" value="Показать" name="allRequest"></td>
+            <td><input type="submit" value="Показать" name="allOrders"></td>
         </tr>
 </table>
 </form>
 
 <br>
-<form>
-    <c:if test="${not empty orders}">
-        <p>Количество найденных результатов - <c:out value="${ordersSize}"/></p>
-    </c:if>
+<div align="center">
+    <form>
+        <c:if test="${not empty orders}">
+            <p>Количество найденных результатов - <c:out value="${ordersSize}"/></p>
+        </c:if>
 
-    <c:if test="${not empty orders}">
-    <table>
-        <tr>
-            <td>#</td>
-            <td>ID Заказ</td>
-            <td>ID Пользователя</td>
-            <td>ID Админ</td>
-            <td>ID Книги</td>
-            <td>Название</td>
-            <td>ISBN</td>
-            <td>Год</td>
-            <td>Дата заказа</td>
-            <td>Библиотека</td>
-            <td>Комментарий</td>
-            <td>Статус</td>
-            <td>Изменить статус</td>
-        </tr>
-        <c:forEach var="orders" items="${orders}" varStatus="status">
+        <c:if test="${not empty orders}">
+        <table>
             <tr>
-                <td><c:out value="${status.index + 1}"></c:out></td>
-                <td><c:out value="${orders.orderDtoId}"></c:out></td>
-                <td> <a href="?command=UserCatalog&userId=${orders.userId}"><c:out value="${orders.userId}"></c:out> </a></td>
-                <td> <a href="?command=UserCatalog&userId=${orders.adminId}"><c:out value="${orders.adminId}"></c:out> </a></td>
-                <td> <a href="?command=CatalogBook&bookId=${orders.bookId}"><c:out value="${orders.bookId}"></c:out> </a></td>
-                <td><c:out value="${orders.title}"></c:out></td>
-                <td><c:out value="${orders.isbn}"></c:out></td>
-                <td><c:out value="${orders.year}"></c:out></td>
-                <td><c:out value="${orders.date}"></c:out></td>
-                <td><c:out value="${orders.cityLibrary}"></c:out></td>
-                <td><c:out value="${orders.comment}"></c:out></td>
-                <td><c:out value="${orders.status}"></c:out></td>
-                <td>
-                    <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=approved">Одобрено</a>
-                    <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=rejected">Отказано</a>
-                    <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=arrived">Прибыло в библиотеку</a>
-                </td>
+                <td>#</td>
+                <td>ID Заказ</td>
+                <td>ID Пользователя</td>
+                <td>ID Админ</td>
+                <td>ID Книги</td>
+                <td>Название</td>
+                <td>ISBN</td>
+                <td>Год</td>
+                <td>Дата заказа</td>
+                <td>Библиотека</td>
+                <td>Комментарий</td>
+                <td>Статус</td>
+                <td>Изменить статус</td>
             </tr>
-        </c:forEach>
-    </table>
-    </c:if>
-</form>
+            <c:forEach var="orders" items="${orders}" varStatus="status">
+                <tr>
+                    <td><c:out value="${status.index + 1}"></c:out></td>
+                    <td><c:out value="${orders.orderDtoId}"></c:out></td>
+                    <td> <a href="?command=UserCatalog&userId=${orders.userId}"><c:out value="${orders.userId}"></c:out> </a></td>
+                    <td> <a href="?command=UserCatalog&userId=${orders.adminId}"><c:out value="${orders.adminId}"></c:out> </a></td>
+                    <td> <a href="?command=CatalogBook&bookId=${orders.bookId}"><c:out value="${orders.bookId}"></c:out> </a></td>
+                    <td><c:out value="${orders.title}"></c:out></td>
+                    <td><c:out value="${orders.isbn}"></c:out></td>
+                    <td><c:out value="${orders.year}"></c:out></td>
+                    <td><c:out value="${orders.date}"></c:out></td>
+                    <td><c:out value="${orders.cityLibrary}"></c:out></td>
+                    <td><c:out value="${orders.comment}"></c:out></td>
+                    <td><c:out value="${orders.status}"></c:out></td>
+                    <td>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=approved">Одобрено</a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=rejected">Отказано</a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=arrived">Прибыло в библиотеку</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+        </c:if>
+    </form>
+</div>
 </body>
 </html>

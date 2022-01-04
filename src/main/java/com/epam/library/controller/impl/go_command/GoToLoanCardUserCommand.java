@@ -4,37 +4,40 @@ import com.epam.library.controller.Command;
 import com.epam.library.controller.PathFile;
 import com.epam.library.entity.User;
 import com.epam.library.entity.dto.LoanCardDto;
-import com.epam.library.service.LoanCardService;
+import com.epam.library.service.LoanCardDtoService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
-import com.epam.library.service.impl.LoanCardServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GoToLoanCardUserCommand implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(GoToLoanCardUserCommand.class);
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            System.out.println("GoToLoanCardCommand");
-            LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();
-            String userId = req.getParameter("userId");
-            List<LoanCardDto> cardsList = new ArrayList<>();
-            if (userId != null && userId !="") {
-                cardsList = loanCardService.showCardsByUser(Long.parseLong(userId));
+            LoanCardDtoService loanCardDtoService = ServiceFactory.getInstance().getLoanCardDtoService();
+            HttpSession session = req.getSession();
+            User user = (User) session.getAttribute("user");
+            List<LoanCardDto> cardsList;
+            if (user != null) {
+                cardsList = loanCardDtoService.showCardsByUser(user.getUserId() + "");
+                req.setAttribute("loanCards", cardsList);
+                req.getRequestDispatcher(PathFile.USER_LOAN_CARD).forward(req, resp);
+            } else {
+                resp.sendRedirect(PathFile.INDEX_PAGE);
             }
-
-
-            req.setAttribute("loanCards", cardsList);
-            req.getRequestDispatcher(PathFile.USER_LOAN_CARD).forward(req, resp);
         } catch (ServiceException e) {
-
+            logger.error("Error while retrieving the history of borrowed books by the user.", e);
+            resp.sendRedirect(PathFile.ERROR_PAGE);
         }
     }
 }

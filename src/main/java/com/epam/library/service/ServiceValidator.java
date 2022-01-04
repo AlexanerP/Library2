@@ -7,31 +7,33 @@ public class ServiceValidator {
     private final String REGEX_PASSWORD  = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
 
     public boolean isLength(String line) {
-        if (line != null && line.length() <= MAX_LENGTH) {
+        if (line != null && line.length() <= MAX_LENGTH && line != "") {
             return true;
         }
         return false;
     }
 
     public boolean isNumber(String line) {
-        if (line != null && line != "") {
+        if (line != "") {
             return line.trim().matches("\\d+");
         }
         return false;
     }
 
     public boolean isEmail(String email) {
-        if (email != null && isLength(email)) {
+        if (isLength(email)) {
             return email.trim().matches(REGEX_EMAIL);
         }
         return false;
     }
 
     public boolean isPassword(String password) {
-        if (password != null && isLength(password)) {
+        if (isLength(password)) {
             return password.trim().matches(REGEX_PASSWORD);
         }
         return false;
     }
+
+
 
 }

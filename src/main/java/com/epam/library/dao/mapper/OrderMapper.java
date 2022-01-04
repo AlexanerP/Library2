@@ -15,7 +15,7 @@ public class OrderMapper implements RowMapper<Order> {
         order.setOrderId(resultSet.getLong(ColumnName.ORDER_ID_REQUEST));
         order.setUserId(resultSet.getLong(ColumnName.ORDER_ID_USER));
         order.setAdminId(resultSet.getLong(ColumnName.ORDER_ID_ADMIN));
-        order.setLibraryId(resultSet.getString(ColumnName.LIBRARY_CITY));
+        order.setLibraryCity(resultSet.getString(ColumnName.LIBRARY_CITY));
         order.setBookId(resultSet.getLong(ColumnName.ORDER_ID_BOOK));
         order.setDate(resultSet.getDate(ColumnName.ORDER_DATE).toLocalDate());
         order.setComment(resultSet.getString(ColumnName.ORDER_COMMENT));

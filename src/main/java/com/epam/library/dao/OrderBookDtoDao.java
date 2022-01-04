@@ -9,14 +9,16 @@ import java.util.Optional;
 
 public interface OrderBookDtoDao {
 
-    Optional<OrderDto> getRequestById(Long id) throws DAOException;
+    Optional<OrderDto> getOrderById(Long id) throws DAOException;
 
-    List<OrderDto> getRequestsByCity(String city) throws DAOException;
+    List<OrderDto> getOrderByCity(String city) throws DAOException;
 
-    List<OrderDto> getRequestsByStatus(OrderStatus status) throws DAOException;
+    List<OrderDto> getOrderByCityAndStatus(String city, OrderStatus status) throws DAOException;
 
-    List<OrderDto> getRequestsByUser(Long id) throws DAOException;
+    List<OrderDto> getOrderByStatus(OrderStatus status) throws DAOException;
 
-    List<OrderDto> getRequests() throws DAOException;
+    List<OrderDto> getOrderByUser(long id) throws DAOException;
+
+    List<OrderDto> getOrders() throws DAOException;
 
 }

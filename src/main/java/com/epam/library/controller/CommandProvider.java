@@ -45,6 +45,7 @@ public final class CommandProvider {
 
         commands.put("GoToPrivateRoom", new GoToPrivateRoomCommand());
 
+        commands.put("UpdateUserPassword", new UpdateUserPasswordCommand());
         commands.put("UpdateUser", new UpdateUserCommand());
         commands.put("GoToUpdateUser", new GoToUpdateUserCommand());
 

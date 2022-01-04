@@ -33,9 +33,6 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
             ColumnName.LIBRARY_ID_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS, TableName.LIBRARY_STATUS,
             ColumnName.LIBRARY_STATUS_STATUS, ColumnName.LIBRARY_ID_LIBRARY);
 
-    private final static String UPDATE_STREET_QUERY = String.format("UPDATE %s SET %s=? WHERE %s=?;", TableName.LIBRARY,
-            ColumnName.LIBRARY_STREET, ColumnName.LIBRARY_ID_LIBRARY);
-
     private final static String GET_LIBRARY_BY_ID_QUERY = String.format("SELECT * FROM %s LEFT JOIN %s on(%s.%s=%s.%s) " +
                     "WHERE %s=?;", TableName.LIBRARY, TableName.LIBRARY_STATUS, TableName.LIBRARY,
             ColumnName.LIBRARY_ID_STATUS, TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS,
@@ -85,21 +82,6 @@ public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
         } catch (SQLException sqlE) {
             logger.error("Failed to update library. Library - {}", library.toString());
             throw new DAOException("Failed to update library.", sqlE);
-        } finally {
-            closePreparedStatement(prStatement);
-        }
-    }
-
-    @Override
-    public int updateStreet(Long id, String street) throws DAOException {
-        logger.info("Start of updating city address (street).");
-        PreparedStatement prStatement = null;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, UPDATE_STREET_QUERY, street, id);
-            return prStatement.executeUpdate();
-        } catch (SQLException sqlE) {
-            logger.error("Library address (street) update error. Street - {}, id - {}", street, id);
-            throw new DAOException("Library address (street) update error.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }

@@ -14,35 +14,36 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class ActionAdminCommand implements Command {
+public class UpdateUserPasswordCommand implements Command {
 
-    private static final Logger logger = LoggerFactory.getLogger(ActionAdminCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(UpdateUserPasswordCommand.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try{
+        try {
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
-            String userId = req.getParameter("userId");
-            String role = req.getParameter("role");
-
-            if (userId != null && userId != "" && role != null && role != "") {
-                boolean result = userService.updateRole(userId, role);
-                if (result) {
-                    String successfulMessage = "Successful operation";
-                    session.setAttribute("successfulMessage", successfulMessage);
-
+            String email = req.getParameter("email");
+            String oldPassword = req.getParameter("old_password");
+            String newPassword = req.getParameter("new_password");
+            if (email != "" && oldPassword != "" && newPassword != "") {
+                boolean flag = userService.updatePassword(newPassword, email, oldPassword);
+                if (flag) {
+                    String message = "Operation completed";
+                    session.setAttribute("successfulMessage", message);
+                    resp.sendRedirect("Controller?command=GoToMessagePage");
                 } else {
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
+                    resp.sendRedirect("Controller?command=GoToMessagePage");
                 }
-                resp.sendRedirect("Controller?command=GoToMessagePage");
             } else {
-                req.getRequestDispatcher(PathFile.MANAGER_CATALOG_PAGE).forward(req, resp);
+                req.getRequestDispatcher(PathFile.UPDATE_USER_PAGE).forward(req, resp);
             }
+
         }catch (ServiceException e) {
-            logger.error("Error while changing user role.", e);
-//            resp.sendRedirect(PathFile.ERROR_PAGE);
+            logger.error("Error during password update.", e);
+            resp.sendRedirect("error.jsp");
         }
     }
 }

@@ -4,6 +4,9 @@ import com.epam.library.service.impl.*;
 
 public class ServiceFactory {
 
+    private ServiceFactory() {
+    }
+
     private static ServiceFactory instance = new ServiceFactory();
 
     private BookDtoService bookDtoService = new BookDtoServiceImpl();
@@ -12,9 +15,11 @@ public class ServiceFactory {
     private OrderDtoService orderDtoService = new OrderDtoServiceImpl();
     private OrderService orderService = new OrderServiceImpl();
     private WishBookService wishBookService = new WishBookServiceImpl();
+    private WishBookDtoService wishBookDtoService = new WishBookDtoServiceImpl();
     private AuthorService authorService = new AuthorServiceImpl();
     private GenreService genreService = new GenreServiceImpl();
-    private LoanCardService loanCardService = new LoanCardServiceImpl();
+    private LoanCardDtoService loanCardDtoService = new LoanCardDtoServiceImpl();
+    private LoanCardService loanCardDao = new LoanCardServiceImpl();
     private LibraryService libraryService = new LibraryServiceImpl();
     private ServiceValidator serviceValidator = new ServiceValidator();
 
@@ -55,8 +60,8 @@ public class ServiceFactory {
         return orderService;
     }
 
-    public LoanCardService getLoanCardService() {
-        return loanCardService;
+    public LoanCardDtoService getLoanCardService() {
+        return loanCardDtoService;
     }
 
     public LibraryService getLibraryService() {
@@ -65,5 +70,17 @@ public class ServiceFactory {
 
     public ServiceValidator getServiceValidator() {
         return serviceValidator;
+    }
+
+    public WishBookDtoService getWishBookDtoService() {
+        return wishBookDtoService;
+    }
+
+    public LoanCardDtoService getLoanCardDtoService() {
+        return loanCardDtoService;
+    }
+
+    public LoanCardService getLoanCardDao() {
+        return loanCardDao;
     }
 }

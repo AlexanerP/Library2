@@ -24,7 +24,7 @@
     <table>
         <tr>
             <td>Поиск по id</td>
-            <td><input type="number" name="userIdFind"></td>
+            <td><input type="number" name="userIdFind" min="1"></td>
             <td><input type="submit" value="Найти"></td>
 <%--            <td><a href="?command=ManagerCatalog&userIdFind=${userIdFind}">Найти</a></td>--%>
         </tr>

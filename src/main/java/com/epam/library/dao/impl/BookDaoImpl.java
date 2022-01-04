@@ -28,9 +28,6 @@ public class BookDaoImpl extends DAOHelper implements BookDao {
             ColumnName.BOOK_QUANTITY, ColumnName.BOOK_BORROW, ColumnName.BOOK_PUBLISHER, ColumnName.BOOK_DESCRIPTION,
             ColumnName.BOOK_SHELF);
 
-    private static final String UPDATE_BORROW_QUERY = String.format("UPDATE %s SET %s=? WHERE %s=?;", TableName.BOOK,
-            ColumnName.BOOK_BORROW, ColumnName.BOOK_ID_BOOK);
-
     private static final String GET_BOOK_BY_ID = String.format("SELECT * FROM %s WHERE %s=?", TableName.BOOK,
             ColumnName.BOOK_ID_BOOK);
 
@@ -49,21 +46,6 @@ public class BookDaoImpl extends DAOHelper implements BookDao {
         }catch (SQLException sqlE) {
             logger.error("Error while updating the book.");
             throw new DAOException("Error while updating the book.", sqlE);
-        } finally {
-            closePreparedStatement(prStatement);
-        }
-    }
-
-    @Override
-    public int updateBorrow(long bookId, int borrow) throws DAOException {
-        logger.info("Updating books by ID.");
-        PreparedStatement prStatement = null;
-        try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, UPDATE_BORROW_QUERY, borrow, bookId);
-            return prStatement.executeUpdate();
-        } catch (SQLException sqlE) {
-            logger.error("Error while updating books by ID.");
-            throw new DAOException("Error while updating books by ID.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }

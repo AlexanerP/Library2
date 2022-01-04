@@ -47,7 +47,7 @@
                 <td><c:if test="${wishBook.borrow < wishBook.quantity}">
                     <a href="?command=GoToOrder&bookId=${wishBook.bookId}">Заказать книгу</a>
                 </c:if></td>
-                <td><a href="?command=ActionWishBook&bookId=${wishBook.bookId}">Удалить книгу</a></td>
+                <td><a href="?command=ActionWishBook&wish_book_id=${wishBook.wishBooksId}">DELETE</a></td>
             </tr>
         </c:forEach>
     </table>

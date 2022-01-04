@@ -58,6 +58,15 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
             ColumnName.ORDER_STATUS_ID_STATUS, TableName.ORDER_STATUS, ColumnName.ORDER_STATUS_ID_STATUS, TableName.LIBRARY,
             ColumnName.LIBRARY_CITY, TableName.ORDER, ColumnName.ORDER_ID_REQUEST);
 
+    private final static String GET_ORDER_BY_CITY_AND_STATUS_QUERY = String.format("SELECT * from %s left join %s " +
+                    "on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) where %s.%s=? and %s.%s=? group by %s.%s",
+            TableName.ORDER, TableName.USER, TableName.ORDER, ColumnName.ORDER_ID_USER, TableName.USER,
+            ColumnName.USER_ID_USERS, TableName.LIBRARY, TableName.ORDER, ColumnName.ORDER_ID_LIBRARY,
+            TableName.LIBRARY, ColumnName.LIBRARY_ID_LIBRARY, TableName.BOOK, TableName.BOOK, ColumnName.BOOK_ID_BOOK,
+            TableName.ORDER, ColumnName.ORDER_ID_BOOK, TableName.ORDER_STATUS, TableName.ORDER,
+            ColumnName.ORDER_STATUS_ID_STATUS, TableName.ORDER_STATUS, ColumnName.ORDER_STATUS_ID_STATUS, TableName.LIBRARY,
+            ColumnName.LIBRARY_CITY, TableName.ORDER_STATUS, ColumnName.ORDER_STATUS_STATUS, TableName.ORDER, ColumnName.ORDER_ID_REQUEST);
+
     private final static String GET_ALL_ORDERS_QUERY = String.format("SELECT * from %s left join %s " +
                     "on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) group by %s.%s",
             TableName.ORDER, TableName.USER, TableName.ORDER, ColumnName.ORDER_ID_USER, TableName.USER,
@@ -68,7 +77,7 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
 
 
     @Override
-    public Optional<OrderDto> getRequestById(Long id) throws DAOException {
+    public Optional<OrderDto> getOrderById(Long id) throws DAOException {
         logger.info("Receiving a order by id.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -98,7 +107,7 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getRequestsByCity(String city) throws DAOException {
+    public List<OrderDto> getOrderByCity(String city) throws DAOException {
         logger.info("Receiving a request by city.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -122,7 +131,7 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getRequestsByStatus(OrderStatus status) throws DAOException {
+    public List<OrderDto> getOrderByStatus(OrderStatus status) throws DAOException {
         logger.info("Receiving a request by status.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -146,7 +155,7 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getRequestsByUser(Long id) throws DAOException {
+    public List<OrderDto> getOrderByUser(long id) throws DAOException {
         logger.info("Receiving orders by user.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -170,7 +179,7 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getRequests() throws DAOException {
+    public List<OrderDto> getOrders() throws DAOException {
         logger.info("Getting a list of orderBookDtos");
         List<OrderDto> orderDtos = new ArrayList<>();
         OrderDtoMapper mapper = new OrderDtoMapper();
@@ -187,6 +196,30 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
         } catch (SQLException sqlE) {
             logger.error("OrderBookDto list not received... Error.");
             throw new DAOException(sqlE);
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(prStatement);
+        }
+    }
+
+    @Override
+    public List<OrderDto> getOrderByCityAndStatus(String city, OrderStatus status) throws DAOException {
+        logger.info("Receiving orders by city and by status.");
+        OrderDtoMapper mapper = new OrderDtoMapper();
+        PreparedStatement prStatement = null;
+        ResultSet resultSet = null;
+        List<OrderDto> orders = new ArrayList<>();
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
+            prStatement = createPreparedStatement(connection, GET_ORDER_BY_CITY_AND_STATUS_QUERY, city, status.name());
+            resultSet = prStatement.executeQuery();
+            while (resultSet.next()) {
+                orders.add(mapper.map(resultSet));
+            }
+            logger.info("Receiving the list of orders by city and by status is over.");
+            return orders;
+        } catch (SQLException sqlE) {
+            logger.error("OrderBookDto list by city and by status not received. Status - {}, city - {}", status, city);
+            throw new DAOException("OrderBookDto list by city and by status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

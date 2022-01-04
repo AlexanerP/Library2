@@ -12,8 +12,6 @@ public interface LibraryDAO {
 
     int update(Library library) throws DAOException;
 
-    int updateStreet(Long id, String street) throws DAOException;
-
     Optional<Library> getLibraryById(Long id) throws DAOException;
 
     Optional<Library> getLibraryByCity(String city) throws DAOException;

@@ -14,6 +14,8 @@ public interface UserDAO {
 
     int update(User user) throws DAOException;
 
+    int updatePassword(User user) throws DAOException;
+
     Optional<User> getUserById(long id) throws DAOException;
 
     List<User> getUserByEmail(String email) throws DAOException;
@@ -30,5 +32,5 @@ public interface UserDAO {
 
     int getCount(UserStatus status) throws DAOException;
 
-    List<User> getUsersByPeriod(LocalDate start, LocalDate finish);
+    List<User> getUsersByPeriod(LocalDate start, LocalDate finish) throws DAOException;
 }

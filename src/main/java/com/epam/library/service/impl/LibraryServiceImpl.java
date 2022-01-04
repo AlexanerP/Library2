@@ -25,15 +25,19 @@ public class LibraryServiceImpl implements LibraryService {
         try {
             LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (validator.isLength(city) && validator.isLength(street)) {
-                Library library = new Library();
-                library.setStreet(street);
-                library.setCity(city);
-                library.setStatus(LibraryStatus.OPENED);
-                return libraryDAO.create(library);
+            if (city != null && street != null) {
+                if (validator.isLength(city) && validator.isLength(street)) {
+                    Library library = new Library();
+                    library.setStreet(street);
+                    library.setCity(city);
+                    library.setStatus(LibraryStatus.OPENED);
+                    return libraryDAO.create(library);
+                } else {
+                    throw new ServiceException("Services error while updating the library. The length of the word " +
+                            "is longer.");
+                }
             } else {
-                throw new ServiceException("Services error while updating the library. The length of the word " +
-                        "is longer.");
+                throw new ServiceException("The city or the street value is empty.");
             }
         }catch (DAOException e) {
             logger.error("Error while creating a library.");
@@ -57,24 +61,27 @@ public class LibraryServiceImpl implements LibraryService {
         try {
             LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (validator.isNumber(libraryId.trim())) {
-                if (status.equalsIgnoreCase(LibraryStatus.OPENED.name()) ||
-                        status.equalsIgnoreCase(LibraryStatus.CLOSED.name())) {
-                    Optional<Library> optionalLibrary = libraryDAO.getLibraryById(Long.parseLong(libraryId.trim()));
-                    if (optionalLibrary.isPresent()) {
-                        Library library = optionalLibrary.get();
-                        library.setStatus(LibraryStatus.valueOf(status.toUpperCase()));
-                        libraryDAO.update(library);
-                        return true;
+            if (libraryId != null && status != null) {
+                if (validator.isNumber(libraryId.trim())) {
+                    if (status.equalsIgnoreCase(LibraryStatus.OPENED.name()) ||
+                            status.equalsIgnoreCase(LibraryStatus.CLOSED.name())) {
+                        Optional<Library> optionalLibrary = libraryDAO.getLibraryById(Long.parseLong(libraryId.trim()));
+                        if (optionalLibrary.isPresent()) {
+                            Library library = optionalLibrary.get();
+                            library.setStatus(LibraryStatus.valueOf(status.toUpperCase()));
+                            libraryDAO.update(library);
+                            return true;
+                        }
+                    } else {
+                        throw new ServiceException("An error occurred in services while updating the status in the " +
+                                "library. Incorrect status");
                     }
-
                 } else {
-                    throw new ServiceException("An error occurred in services while updating the status in the " +
-                            "library. Incorrect status");
+                    throw new ServiceException("Trying to get a library by ID using a text string that does not " +
+                            "have a digit");
                 }
             } else {
-                throw new ServiceException("Trying to get a library by ID using a text string that does not " +
-                        "have a digit");
+                throw new ServiceException("The library ID or status value is empty.");
             }
         }catch (DAOException e) {
             logger.error("Services error when updating the status in the library.");
@@ -88,25 +95,29 @@ public class LibraryServiceImpl implements LibraryService {
         try {
             LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (validator.isNumber(libraryId.trim())) {
-                Optional<Library> optionalLibrary = libraryDAO.getLibraryById(Long.parseLong(libraryId.trim()));
-                if (validator.isLength(city) && validator.isLength(street)) {
-                    if (optionalLibrary.isPresent()) {
-                        Library library = new Library();
-                        library.setLibraryId(Integer.parseInt(libraryId.trim()));
-                        library.setCity(city);
-                        library.setStreet(street);
-                        library.setStatus(optionalLibrary.get().getStatus());
-                        libraryDAO.update(library);
-                        return true;
+            if (libraryId != null) {
+                if (validator.isNumber(libraryId.trim())) {
+                    Optional<Library> optionalLibrary = libraryDAO.getLibraryById(Long.parseLong(libraryId.trim()));
+                    if (validator.isLength(city) && validator.isLength(street)) {
+                        if (optionalLibrary.isPresent()) {
+                            Library library = new Library();
+                            library.setLibraryId(Integer.parseInt(libraryId.trim()));
+                            library.setCity(city);
+                            library.setStreet(street);
+                            library.setStatus(optionalLibrary.get().getStatus());
+                            libraryDAO.update(library);
+                            return true;
+                        }
+                    } else {
+                        throw new ServiceException("Services error while updating the library. The length of the word " +
+                                "is longer.");
                     }
-                }else {
-                    throw new ServiceException("Services error while updating the library. The length of the word " +
-                            "is longer.");
+                } else {
+                    throw new ServiceException("Trying to get a library by ID using a text string that does not " +
+                            "have a digit");
                 }
             } else {
-                throw new ServiceException("Trying to get a library by ID using a text string that does not " +
-                        "have a digit");
+                throw new ServiceException("The book ID value is empty.");
             }
         }catch (DAOException e) {
             logger.error("Services error when updating the library.");
@@ -121,13 +132,17 @@ public class LibraryServiceImpl implements LibraryService {
             LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             Optional<Library> libraryOptional = Optional.empty();
-            if(validator.isNumber(libraryId.trim())) {
-                libraryOptional = libraryDAO.getLibraryById(Long.parseLong(libraryId.trim()));
+            if (libraryId != null) {
+                if (validator.isNumber(libraryId.trim())) {
+                    libraryOptional = libraryDAO.getLibraryById(Long.parseLong(libraryId.trim()));
+                } else {
+                    throw new ServiceException("Trying to get a library by ID using a text string that does not " +
+                            "have a digit");
+                }
+                return libraryOptional;
             } else {
-                throw new ServiceException("Trying to get a library by ID using a text string that does not " +
-                        "have a digit");
+                throw new ServiceException("The library ID value is empty.");
             }
-            return libraryOptional;
         } catch (DAOException e) {
             logger.error("Error in services when retrieving a library by ID.");
             throw new ServiceException("Error in services when retrieving a library by ID.", e);
@@ -140,10 +155,14 @@ public class LibraryServiceImpl implements LibraryService {
             LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             Optional<Library> optionalLibrary = Optional.empty();
-            if (validator.isLength(city)) {
-                optionalLibrary = libraryDAO.getLibraryByCity(city);
+            if (city != null) {
+                if (validator.isLength(city)) {
+                    optionalLibrary = libraryDAO.getLibraryByCity(city);
+                }
+                return optionalLibrary;
+            } else {
+                throw new ServiceException("The city value is empty.");
             }
-            return optionalLibrary;
         }catch (DAOException e) {
             logger.error("Error in services when getting a library around the city.");
             throw new ServiceException("Error in services when getting a library around the city.", e);
@@ -154,13 +173,16 @@ public class LibraryServiceImpl implements LibraryService {
     public List<Library> showByStatus(String status) throws ServiceException {
         try {
             LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
-            if (status.equalsIgnoreCase(LibraryStatus.OPENED.name()) ||
-                    status.equalsIgnoreCase(LibraryStatus.CLOSED.name())) {
-                return  libraryDAO.getLibrariesByStatus(LibraryStatus.valueOf(status.toUpperCase()));
-            }else {
-                throw new ServiceException("Unknown library status");
+            if (status != null) {
+                if (status.equalsIgnoreCase(LibraryStatus.OPENED.name()) ||
+                        status.equalsIgnoreCase(LibraryStatus.CLOSED.name())) {
+                    return libraryDAO.getLibrariesByStatus(LibraryStatus.valueOf(status.toUpperCase()));
+                } else {
+                    throw new ServiceException("Unknown library status");
+                }
+            }  else {
+                throw new ServiceException("The status value is empty.");
             }
-
         } catch (DAOException e) {
             logger.error("Error in services when retrieving a libraries by status.");
             throw new ServiceException("Error in services when retrieving a libraries by status.", e);

@@ -41,6 +41,10 @@
                         <td>${countUsersBlocked}</td>
                     </tr>
                     <tr>
+                        <td>Количество удаленных пользователей в библиотеке</td>
+                        <td>${countUsersDelete}</td>
+                    </tr>
+                    <tr>
                         <td>Количество новых пользователей в этом месяце</td>
                         <td>${countUsersBlocked}</td>
                     </tr>

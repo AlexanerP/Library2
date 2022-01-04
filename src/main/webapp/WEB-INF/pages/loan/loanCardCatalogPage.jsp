@@ -23,8 +23,18 @@
     <input type="hidden" name="command" value="LoanCardCatalog">
     <table>
         <tr>
+            <td>Введите ID карты выдачи: </td>
+            <td><input type="number" name="cardId" min="1"></td>
+            <td><input type="submit" value="Поиск"></td>
+        </tr>
+    </table>
+</form>
+<form>
+    <input type="hidden" name="command" value="LoanCardCatalog">
+    <table>
+        <tr>
             <td>Введите ID книги: </td>
-            <td><input type="number" name="bookId"></td>
+            <td><input type="number" name="bookId" min="1"></td>
             <td><input type="submit" value="Поиск"></td>
         </tr>
     </table>
@@ -34,7 +44,7 @@
     <table>
         <tr>
             <td>Введите ID пользователя: </td>
-            <td><input type="number" name="userId"></td>
+            <td><input type="number" name="userId" min="1"></td>
             <td><input type="submit" value="Поиск"></td>
         </tr>
     </table>
@@ -44,6 +54,43 @@
     <table>
         <tr>
             <td>Показать карточки выдачи по городу: </td>
+            <td>
+                <select name="city">
+                    <c:forEach var="libraries" items="${libraries}">
+                        <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td><input type="submit" value="Поиск"></td>
+        </tr>
+    </table>
+</form>
+<form>
+    <input type="hidden" name="command" value="LoanCardCatalog">
+    <table>
+        <tr>
+            <td>Показать карточки выдачи по статусу: </td>
+            <td>
+                <select name="status">
+                        <option value="open">Открытые</option>
+                        <option value="closed">Закрытые</option>
+                </select>
+            </td>
+            <td><input type="submit" value="Поиск"></td>
+        </tr>
+    </table>
+</form>
+<form>
+    <input type="hidden" name="command" value="LoanCardCatalog">
+    <table>
+        <tr>
+            <td>Показать карточки выдачи по статусу и городу: </td>
+            <td>
+                <select name="status">
+                    <option value="open">Открытые</option>
+                    <option value="closed">Закрытые</option>
+                </select>
+            </td>
             <td>
                 <select name="city">
                     <c:forEach var="libraries" items="${libraries}">

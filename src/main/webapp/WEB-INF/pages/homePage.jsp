@@ -15,7 +15,7 @@
 <p>
     <a href="Controller?command=GoToMainPage"><input type="submit" value="На главную страницу"></a>
 </p>
-<div align="center"><h1>Welcome ${user.secondName}</h1></div>
+<div align="center"><h1>Welcome ${user.secondName} ${user.lastName}</h1></div>
 <br><br>
 <div align="center">
     <table border="1" cellpadding="5">
@@ -37,7 +37,7 @@
         </tr>
         <tr>
             <td>История моих книг</td>
-            <td><a href="Controller?command=GoToStoryLoanCardUser&userId=${user.userId}"><input type="submit" value="Перейти"></a></td>
+            <td><a href="Controller?command=GoToLoanCardUser"><input type="submit" value="Перейти"></a></td>
         </tr>
         <tr>
             <td>Обновить пользователя</td>

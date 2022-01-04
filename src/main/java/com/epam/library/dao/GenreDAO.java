@@ -8,7 +8,7 @@ public interface GenreDAO {
 
     boolean create(Genre genre) throws DAOException;
 
-    boolean updateById(Genre author) throws DAOException;
+    boolean update(Genre author) throws DAOException;
 
     boolean deleteGenreByBookId(long bookId) throws DAOException;
 

@@ -7,6 +7,8 @@ import com.epam.library.entity.UserRole;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
 import com.epam.library.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ import java.util.Optional;
 
 public class AdminCatalogPage implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(AdminCatalogPage.class);
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
@@ -27,7 +31,7 @@ public class AdminCatalogPage implements Command {
             String admins = req.getParameter("allAdmins");
             List<User> users = new ArrayList<>();
             if (userIdFind != null && userIdFind != "") {
-               users.add(userService.showUserById("userIdFind").get());
+               users.add(userService.showUserById(userIdFind).get());
             } else if (email != null && email != "") {
                 users.addAll(userService.showUserByEmail(email));
             } else if (admins != null && admins != "") {
@@ -35,10 +39,10 @@ public class AdminCatalogPage implements Command {
                 users.addAll(userService.showUserByRole(UserRole.MANAGER.name()));
             }
             req.setAttribute("users", users);
-//resp.sendRedirect(PathFile.MANAGER_CATALOG_PAGE);
             req.getRequestDispatcher(PathFile.MANAGER_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
-
+            logger.error("Error while searching for administrators.", e);
+            resp.sendRedirect(PathFile.ERROR_PAGE);
         }
     }
 }

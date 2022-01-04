@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface WishBookService {
 
-    List<WishBookDto> showBooksByUser(long userId) throws ServiceException;
+    boolean add(String userId, String bookId) throws ServiceException;
 
-    boolean delete(String bookId, long userId) throws ServiceException;
+    boolean delete(String wishBookId) throws ServiceException;
+
+    long showCountBooks() throws ServiceException;
 }

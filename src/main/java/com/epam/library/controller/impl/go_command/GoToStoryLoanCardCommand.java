@@ -26,27 +26,27 @@ public class GoToStoryLoanCardCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            logger.info("Story loan cards of user.");
-            LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();
-            UserService userService = ServiceFactory.getInstance().getUserService();
-            String userId = req.getParameter("userId");
-            List<LoanCardDto> loanCards = new ArrayList<>();
-            String secondName = "";
-            String lastName = "";
-            if (userId != null && userId != "") {
-                loanCards = loanCardService.showCardsByUser(Long.parseLong(userId));
-                secondName = "Second name Test";
-                lastName = "Last name Test";
-            }
-
-
-            req.setAttribute("secondName", secondName);
-            req.setAttribute("lastName", lastName);
-            req.setAttribute("loanCards", loanCards);
-            req.getRequestDispatcher(PathFile.USER_LOAN_CARD).forward(req, resp);
-        }catch (ServiceException e) {
-            logger.error("Error when requesting the history of user cards.", e);
-        }
+//        try {
+//            logger.info("Story loan cards of user.");
+//            LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();
+//            UserService userService = ServiceFactory.getInstance().getUserService();
+//            String userId = req.getParameter("userId");
+//            List<LoanCardDto> loanCards = new ArrayList<>();
+//            String secondName = "";
+//            String lastName = "";
+//            if (userId != null && userId != "") {
+//                loanCards = loanCardService.showCardsByUser(Long.parseLong(userId));
+//                secondName = "Second name Test";
+//                lastName = "Last name Test";
+//            }
+//
+//
+//            req.setAttribute("secondName", secondName);
+//            req.setAttribute("lastName", lastName);
+//            req.setAttribute("loanCards", loanCards);
+//            req.getRequestDispatcher(PathFile.USER_LOAN_CARD).forward(req, resp);
+//        }catch (ServiceException e) {
+//            logger.error("Error when requesting the history of user cards.", e);
+//        }
     }
 }

@@ -15,19 +15,19 @@ public class ActionOrderCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
-            String orderId = req.getParameter("orderId");
-            String status = req.getParameter("status");
-            String message = "Order not updated";
-            if (orderId != null && orderId != "" && status != null && status != "") {
-                orderDtoService.update(orderId, status);
-                message = "Order status update";
-            }
-
-            resp.sendRedirect("Controller?command=GoToMessagePage&message=" + message);
-        }catch (ServiceException e) {
-
-        }
+//        try {
+//            OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
+//            String orderId = req.getParameter("orderId");
+//            String status = req.getParameter("status");
+//            String message = "Order not updated";
+//            if (orderId != null && orderId != "" && status != null && status != "") {
+//                orderDtoService.update(orderId, status);
+//                message = "Order status update";
+//            }
+//
+//            resp.sendRedirect("Controller?command=GoToMessagePage&message=" + message);
+//        }catch (ServiceException e) {
+//
+//        }
     }
 }

@@ -8,5 +8,4 @@ public interface WishBookDtoDao {
 
     List<WishBookDto> getBooks(long userId) throws DAOException;
 
-    boolean delete(long idBook, long userId) throws DAOException;
 }

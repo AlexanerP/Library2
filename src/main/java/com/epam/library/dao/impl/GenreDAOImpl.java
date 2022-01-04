@@ -61,7 +61,7 @@ public class GenreDAOImpl extends DAOHelper implements GenreDAO {
     }
 
     @Override
-    public boolean updateById(Genre genre) throws DAOException {
+    public boolean update(Genre genre) throws DAOException {
         logger.info("Start to update genre by id.");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {

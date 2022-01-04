@@ -18,10 +18,10 @@
         <input type="hidden" name="command" value="SignIn">
         <p><input type="text" placeholder="Введите E-mail" name="email"></p>
         <p><input type="password" placeholder="Введите пароль" name="password"></p>
-        <p><input type="submit" value="Sign In"></p>
+        <p><input type="submit" value="Войти"></p>
     </form>
     <p><div align="right">
-    <a href="Controller?command=GoToRegistration"><input type="submit" value="Registration"></a>
+    <a href="Controller?command=GoToRegistration"><input type="submit" value="Регистрация"></a>
 </div></p>
 </c:if>
 <c:if test="${not empty user.role}">
@@ -29,7 +29,7 @@
         <a href="Controller?command=GoToHome"><input type="submit" value="Личный кабинет"></a>
     </p>
     <form width="400" height="300" align="right">
-        <input type="hidden" name="command" value="SignOut">
+        <input type="hidden" name="command" value="Выйти">
         <p><input type="submit" value="Выйти"></p>
     </form>
 </c:if>
@@ -114,13 +114,13 @@
                         <c:if test="${not empty user}">
                         <td>
             <%--                <c:if test="${booksDTO.borrow < bookDTO.quantity}">--%>
-                            <a href="?command=GoToOrder&bookId=${booksDTO.bookDtoId}">Order</a>
+                            <a href="?command=GoToOrder&bookId=${booksDTO.bookDtoId}">Заказать</a>
             <%--                <a href="?command=GoToOrder"><input type="submit" value="Request this Book">--%>
             <%--                    <c:set var="bookId" scope="request" value="${bookDTO.bookId}"></c:set>--%>
                             </a>
             <%--            </c:if>--%>
                         </td>
-                            <td><a href="?command=GoToWishList&bookId=${booksDTO.bookDtoId}"><input type="submit" value="Request this Book"></a></td>
+                            <td><a href="?command=ActionWishBook&bookId=${booksDTO.bookDtoId}">В избранные</a></td>
                         </c:if>
                     </tr>
     </c:forEach>

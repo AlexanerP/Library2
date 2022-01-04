@@ -35,7 +35,7 @@
                 <td><input type="text" name="last_name" placeholder="Last name"></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="Push" name="updateUser"></td>
+                <td colspan="2" align="center"><input type="submit" value="Обновить" name="updateUser"></td>
             </tr>
         </table>
     </div>
@@ -45,18 +45,22 @@
 <br>
 <br>
 <br>
-
+<div align="center"><h1>Обновление пароля</h1></div>
 <form action="Controller" method="post">
-    <input type="hidden" name="command" value="UpdateUser">
+    <input type="hidden" name="command" value="UpdateUserPassword">
     <div align="center">
         <table>
             <tr>
-                <td>Old password:</td>
-                <td><input type="password" name="password" placeholder="Old password"/></td>
+                <td>Email:</td>
+                <td><input type="text" name="email" placeholder="email"/></td>
             </tr>
             <tr>
-                <td>New password:</td>
-                <td><input type="password" name="password" placeholder="New password"/></td>
+                <td>Старый пароль:</td>
+                <td><input type="password" name="old_password" placeholder="Old password"/></td>
+            </tr>
+            <tr>
+                <td>Новый пароль:</td>
+                <td><input type="password" name="new_password" placeholder="New password"/></td>
             </tr>
             <tr>
                 <td colspan="2"> <i>
@@ -65,7 +69,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="Push" name="updatePassword"></td>
+                <td colspan="2" align="center"><input type="submit" value="Обновить пароль" name="updatePassword"></td>
             </tr>
         </table>
     </div>

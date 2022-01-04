@@ -18,7 +18,7 @@ public class LoanCardDto implements Serializable {
     private String lastName;
     private String cityLibrary;
     private LocalDate takingBook;
-    private LocalDate returnBook;
+    private String returnBook;
     private LocalDate deadline;
     private LoanCardStatus status;
     private BookTypeUse typeUse;
@@ -95,11 +95,11 @@ public class LoanCardDto implements Serializable {
         this.takingBook = takingBook;
     }
 
-    public LocalDate getReturnBook() {
+    public String getReturnBook() {
         return returnBook;
     }
 
-    public void setReturnBook(LocalDate returnBook) {
+    public void setReturnBook(String returnBook) {
         this.returnBook = returnBook;
     }
 

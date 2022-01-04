@@ -158,7 +158,6 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
             prStatement.setString(7, bookDto.getYear());
             prStatement.setString(8, bookDto.getIsbn());
             prStatement.setString(9, bookDto.getCityLibrary());
-
             int bookId = 0;
             int rowExecute = prStatement.executeUpdate();
             if (rowExecute == 0) {
@@ -177,7 +176,6 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
                     }
                 }
             }
-
             if(bookDto.getGenres() != null) {
                 if (!bookDto.getGenres().isEmpty()) {
                     for (Genre genre : bookDto.getGenres()) {
@@ -187,13 +185,11 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
                     }
                 }
             }
-
             connection.commit();
             connection.setAutoCommit(true);
             return true;
         }catch (SQLException sqlE) {
             logger.error("Error while adding bookDto to table. BookDto - {}", bookDto.toString());
-            sqlE.printStackTrace();
             try {
                 connection.rollback();
             } catch (SQLException e) {      // check
@@ -204,7 +200,9 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
             try {
-                connection.close();
+                if (connection != null) {
+                    connection.close();
+                }
             } catch (SQLException sqlException) {
                 throw new DAOException("The connection is not closed.", sqlException);
             }

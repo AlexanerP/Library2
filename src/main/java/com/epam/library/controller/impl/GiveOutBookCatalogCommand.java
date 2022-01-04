@@ -36,13 +36,13 @@ public class GiveOutBookCatalogCommand implements Command {
 
             if (orderId != null && orderId != "") {
     System.out.println("orderId");
-                orders.add(orderDtoService.showOrderById(1).get());
+                orders.add(orderDtoService.showOrderById("1").get());
             } else if (city != null && city != "") {
     System.out.println("city");
-                orders = orderDtoService.showOrdersByCityAndStatus(city, OrderStatus.APPROVED);
+                orders = orderDtoService.showOrdersByCityAndStatus(city, "OrderStatus.APPROVED");
             } else if (all != null && all != "") {
     System.out.println("all");
-                orders = orderDtoService.showOrdersByStatus(OrderStatus.APPROVED);
+                orders = orderDtoService.showOrdersByStatus("OrderStatus.APPROVED");
             }
 
             req.setAttribute("libraries", libraries);

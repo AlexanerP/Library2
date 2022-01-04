@@ -8,14 +8,6 @@ import java.util.Optional;
 
 public interface LoanCardDtoDao {
 
-    boolean create(LoanCardDto card) throws DAOException;
-
-    boolean update(LoanCardDto card) throws DAOException;
-
-    boolean updateReturnDate(LoanCardDto card) throws DAOException;
-
-    boolean updateStatus(long cardId, LoanCardStatus status) throws DAOException;
-
     List<LoanCardDto> getCardsByIdUser(long id) throws DAOException;
 
     List<LoanCardDto> getCardsByStatusCard(LoanCardStatus status) throws DAOException;
@@ -25,6 +17,8 @@ public interface LoanCardDtoDao {
     Optional<LoanCardDto> getCardsById(long id) throws DAOException;
 
     List<LoanCardDto> getCardsByCity(String city) throws DAOException;
+
+    List<LoanCardDto> getCardsByCityAndStatus(String city, LoanCardStatus status) throws DAOException;
 
     List<LoanCardDto> getAll() throws DAOException;
 }

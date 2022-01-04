@@ -1,27 +1,12 @@
 package com.epam.library.service;
 
-import com.epam.library.entity.LoanCardStatus;
-import com.epam.library.entity.dto.LoanCardDto;
-
-import java.util.List;
-import java.util.Optional;
-
 public interface LoanCardService {
 
-    List<LoanCardDto> showCardsByUser(long idUser) throws ServiceException;
+    boolean create(String orderId, String typeUse) throws ServiceException;
 
-    List<LoanCardDto> showCardsByStatus(LoanCardStatus status) throws ServiceException;
+    boolean closeLoanCard(String cardId) throws ServiceException;
 
-    List<LoanCardDto> showCardsByUser(String userId) throws ServiceException;
+    boolean update(String cardId, String typeUse, String status) throws ServiceException;
 
-    List<LoanCardDto> showCardsByBook(String bookId) throws ServiceException;
-
-    List<LoanCardDto> showCardsByCityAndStatus(String city, LoanCardStatus status) throws ServiceException;
-
-    List<LoanCardDto> showCardsByCity(String city) throws ServiceException;
-
-    List<LoanCardDto> showAll() throws ServiceException;
-
-    Optional<LoanCardDto> showCardsById(String loanCardId) throws ServiceException;
-
+    long showCountCards(String status) throws ServiceException;
 }

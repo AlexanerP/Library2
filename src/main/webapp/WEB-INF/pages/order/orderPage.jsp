@@ -18,17 +18,17 @@
         <td><a href="?command=GoToHome">Домашний кабинет</a></td>
     </tr>
 </table>
-<h1>Заказ книги</h1>
+<div align="center"><h1>Заказ книги</h1></div>
 <form>
     <input type="hidden" name="command" value="Order">
     <div align="center">
         <table>
             <tr>
-                <td>Book ID:</td>
+                <td>ID книги:</td>
                 <td><c:out value="${book.bookDtoId}"></c:out></td>
             </tr>
             <tr>
-                <td>Title:</td>
+                <td>Название:</td>
                 <td><c:out value="${book.title}"></c:out></td>
             </tr>
             <tr>
@@ -36,15 +36,15 @@
                 <td><c:out value="${book.isbn}"></c:out></td>
             </tr>
             <tr>
-                <td>Publisher:</td>
+                <td>Издательство:</td>
                 <td><c:out value="${book.publisher}"></c:out></td>
             </tr>
             <tr>
-                <td>Year:</td>
+                <td>Год:</td>
                 <td><c:out value="${book.year}"></c:out></td>
             </tr>
             <tr>
-                <td>Author:</td>
+                <td>Автор:</td>
                 <td>
                     <c:forEach var="author" items="${book.authors}">
                         <c:out value="${author.name}"></c:out>
@@ -81,11 +81,11 @@
                 <td>Message</td>
                 <td> <p><textarea rows="5" cols="30" name="text"></textarea></p></td>
             </tr>
-            <tr><tr>
-            <div align="center">
-                <a href="?command=Order&bookId${book.bookDtoId}">Заказать</a>
-            </div>
-        </tr></tr>
+            <tr>
+                <div align="center">
+                    <a href="?command=Order&bookId${book.bookDtoId}">Заказать</a>
+                </div>
+            </tr>
         </table>
     </div>
 </form>

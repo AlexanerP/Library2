@@ -69,7 +69,7 @@ public class AuthorDAOImpl extends DAOHelper implements AuthorDAO {
     }
 
     @Override
-    public boolean updateById(Author author) throws DAOException {
+    public boolean update(Author author) throws DAOException {
         logger.info("Start to update by id.");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {

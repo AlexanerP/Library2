@@ -39,10 +39,8 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
             ColumnName.USER_EMAIL, ColumnName.USER_COUNT_VIOLATIONS,
             ColumnName.USER_ID_USERS);
 
-    private final static String UPDATE_STATUS_BY_ID_QUERY = String.format("UPDATE %s SET %s=(SELECT %s FROM %s " +
-                    "WHERE %s=?) WHERE %s=?;", TableName.USER, ColumnName.USER_ID_STATUS,
-            ColumnName.USER_STATUS_ID_STATUS, TableName.USER_STATUS, ColumnName.USER_STATUS_STATUS,
-            ColumnName.USER_ID_USERS);
+    private final static String UPDATE_PASSWORD_QUERY = String.format("UPDATE %s SET %s=? WHERE %s=?;",
+            TableName.USER, ColumnName.USER_PASSWORD, ColumnName.USER_ID_USERS);
 
     private final static String GET_USER_BY_ID_QUERY = String.format("SELECT * FROM %s NATURAL JOIN %s " +
             "NATURAL JOIN %s WHERE %s=?;", TableName.USER, TableName.ROLE,
@@ -68,9 +66,10 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
                     "NATURAL JOIN %s  WHERE %s.%s=?;", TableName.USER, TableName.USER_STATUS, TableName.ROLE,
             TableName.ROLE, ColumnName.ROLE_ROLE);
 
-    private final static String GET_COUNT_QUERY_BY_STATUS = String.format("select count(%s) from %s where %s.%s=" +
-                    "(SELECT %s from %s where status=?)", ColumnName.USER_EMAIL, TableName.USER, TableName.USER,
-            ColumnName.USER_STATUS_ID_STATUS, ColumnName.USER_STATUS_ID_STATUS, TableName.USER_STATUS);
+    private final static String GET_COUNT_BY_STATUS_QUERY = String.format("select count(%s) from %s where %s.%s=" +
+                    "(SELECT %s from %s where %s=?)", ColumnName.USER_EMAIL, TableName.USER, TableName.USER,
+            ColumnName.USER_STATUS_ID_STATUS, ColumnName.USER_STATUS_ID_STATUS, TableName.USER_STATUS,
+            ColumnName.USER_STATUS_STATUS);
 
     private final static String GET_COUNT_USER_BY_PERIOD_QUERY = String.format("SELECT * FROM %s NATURAL JOIN %s " +
                     "NATURAL JOIN %s WHERE %s BETWEEN ? AND ?;", TableName.USER, TableName.ROLE, TableName.USER_STATUS,
@@ -105,6 +104,22 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Failed to update user. User - {}", user.toString());
+            throw new DAOException(sqlE);
+        } finally {
+            closePreparedStatement(prStatement);
+        }
+    }
+
+    @Override
+    public int updatePassword(User user) throws DAOException {
+        logger.info("User password update");
+        PreparedStatement prStatement = null;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
+            prStatement = createPreparedStatement(connection, UPDATE_PASSWORD_QUERY, user.getPassword(),
+                    user.getUserId());
+            return prStatement.executeUpdate();
+        } catch (SQLException sqlE) {
+            logger.error("Error updating user password. User - {}", user.toString());
             throw new DAOException(sqlE);
         } finally {
             closePreparedStatement(prStatement);
@@ -180,7 +195,6 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
             while (resultSet.next()) {
                 entity.add(mapper.map(resultSet));
             }
-
             if(entity.size() == 1) {
                 logger.info("User received for verification.");
                 return Optional.of(entity.get(0));
@@ -188,7 +202,7 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
                 return Optional.empty();
             } else {
                 logger.info("Find more 1 user.");
-                throw new UnsupportedOperationException("Find more 1 user.");
+                throw new DAOException("Find more 1 user.");
             }
         } catch (SQLException sqlE) {
             logger.error("User not received for verification.");
@@ -285,12 +299,12 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
     public int getCount(UserStatus status) throws DAOException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
-        int countAuthors = 0;
+        int countUsers = 0;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
-            prStatement = createPreparedStatement(connection, GET_COUNT_QUERY_BY_STATUS, status.name());
+            prStatement = createPreparedStatement(connection, GET_COUNT_BY_STATUS_QUERY, status.name());
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
-                countAuthors = resultSet.getInt(1);
+                countUsers = resultSet.getInt(1);
             }
         }catch (SQLException sqlE) {
             logger.error("Number of users by status not received.");
@@ -299,7 +313,7 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
         }
-        return countAuthors;
+        return countUsers;
     }
 
     @Override

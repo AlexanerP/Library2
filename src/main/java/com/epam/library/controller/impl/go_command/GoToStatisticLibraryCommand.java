@@ -30,15 +30,18 @@ public class GoToStatisticLibraryCommand implements Command {
 
             List<User> usersBlocked = userService.showUserByStatus(UserStatus.BLOCKED.name());
             List<User> usersActive = userService.showUserByStatus(UserStatus.ACTIVE.name());
+            List<User> usersDelete = userService.showUserByStatus(UserStatus.DELETE.name());
 
             req.setAttribute("countUsers", countUsers);
             req.setAttribute("countBooks", countBooks);
             req.setAttribute("countUsersBlocked", usersBlocked.size());
+            req.setAttribute("countUsersDelete", usersDelete.size());
             req.setAttribute("countUsersActive", usersActive.size());
 
             req.getRequestDispatcher(PathFile.STATISTICS_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while getting library statistics", e);
+            resp.sendRedirect("error.jsp");
         }
     }
 }

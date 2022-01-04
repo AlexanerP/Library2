@@ -7,6 +7,8 @@ import com.epam.library.entity.LibraryStatus;
 import com.epam.library.service.LibraryService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,8 @@ import java.util.List;
 
 public class GoToLoanCardCatalogCommand implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(GoToLoanCardCatalogCommand.class);
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -24,7 +28,8 @@ public class GoToLoanCardCatalogCommand implements Command {
             req.setAttribute("libraries", libraries);
             req.getRequestDispatcher(PathFile.LOAN_CARD_CATALOG_PAGE).forward(req, resp);
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error("Error getting libraries for the loan cards directory.", e);
+            resp.sendRedirect(PathFile.ERROR_PAGE);
         }
     }
 }

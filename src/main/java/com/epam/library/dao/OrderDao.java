@@ -12,12 +12,8 @@ public interface OrderDao {
 
     int update(Order order) throws DAOException;
 
-    int updateStatus(Long id, OrderStatus status) throws DAOException;
+    int delete(long id) throws DAOException;
 
-    int delete(Long id) throws DAOException;
-
-    Optional<Order> getOrderById(Long id) throws DAOException;
-
-    List<Order> getOrders() throws DAOException;
+    Optional<Order> getOrderById(long id) throws DAOException;
 
 }

@@ -52,19 +52,4 @@ public class WishBookDtoDaoImpl extends DAOHelper implements WishBookDtoDao {
             closePreparedStatement(prStatement);
         }
     }
-
-    @Override
-    public boolean delete(long bookId, long userId) throws DAOException {
-        logger.info("Deleting wish books.");
-        PreparedStatement prStatement = null;
-        try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, DELETE_WISH_BOOKS_QUERY, userId, bookId);
-            return true;
-        } catch (SQLException e) {
-            logger.error("Error while deleting books.");
-            throw new DAOException("Error while deleting books.", e);
-        } finally {
-            closePreparedStatement(prStatement);
-        }
-    }
 }

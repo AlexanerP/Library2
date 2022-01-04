@@ -3,7 +3,9 @@ package com.epam.library.controller.impl;
 import com.epam.library.controller.Command;
 import com.epam.library.entity.User;
 import com.epam.library.service.OrderDtoService;
+import com.epam.library.service.OrderService;
 import com.epam.library.service.ServiceException;
+import com.epam.library.service.ServiceFactory;
 import com.epam.library.service.impl.OrderDtoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +29,10 @@ System.out.println("OrderCommand /");
 System.out.println("bookId /" + bookId);
             User user = (User) session.getAttribute("user");
             String city = req.getParameter("city");
-            OrderDtoService orderDtoService = new OrderDtoServiceImpl();
+            OrderService orderService = ServiceFactory.getInstance().getOrderService();
             System.out.println("BookID/ " + bookId);
             if (user != null && bookId != null && city !="") {
-                if (orderDtoService.create(Long.parseLong(bookId), user.getUserId(), city)) {
+                if (orderService.create("Long.parseLong(bookId", "ser.getUserId()", city, "")) {
                     resp.sendRedirect("Controller?command=GoToMessagePage&message=" + "Order success.");
                 }
             } else {

@@ -9,18 +9,17 @@ import java.util.Optional;
 
 public interface OrderDtoService {
 
-    boolean create(long bookId, long userId, String city) throws ServiceException;
 
-    List<OrderDto> showOrdersUser(long userId) throws ServiceException;
+    List<OrderDto> showOrdersUser(String userId) throws ServiceException;
 
-    Optional<OrderDto> showOrderById(long orderId) throws ServiceException;
+    Optional<OrderDto> showOrderById(String orderId) throws ServiceException;
 
-    List<OrderDto> getOrders() throws ServiceException;
+    List<OrderDto> showAllOrders() throws ServiceException;
 
-    List<OrderDto> showOrdersByStatus(OrderStatus status) throws ServiceException;
+    List<OrderDto> showOrdersByStatus(String status) throws ServiceException;
 
-    List<OrderDto> showOrdersByCityAndStatus(String city, OrderStatus status) throws ServiceException;
+    List<OrderDto> showOrdersByCityAndStatus(String city, String status) throws ServiceException;
 
-    boolean update(String orderId, String status) throws ServiceException;
+    List<OrderDto> showOrdersByCity(String city) throws ServiceException;
 
 }

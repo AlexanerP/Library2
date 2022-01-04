@@ -9,7 +9,7 @@ public interface AuthorDAO {
 
     boolean create(Author author) throws DAOException;
 
-    boolean updateById(Author author) throws DAOException;
+    boolean update(Author author) throws DAOException;
 
     boolean deleteAuthorByBookId(long bookId) throws DAOException;
 

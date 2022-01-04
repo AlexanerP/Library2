@@ -6,9 +6,11 @@ import com.epam.library.dao.OrderDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
+import com.epam.library.dao.mapper.OrderDtoMapper;
 import com.epam.library.dao.mapper.OrderMapper;
 import com.epam.library.entity.Order;
 import com.epam.library.entity.OrderStatus;
+import com.epam.library.entity.dto.OrderDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,15 +36,9 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
     private final static String UPDATE_ORDER_QUERY = String.format("UPDATE %s set %s=?, %s=?, %s=?, %s=?, " +
                     "%s=(SELECT %s from %s where %s=?), %s=(SELECT %s from %s where %s=?) WHERE %s=?;",
             TableName.ORDER, ColumnName.ORDER_ID_BOOK, ColumnName.ORDER_ID_USER, ColumnName.ORDER_ID_ADMIN,
-            ColumnName.ORDER_COMMENT, ColumnName.ORDER_ID_LIBRARY, ColumnName.LIBRARY_ID_LIBRARY,
-            TableName.LIBRARY, ColumnName.LIBRARY_CITY, ColumnName.ORDER_ID_STATUS,
-            ColumnName.ORDER_STATUS_ID_STATUS, TableName.ORDER_STATUS, ColumnName.ORDER_STATUS_STATUS,
-            ColumnName.ORDER_ID_REQUEST);
-
-    private final static String UPDATE_ORDER_STATUS_QUERY = String.format("UPDATE %s SET %s=(SELECT %s FROM %s " +
-                    "WHERE %s=?) WHERE %s=?;", TableName.ORDER,  ColumnName.ORDER_ID_STATUS,
-            ColumnName.ORDER_STATUS_ID_STATUS, TableName.ORDER_STATUS, ColumnName.ORDER_STATUS_STATUS,
-            ColumnName.ORDER_ID_REQUEST);
+            ColumnName.ORDER_COMMENT, ColumnName.ORDER_ID_LIBRARY, ColumnName.LIBRARY_ID_LIBRARY, TableName.LIBRARY,
+            ColumnName.LIBRARY_CITY, ColumnName.ORDER_ID_STATUS, ColumnName.ORDER_STATUS_ID_STATUS,
+            TableName.ORDER_STATUS, ColumnName.ORDER_STATUS_STATUS, ColumnName.ORDER_ID_REQUEST);
 
     private static final String DELETE_ORDER_QUERY = String.format("delete from %s where %s=?",
             TableName.ORDER, ColumnName.ORDER_ID_REQUEST);
@@ -67,7 +63,7 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
             prStatement = createPreparedStatement(connection, ADD_ORDER_QUERY, order.getBookId(),
-                    order.getUserId(), order.getAdminId(), order.getComment(), order.getLibraryId(),
+                    order.getUserId(), order.getAdminId(), order.getComment(), order.getLibraryCity(),
                     order.getStatus());
             prStatement.execute();
             return true;
@@ -85,7 +81,7 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
             prStatement = createPreparedStatement(connection, UPDATE_ORDER_QUERY, order.getBookId(), order.getUserId(),
-                    order.getAdminId(), order.getLibraryId(), order.getComment(), order.getOrderId());
+                    order.getAdminId(), order.getLibraryCity(), order.getComment(), order.getOrderId());
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Failed to update order.order - {}", order.toString());
@@ -95,23 +91,9 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
         }
     }
 
-    @Override
-    public int updateStatus(Long id, OrderStatus status) throws DAOException {
-        logger.info("Update status.");
-        PreparedStatement prStatement = null;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
-            prStatement = createPreparedStatement(connection, UPDATE_ORDER_STATUS_QUERY, status.name(), id);
-            return prStatement.executeUpdate();
-        } catch (SQLException sqlE) {
-            logger.error("Failed to update status request. id - {}, status - {}", id, status);
-            throw new DAOException("Failed to update status request.", sqlE);
-        } finally {
-            closePreparedStatement(prStatement);
-        }
-    }
 
     @Override
-    public int delete(Long id) throws DAOException {
+    public int delete(long id) throws DAOException {
         logger.info("Delete order. Id - {}", id);
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -126,8 +108,8 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
     }
 
     @Override
-    public Optional<Order> getOrderById(Long id) throws DAOException {
-        logger.info("Receiving a request by id.");
+    public Optional<Order> getOrderById(long id) throws DAOException {
+        logger.info("Receiving a order by ID.");
         OrderMapper mapper = new OrderMapper();
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -139,12 +121,12 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
                 entity.add(mapper.map(resultSet));
             }
             if(entity.size() == 1) {
-                logger.info("Order by id received.");
+                logger.info("Order by ID received.");
                 return Optional.of(entity.get(0));
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 user.");
+                throw new DAOException("Find more 1 order.");
             }
         } catch (SQLException sqlE) {
             logger.error("Find more 1 order. Find - {}", entity.toString());
@@ -154,28 +136,34 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
             closePreparedStatement(prStatement);
         }
     }
-
-    @Override
-    public List<Order> getOrders() throws DAOException {
-        logger.info("Getting a list of orders");
-        List<Order> order = new ArrayList<>();
-        OrderMapper mapper = new OrderMapper();
-        PreparedStatement prStatement = null;
-        ResultSet resultSet = null;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = connection.prepareStatement(GET_ALL_ORDERS_QUERY);
-            resultSet = prStatement.executeQuery();
-            while (resultSet.next()) {
-                order.add(mapper.map(resultSet));
-            }
-            logger.info("Orders list received.");
-            return order;
-        } catch (SQLException sqlE) {
-            logger.error("Orders list not received... Error.");
-            throw new DAOException(sqlE);
-        } finally {
-            closeResultSet(resultSet);
-            closePreparedStatement(prStatement);
-        }
-    }
+//
+//    @Override
+//    public Optional<Order> getOrderById(long orderId) throws DAOException {
+//        logger.info("Receiving orders by ID.");
+//        OrderMapper mapper = new OrderMapper();
+//        PreparedStatement prStatement = null;
+//        ResultSet resultSet = null;
+//        List<Order> entity = new ArrayList<>();
+//        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
+//            prStatement = createPreparedStatement(connection, GET_ORDER_BY_USER_QUERY, id);
+//            resultSet = prStatement.executeQuery();
+//            while (resultSet.next()) {
+//                entity.add(mapper.map(resultSet));
+//            }
+//            if(entity.size() == 1) {
+//                logger.info("Order by ID received.");
+//                return Optional.of(entity.get(0));
+//            } else if (entity.size() == 0) {
+//                return Optional.empty();
+//            } else {
+//                throw new UnsupportedOperationException("Find more 1 order.");
+//            }
+//        } catch (SQLException sqlE) {
+//            logger.error("OrderBookDto list by user not received. Order ID - {}", orderId);
+//            throw new DAOException(sqlE);
+//        } finally {
+//            closeResultSet(resultSet);
+//            closePreparedStatement(prStatement);
+//        }
+//    }
 }

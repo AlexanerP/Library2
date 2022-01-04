@@ -36,25 +36,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean create(String email, String password, String secondName, String lastName) throws ServiceException {
+    public int create(String email, String password, String secondName, String lastName) throws ServiceException {
         try {
             UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
             Cipher cipher = UtilFactory.getInstance().getCipher();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (validator.isPassword(password.trim()) && validator.isLength(secondName)
-                    && validator.isLength(lastName) && validator.isEmail(email.trim())) {
-                String passwordCipher = cipher.getCipherString(password.trim());
-                User user = new User();
-                user.setPassword(passwordCipher);
-                user.setEmail(email);
-                user.setSecondName(secondName);
-                user.setLastName(lastName);
-                user.setStatus(UserStatus.ACTIVE);
-                user.setRole(UserRole.USER);
-                user.setCountViolations(0);
-                return userDAO.create(user);
+            if (validator.isEmail(email.trim())) {
+                if (validator.isPassword(password.trim()) && validator.isLength(secondName)
+                        && validator.isLength(lastName) && validator.isEmail(email.trim())) {
+                    String passwordCipher = cipher.getCipherString(password.trim());
+                    User user = new User();
+                    user.setPassword(passwordCipher);
+                    user.setEmail(email);
+                    user.setSecondName(secondName);
+                    user.setLastName(lastName);
+                    user.setStatus(UserStatus.ACTIVE);
+                    user.setRole(UserRole.USER);
+                    user.setCountViolations(0);
+                    userDAO.create(user);
+                    return 1;
+                } else {
+                    return 2;
+//                throw new ServiceException("Invalid values during registration.");
+                }
             } else {
-                throw new ServiceException("Invalid values during registration.");
+                return 3;
             }
         }catch (DAOException e) {
             logger.error("Error in services during registration.");
@@ -145,7 +151,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (validator.isNumber(userId)) {
+            if (validator.isNumber(userId.trim())) {
                 return userDAO.getUserById(Long.parseLong(userId.trim()));
             } else {
                 throw new ServiceException("Trying to get a user by an ID that is not a number.");
@@ -165,7 +171,7 @@ public class UserServiceImpl implements UserService {
                     && validator.isEmail(email.trim()) && validator.isNumber(userId)) {
                 Optional<User> optionalUser = userDAO.getUserById(Long.parseLong(userId.trim()));
                 if (optionalUser.isPresent()) {
-                    User user = new User();
+                    User user = optionalUser.get();
                     user.setEmail(email != "" ? email : optionalUser.get().getEmail());
                     user.setSecondName(secondName != "" ? secondName : optionalUser.get().getSecondName());
                     user.setLastName(lastName != "" ? lastName : optionalUser.get().getLastName());
@@ -174,10 +180,12 @@ public class UserServiceImpl implements UserService {
                         return true;
                     }
                 } else {
-                    throw new ServiceException("User by ID not found");
+                    return false;
+//                    throw new ServiceException("User by ID not found");
                 }
             } else {
-                throw new ServiceException("Invalid values.");
+                return false;
+//                throw new ServiceException("Invalid values.");
             }
         }catch (DAOException e) {
             logger.error("An error occurred while updating the user in services.", e);
@@ -221,36 +229,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(String password, String userId) throws ServiceException {
+    public boolean updatePassword(String newPassword, String email, String oldPassword) throws ServiceException {
         try {
+System.out.println("updatePassword");
             UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
             Cipher cipher = UtilFactory.getInstance().getCipher();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (validator.isPassword(password.trim())) {
-                if (validator.isNumber(userId)) {
-                    Optional<User> optionalUser = userDAO.getUserById(Long.parseLong(userId.trim()));
-                    if (optionalUser.isPresent()) {
-                        User user = optionalUser.get();
-                        user.setPassword(cipher.getCipherString(password));
-                        System.out.println(user.getPassword());
-                        int result = userDAO.update(user);
-                        if (result == 1) {
-                            return true;
-                        }
-                    } else {
-                        throw new ServiceException("User by ID not found");
-                    }
+            if (validator.isPassword(newPassword) && validator.isPassword(oldPassword)) {
+                String oldPasswordCipher = cipher.getCipherString(oldPassword.trim());
+                Optional<User> optionalUser = verification(email, oldPasswordCipher);
+                if (optionalUser.isPresent()) {
+                    User user = optionalUser.get();
+                    user.setPassword(cipher.getCipherString(newPassword));
+                    userDAO.updatePassword(user);
+                    return true;
                 } else {
-                    throw new ServiceException("Invalid values for ID.");
+                    throw new ServiceException("User not found");
                 }
             } else {
-                throw new ServiceException("Invalid values for password.");
+                throw new ServiceException("Invalid values for newPassword.");
             }
     }catch (DAOException e) {
         logger.error("Error in services during registration.");
         throw new ServiceException("Error in services during registration.", e);
     }
-        return false;
     }
 
     @Override
