@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.BookDtoService;
 import com.epam.library.service.ServiceException;
@@ -17,9 +17,9 @@ import java.io.IOException;
 
 import java.util.List;
 
-public class GoToCatalogCommand implements Command {
+public class GoToCatalogByPageCommand implements Command {
 
-    private static final Logger logger = LoggerFactory.getLogger(GoToCatalogCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(GoToCatalogByPageCommand.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,10 +31,10 @@ public class GoToCatalogCommand implements Command {
             List<BookDto> bookList = bookDtoService.showByPage(page, limit);
             req.setAttribute("bookList", bookList);
             req.setAttribute("pageCatalog", page);
-            req.getRequestDispatcher(PathFile.BOOK_CATALOG_BY_PAGE).forward(req, resp);
+            req.getRequestDispatcher(PathJsp.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("An error occurred while getting data for viewing on the first page. No data received", e);
-            //error page
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

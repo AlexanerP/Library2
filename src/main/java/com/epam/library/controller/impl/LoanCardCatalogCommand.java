@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.dto.LoanCardDto;
 import com.epam.library.service.*;
@@ -50,10 +50,10 @@ public class LoanCardCatalogCommand implements Command {
             req.setAttribute("libraries", libraries);
             req.setAttribute("loanCards", loanCards);
             req.setAttribute("loanCardsSize", loanCards.size());
-            req.getRequestDispatcher(PathFile.LOAN_CARD_CATALOG_PAGE).forward(req, resp);
+            req.getRequestDispatcher(PathJsp.LOAN_CARD_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error working with the loan cards directory.", e);
-            resp.sendRedirect(PathFile.ERROR_PAGE);
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.library.controller;
 
-public class PathFile {
+public class PathJsp {
 
     public static final String USER_LOAN_CARD = "WEB-INF/pages/loan/storyUserLoanCardsPage.jsp";
 

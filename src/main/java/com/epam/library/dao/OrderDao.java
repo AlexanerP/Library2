@@ -14,6 +14,8 @@ public interface OrderDao {
 
     int delete(long id) throws DAOException;
 
+    long countOrderByStatus(OrderStatus status) throws DAOException;
+
     Optional<Order> getOrderById(long id) throws DAOException;
 
 }

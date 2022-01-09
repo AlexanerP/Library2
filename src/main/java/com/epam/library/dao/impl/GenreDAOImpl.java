@@ -78,6 +78,16 @@ public class GenreDAOImpl extends DAOHelper implements GenreDAO {
     }
 
     @Override
+    public Optional<Genre> getGenreById(long genreId) throws DAOException {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Genre> getGenreByGenre(String genre) throws DAOException {
+        return Optional.empty();
+    }
+
+    @Override
     public boolean deleteGenreByBookId(long bookId)  {
         logger.info("Deleting genre data by book. BookId - {}", bookId);
         PreparedStatement prStatement = null;
@@ -94,7 +104,7 @@ public class GenreDAOImpl extends DAOHelper implements GenreDAO {
     }
 
     @Override
-    public List<Genre> getGenresByIdBook(Long bookId) throws DAOException {
+    public List<Genre> getGenresByIdBook(long bookId) throws DAOException {
         logger.info("Receiving a genre by bookId.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -142,7 +152,7 @@ public class GenreDAOImpl extends DAOHelper implements GenreDAO {
     }
 
     @Override
-    public int getCount() throws DAOException {
+    public long getCount() throws DAOException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         int countAuthors = 0;
@@ -160,5 +170,10 @@ public class GenreDAOImpl extends DAOHelper implements GenreDAO {
             closePreparedStatement(prStatement);
         }
         return countAuthors;
+    }
+
+    @Override
+    public long getCountByGenre(String genre) throws DAOException {
+        return 0;
     }
 }

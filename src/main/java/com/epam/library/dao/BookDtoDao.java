@@ -16,9 +16,11 @@ public interface BookDtoDao {
 
     Optional<BookDto> getBookById(long bookId) throws DAOException;
 
-    int delete(Long id) throws DAOException;
+    int delete(long id) throws DAOException;
 
     List<BookDto> getBooks() throws DAOException;
+
+    List<BookDto> getBooksByCity(String city) throws DAOException;
 
     List<BookDto> getBooksByPage(int limit, int page) throws DAOException;
 

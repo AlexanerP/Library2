@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.*;
@@ -23,6 +23,8 @@ public class CatalogBookCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
             BookDtoService bookService = ServiceFactory.getInstance().getBookDtoService();
+            LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
+            List<Library> libraries = libraryService.showAll();
 
             String bookId = req.getParameter("bookId");
             String title = req.getParameter("title");
@@ -30,29 +32,33 @@ public class CatalogBookCommand implements Command {
             String author = req.getParameter("author");
             String genre = req.getParameter("genre");
             String all = req.getParameter("all");
-            System.out.println("bookId/" + bookId + ". title/" + title + ". isbn/" + isbn+ ". author/" + author + ". genre/" + ". all/" + all);
+            String city = req.getParameter("city");
+
             List<BookDto> books = new ArrayList<>();
 
-            if(bookId == null && title == null && isbn == null && author == null && genre == null & all == null) {
-                req.getRequestDispatcher(PathFile.BOOK_CATALOG_PAGE).forward(req, resp);
+            if(bookId == null && title == null && isbn == null && author == null
+                    && genre == null && all == null && city == null) {
+                req.getRequestDispatcher(PathJsp.BOOK_CATALOG_PAGE).forward(req, resp);
             } else {
-                if (bookId != "" && bookId != null) {
-System.out.println("bookId1");
+                if (bookId != null) {
                     books.add(bookService.showBookById(bookId).orElse(new BookDto("-", "-")));
-                }else if (title == "" || isbn == "" || author == "" || genre == "") {
-System.out.println("title1");
+                }else if (title != "" && title != null || isbn != "" && isbn != null
+                        || author != "" && author != null || genre != "" && genre != null) {
                     books = bookService.showBookByParameter(title, isbn, genre, author);
-                } else if (all != ""){
-System.out.println("al1 - " + all);
+                } else if (all != null){
                     books = bookService.showCatalog();
+                } else if (city != null) {
+                    books = bookService.showBookByCity(city);
+                    System.out.println("CitySize - " + books.size());
                 }
+                req.setAttribute("libraries", libraries);
                 req.setAttribute("books", books);
                 req.setAttribute("booksSize", books.size());
-                req.getRequestDispatcher(PathFile.BOOK_CATALOG_PAGE).forward(req, resp);
+                req.getRequestDispatcher(PathJsp.BOOK_CATALOG_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Error in controllers book directory." , e);
-            //  sendRedirect
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

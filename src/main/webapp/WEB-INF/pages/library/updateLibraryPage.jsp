@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Александр
@@ -6,45 +6,42 @@
   Time: 20:59
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="admin_menu_libraries"></fmt:message></title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
-    </tr>
-</table>
-<div align="center"><h1>Обновление библиотеки</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="admin_menu_libraries"></fmt:message></h1></div>
 <div align="center">
     <form>
         <input type="hidden" name="command" value="UpdateLibrary">
         <table>
             <tr>
-                <td>Значение</td>
-                <td>Старые значения</td>
-                <td>Заменить</td>
+                <td><fmt:message key="data"></fmt:message></td>
+                <td><fmt:message key="old_data"></fmt:message></td>
+                <td><fmt:message key="new_data"></fmt:message></td>
             </tr>
             <tr>
-                <td>ID</td>
+                <td><fmt:message key="id"></fmt:message></td>
                 <td><c:out value="${library.libraryId}"></c:out></td>
-                <td><input type="number" name="libraryId" value="${library.libraryId}" placeholder="ID"></td>
+                <td>${library.libraryId}</td>
             </tr>
             <tr>
-                <td>Город</td>
+                <td><fmt:message key="library_city"></fmt:message></td>
                 <td><c:out value="${library.city}"></c:out></td>
-                <td><input type="text" name="city" placeholder="Город"></td>
+                <td><input type="text" name="city" placeholder="${library.city}"></td>
             </tr>
             <tr>
-                <td>Улица</td>
+                <td><fmt:message key="library_street"></fmt:message></td>
                 <td><c:out value="${library.street}"></c:out></td>
-                <td><input type="text" name="street" placeholder="Улица"></td>
+                <td><input type="text" name="street" placeholder="${library.street}"></td>
             </tr>
             <tr>
-                <td><input type="submit" value="Обновить"></td>
+                <td colspan="3"><input type="submit" value="<fmt:message key="button_update"></fmt:message>"></td>
             </tr>
         </table>
     </form>

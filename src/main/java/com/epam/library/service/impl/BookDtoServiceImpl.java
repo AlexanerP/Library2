@@ -6,11 +6,9 @@ import com.epam.library.dao.DAOFactory;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.entity.Author;
 import com.epam.library.entity.Genre;
+import com.epam.library.entity.Library;
 import com.epam.library.entity.dto.BookDto;
-import com.epam.library.service.BookDtoService;
-import com.epam.library.service.ServiceException;
-import com.epam.library.service.ServiceFactory;
-import com.epam.library.service.ServiceValidator;
+import com.epam.library.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,9 +71,9 @@ public class BookDtoServiceImpl implements BookDtoService {
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             BookDtoDao bookDtoDao = DAOFactory.getInstance().getBookDtoDao();
             BookDto newBookDto = new BookDto();
-            if (validator.isLength(bookDto.getTitle()) && validator.isLength(bookDto.getIsbn()) &&
-                    validator.isLength(bookDto.getPublisher()) && validator.isLength(bookDto.getYear()) &&
-                    validator.isLength(bookDto.getShelf())) {
+            if (validator.isLengthForUpdate(bookDto.getTitle()) && validator.isLengthForUpdate(bookDto.getIsbn()) &&
+                    validator.isLengthForUpdate(bookDto.getPublisher()) && validator.isLengthForUpdate(bookDto.getYear()) &&
+                    validator.isLengthForUpdate(bookDto.getShelf())) {
 
                 Optional<BookDto> optionalBookDto = bookDtoDao.getBookById(Long.parseLong(bookId));
 
@@ -187,6 +185,27 @@ public class BookDtoServiceImpl implements BookDtoService {
             throw new ServiceException("Error in services when retrieving a book by ID.", e);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<BookDto> showBookByCity(String city) throws ServiceException {
+        try {
+            BookDtoDao bookDtoDao = DAOFactory.getInstance().getBookDtoDao();
+            LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
+            if (city != null) {
+                Optional<Library> optionalLibrary = libraryService.showByCity(city);
+                if (optionalLibrary.isPresent()) {
+                    return bookDtoDao.getBooksByCity(city);
+                } else {
+                    throw new ServiceException("A library with such a city does not exist.");
+                }
+            }else {
+                throw new ServiceException("The city value is empty");
+            }
+        } catch (DAOException e) {
+            logger.error("Error retrieving books from the library.");
+            throw new ServiceException("Error retrieving books from the library.", e);
+        }
     }
 
     @Override

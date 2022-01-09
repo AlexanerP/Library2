@@ -5,43 +5,114 @@
   Time: 20:16
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="admin_menu_libraries"></fmt:message></title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="admin_menu_libraries"></fmt:message></h1></div>
 <table>
     <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
+        <td>
+            <form>
+                <input type="hidden" name="command" value="LibraryCatalog">
+                <table>
+                    <tr>
+                        <td><fmt:message key="enter_library_id"></fmt:message></td>
+                        <td><input type="number" name="libraryId" min="1" placeholder="<fmt:message key="enter_library_id"></fmt:message>"></td>
+                        <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
+                    </tr>
+                </table>
+            </form>
+            <form>
+                <input type="hidden" name="command" value="LibraryCatalog">
+                <table>
+                    <tr>
+                        <td><fmt:message key="enter_library_city"></fmt:message></td>
+                        <td><input type="text" name="city" placeholder="<fmt:message key="enter_library_city"></fmt:message>"></td>
+                        <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
+                    </tr>
+                </table>
+            </form>
+            <form>
+                <input type="hidden" name="command" value="LibraryCatalog">
+                <table>
+                    <tr>
+                        <td><fmt:message key="library_change_status"></fmt:message></td>
+                        <td>
+                            <select name="status">
+                                <option value="opened"><fmt:message key="library_status_opened"></fmt:message></option>
+                                <option value="closed"><fmt:message key="library_status_closed"></fmt:message></option>
+                            </select>
+                        </td>
+                        <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="status"></td>
+                    </tr>
+                </table>
+            </form>
+            <form>
+                <input type="hidden" name="command" value="LibraryCatalog">
+                <table>
+                    <tr>
+                        <input type="submit" value="<fmt:message key="library_show_all"></fmt:message>" name="getAll">
+                    </tr>
+                </table>
+            </form>
+        </td>
+        <td>
+            <form>
+                <input type="hidden" name="command" value="CreateLibrary">
+                <table>
+                    <tr>
+                        <th><fmt:message key="library_create_new_library"></fmt:message></th>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="enter_library_city"></fmt:message></td>
+                        <td><input type="text" name="city" placeholder="<fmt:message key="enter_library_city"></fmt:message>"></td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="enter_library_street"></fmt:message></td>
+                        <td><input type="text" name="street" placeholder="<fmt:message key="enter_library_street"></fmt:message>"></td>
+                    </tr>
+                    <tr><td><input type="submit" value="<fmt:message key="button_add"></fmt:message>"></tr></td>
+                </table>
+            </form>
+        </td>
     </tr>
 </table>
-<div align="center"><h1>Библиотеки</h1></div>
+
 <div align="center">
     <table>
-        <c:if test="${not empty library}">
+        <c:if test="${not empty libraries}">
             <tr>
-                <td>#</td>
-                <td>ID</td>
-                <td>Город</td>
-                <td>Улица</td>
-                <td>Обновить</td>
-                <td>Изменить статус</td>
+                <th>#</th>
+                <th><fmt:message key="id"></fmt:message></th>
+                <th><fmt:message key="library_city"></fmt:message></th>
+                <th><fmt:message key="library_street"></fmt:message></th>
+                <th><fmt:message key="orders"></fmt:message></th>
+                <th><fmt:message key="loan_card"></fmt:message></th>
+                <th><fmt:message key="books"></fmt:message></th>
+                <th><fmt:message key="enter_library_street"></fmt:message></th>
+                <th><fmt:message key="change_status"></fmt:message></th>
             </tr>
-            <c:forEach var="library" items="${library}" varStatus="status">
+            <c:forEach var="library" items="${libraries}" varStatus="status">
                 <tr>
                     <td><c:out value="${status.index + 1}"></c:out></td>
                     <td><c:out value="${library.libraryId}"></c:out></td>
                     <td><c:out value="${library.city}"></c:out></td>
                     <td><c:out value="${library.street}"></c:out></td>
+                    <td> <a href="?command=OrderCatalog&city=${library.city}"><fmt:message key="orders"></fmt:message></a> </td>
+                    <td> <a href="?command=LoanCardCatalog&city=${library.city}"><fmt:message key="loan_card"></fmt:message></a> </td>
+                    <td> <a href="?command=CatalogBook&city=${library.city}"> <fmt:message key="books"></fmt:message> </a> </td>
                     <td>
-                        <a href="?command=GoToUpdateLibrary&libraryId=${library.libraryId}&city=${library.city}&street=${library.street}">Обновить</a>
+                        <a href="?command=GoToUpdateLibrary&libraryId=${library.libraryId}&city=${library.city}&street=${library.street}"><fmt:message key="button_update"></fmt:message></a>
                     </td>
                     <td>
-                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=opened">Открыто</a>
-                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=closed">Закрыто</a>
+                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=opened"><fmt:message key="library_status_opened"></fmt:message></a>
+                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=closed"><fmt:message key="library_status_closed"></fmt:message></a>
                     </td>
                 </tr>
             </c:forEach>

@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -28,7 +28,8 @@ public class UpdateUserCommand implements Command {
             String secondName = req.getParameter("second_name");
             String lastName = req.getParameter("last_name");
             User user = (User) session.getAttribute("user");
-            if (email != "" || secondName != "" || lastName != "") {
+            if (email != null && email != "" || secondName != null && secondName != ""
+                    || lastName != null && lastName != "") {
                 boolean flag = userService.update(email, secondName, lastName, user.getUserId() + "");
                 if (flag) {
                     String message = "Operation completed";
@@ -40,12 +41,12 @@ public class UpdateUserCommand implements Command {
                     resp.sendRedirect("Controller?command=GoToMessagePage");
                 }
             } else {
-                req.getRequestDispatcher(PathFile.UPDATE_USER_PAGE).forward(req, resp);
+                req.getRequestDispatcher(PathJsp.UPDATE_USER_PAGE).forward(req, resp);
             }
 
         }catch (ServiceException e) {
             logger.error("An error occurred while updating the user's personal data.", e);
-            resp.sendRedirect("error.jsp");
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

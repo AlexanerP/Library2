@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -31,7 +31,8 @@ public class RegistrationCommand implements Command {
             String password = req.getParameter("password");
             String secondName = req.getParameter("second_name");
             String lastName = req.getParameter("last_name");
-            if (email != "" && password != "" && secondName != "" && lastName != ""){
+            if (email != null && email != "" && password != null && password != ""
+                    && secondName != null && secondName != "" && lastName != null && lastName != ""){
                 int flagRegistration = userService.create(email, password, secondName, lastName);
                 if(flagRegistration == 1) {
                     Optional<User> optionalUser = userService.verification(email, password);
@@ -42,7 +43,7 @@ public class RegistrationCommand implements Command {
                     user.setLastName(optionalUser.get().getLastName());
                     user.setStatus(optionalUser.get().getStatus());
                     session.setAttribute("user", user);
-                    req.getRequestDispatcher(PathFile.INDEX_PAGE).forward(req, resp);
+                    req.getRequestDispatcher(PathJsp.INDEX_PAGE).forward(req, resp);
                 } else if (flagRegistration == 2){
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
@@ -53,12 +54,11 @@ public class RegistrationCommand implements Command {
                     resp.sendRedirect("Controller?command=GoToMessagePage");
                 }
             } else {
-                logger.error("Not all fields are filled.");
-                req.getRequestDispatcher(PathFile.REGISTRATION_PAGE).forward(req, resp);
+                req.getRequestDispatcher(PathJsp.REGISTRATION_PAGE).forward(req, resp);
             }
         } catch (ServiceException e) {
-            logger.error("An error occured during registration. " + e);
-            resp.sendRedirect("error.jsp");
+            logger.error("An error occured during registration. ", e);
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

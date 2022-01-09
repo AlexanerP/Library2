@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -52,7 +52,7 @@ public class ActionWishBookCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("Error during action with selected books, when deleting or adding.", e);
-            resp.sendRedirect(PathFile.ERROR_PAGE);
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

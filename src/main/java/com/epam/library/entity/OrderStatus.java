@@ -5,5 +5,6 @@ public enum OrderStatus {
     OPENED,
     APPROVED,
     REJECTED,
-    ARRIVED;
+    ARRIVED,
+    CLOSED;
 }

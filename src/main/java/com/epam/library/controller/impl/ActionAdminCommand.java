@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
 import com.epam.library.service.UserService;
@@ -38,11 +38,11 @@ public class ActionAdminCommand implements Command {
                 }
                 resp.sendRedirect("Controller?command=GoToMessagePage");
             } else {
-                req.getRequestDispatcher(PathFile.MANAGER_CATALOG_PAGE).forward(req, resp);
+                req.getRequestDispatcher(PathJsp.MANAGER_CATALOG_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Error while changing user role.", e);
-//            resp.sendRedirect(PathFile.ERROR_PAGE);
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

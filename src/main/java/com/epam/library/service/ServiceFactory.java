@@ -19,7 +19,7 @@ public class ServiceFactory {
     private AuthorService authorService = new AuthorServiceImpl();
     private GenreService genreService = new GenreServiceImpl();
     private LoanCardDtoService loanCardDtoService = new LoanCardDtoServiceImpl();
-    private LoanCardService loanCardDao = new LoanCardServiceImpl();
+    private LoanCardService loanCardService = new LoanCardServiceImpl();
     private LibraryService libraryService = new LibraryServiceImpl();
     private ServiceValidator serviceValidator = new ServiceValidator();
 
@@ -60,9 +60,7 @@ public class ServiceFactory {
         return orderService;
     }
 
-    public LoanCardDtoService getLoanCardService() {
-        return loanCardDtoService;
-    }
+
 
     public LibraryService getLibraryService() {
         return libraryService;
@@ -80,7 +78,7 @@ public class ServiceFactory {
         return loanCardDtoService;
     }
 
-    public LoanCardService getLoanCardDao() {
-        return loanCardDao;
+    public LoanCardService getLoanCardService() {
+        return loanCardService;
     }
 }

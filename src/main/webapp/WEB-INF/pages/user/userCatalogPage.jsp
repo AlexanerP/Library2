@@ -5,27 +5,23 @@
   Time: 10:40
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>User Catalog</title>
+    <title><fmt:message key="admin_menu_catalog_user"></fmt:message></title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
-    </tr>
-</table>
-<div align="center"><h1>Каталог пользователей</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="admin_menu_catalog_user"></fmt:message></h1></div>
 <form action="Controller">
     <input type="hidden" name="command" value="UserCatalog">
     <table>
         <tr>
-            <td>Поиск по id</td>
-            <td><input type="number" name="userId" min="1" placeholder="ID"></td>
-            <td><input type="submit" value="Найти"></td>
+            <td><fmt:message key="search_user_id"></fmt:message></td>
+            <td><input type="number" name="userId" min="1" placeholder="<fmt:message key="search_user_id"></fmt:message>"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -33,9 +29,9 @@
     <input type="hidden" name="command" value="UserCatalog">
     <table>
         <tr>
-            <td>Поиск по email</td>
-            <td><input type="text" name="email" placeholder="email"></td>
-            <td><input type="submit" value="Найти"></td>
+            <td><fmt:message key="search_by_email"></fmt:message></td>
+            <td><input type="text" name="email" placeholder="<fmt:message key="search_by_email"></fmt:message>"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -43,15 +39,15 @@
     <input type="hidden" name="command" value="UserCatalog">
     <table>
         <tr>
-            <td>Показать по роли</td>
+            <td><fmt:message key="show_user_by_role"></fmt:message></td>
             <td>
                 <select name="user_role">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                        <option value="manager">Manager</option>
+                        <option value="user"><fmt:message key="user_role_user"></fmt:message></option>
+                        <option value="admin"><fmt:message key="user_role_admin"></fmt:message></option>
+                        <option value="manager"><fmt:message key="user_role_manager"></fmt:message></option>
                 </select>
             </td>
-            <td><input type="submit" value="Показать" name="role"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="role"></td>
         </tr>
     </table>
 </form>
@@ -59,15 +55,15 @@
     <input type="hidden" name="command" value="UserCatalog">
     <table>
         <tr>
-            <td>Показать по статусу</td>
+            <td><fmt:message key="show_user_by_status"></fmt:message></td>
             <td>
                 <select name="user_status">
-                    <option value="active">Активных</option>
-                    <option value="blocked">Заблокированных</option>
-                    <option value="delete">Удалённых</option>
+                    <option value="active"><fmt:message key="user_status_active"></fmt:message></option>
+                    <option value="blocked"><fmt:message key="user_status_blocked"></fmt:message></option>
+                    <option value="delete"><fmt:message key="user_status_delete"></fmt:message></option>
                 </select>
             </td>
-            <td><input type="submit" value="Показать" name="status"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="status"></td>
         </tr>
     </table>
 </form>
@@ -75,28 +71,28 @@
     <input type="hidden" name="command" value="UserCatalog">
     <table>
         <tr>
-            <td>Показать всех пользователей</td>
-            <td><input type="submit" value="Показать" name="allUser"></td>
+            <td><fmt:message key="show_all_user"></fmt:message></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="allUser"></td>
         </tr>
     </table>
 </form>
     <br><br><br>
     <c:if test="${not empty users}">
-        <div align="center"><p>Количество найденных результатов - <c:out value="${userSize}"/></p></div>
-        <table align="center">
+        <div align="center"><p><fmt:message key="message_count_found_result"></fmt:message><c:out value="${userSize}"/></p></div>
+        <table border="1" cellpadding="5">
             <tr>
-                <td>#</td>
-                <td>ID</td>
-                <td>Имя</td>
-                <td>Фамилия</td>
-                <td>Email</td>
-                <td>Дата регистрации</td>
-                <td>Количество штрафов</td>
-                <td>Роль</td>
-                <td>Статус</td>
-                <td>Изменить статус</td>
-                <td>Карточки выдачи книг</td>
-                <td>Запросы</td>
+                <th>#</th>
+                <th><fmt:message key="id"></fmt:message></th>
+                <th><fmt:message key="user_second_name"></fmt:message></th>
+                <th><fmt:message key="user_last_name"></fmt:message></th>
+                <th><fmt:message key="user_email"></fmt:message></th>
+                <th><fmt:message key="user_date_registration"></fmt:message></th>
+                <th><fmt:message key="user_number_of_violations"></fmt:message></th>
+                <th><fmt:message key="user_role"></fmt:message></th>
+                <th><fmt:message key="status"></fmt:message></th>
+                <th><fmt:message key="change_status"></fmt:message></th>
+                <th><fmt:message key="loan_card"></fmt:message></th>
+                <th><fmt:message key="orders"></fmt:message></th>
             </tr>
 
             <c:forEach var="user" items="${users}" varStatus="status">
@@ -111,15 +107,15 @@
                     <td><c:out value="${user.role}"></c:out></td>
                     <td><c:out value="${user.status}"></c:out></td>
                     <td>
-                        <a href="?command=ActionUser&userId=${user.userId}&status=active">Active</a>
-                        <a href="?command=ActionUser&userId=${user.userId}&status=blocked">Blocked</a>
-                        <a href="?command=ActionUser&userId=${user.userId}&status=delete">Delete</a>
+                        <a href="?command=ActionUser&userId=${user.userId}&status=active"><fmt:message key="user_status_active"></fmt:message></a>
+                        <a href="?command=ActionUser&userId=${user.userId}&status=blocked"><fmt:message key="user_status_blocked"></fmt:message></a>
+                        <a href="?command=ActionUser&userId=${user.userId}&status=delete"><fmt:message key="user_status_delete"></fmt:message></a>
                     </td>
                     <td>
-                        <a href="?command=GoToLoanCardCatalog&userId=${user.userId}">История книг</a>
+                        <a href="?command=LoanCardCatalog&userId=${user.userId}"><fmt:message key="loan_card"></fmt:message></a>
                     </td>
                     <td>
-                        <a href="?command=OrderCatalog&userId=${user.userId}">Заказы</a>
+                        <a href="?command=OrderCatalog&userId=${user.userId}"><fmt:message key="orders"></fmt:message></a>
                     </td>
                 </tr>
             </c:forEach>

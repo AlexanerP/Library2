@@ -132,7 +132,7 @@ public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
 
     @Override
     public List<OrderDto> getOrderByStatus(OrderStatus status) throws DAOException {
-        logger.info("Receiving a request by status.");
+        logger.info("Receiving a orders by status.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;

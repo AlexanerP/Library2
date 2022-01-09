@@ -27,14 +27,20 @@ public class LibraryServiceImpl implements LibraryService {
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (city != null && street != null) {
                 if (validator.isLength(city) && validator.isLength(street)) {
-                    Library library = new Library();
-                    library.setStreet(street);
-                    library.setCity(city);
-                    library.setStatus(LibraryStatus.OPENED);
-                    return libraryDAO.create(library);
+                    Optional<Library> optionalLibrary = libraryDAO.getLibraryByCity(city);
+                    if(optionalLibrary.isEmpty()) {
+                        Library library = new Library();
+                        library.setStreet(street);
+                        library.setCity(city);
+                        library.setStatus(LibraryStatus.OPENED);
+                        return libraryDAO.create(library);
+                    } else {
+                        return false;
+                    }
                 } else {
-                    throw new ServiceException("Services error while updating the library. The length of the word " +
-                            "is longer.");
+                    return false;
+//                    throw new ServiceException("Services error while updating the library. The length of the word " +
+//                            "is longer.");
                 }
             } else {
                 throw new ServiceException("The city or the street value is empty.");
@@ -98,20 +104,19 @@ public class LibraryServiceImpl implements LibraryService {
             if (libraryId != null) {
                 if (validator.isNumber(libraryId.trim())) {
                     Optional<Library> optionalLibrary = libraryDAO.getLibraryById(Long.parseLong(libraryId.trim()));
-                    if (validator.isLength(city) && validator.isLength(street)) {
                         if (optionalLibrary.isPresent()) {
-                            Library library = new Library();
-                            library.setLibraryId(Integer.parseInt(libraryId.trim()));
-                            library.setCity(city);
-                            library.setStreet(street);
-                            library.setStatus(optionalLibrary.get().getStatus());
-                            libraryDAO.update(library);
-                            return true;
+                            if (validator.isLengthForUpdate(city) && validator.isLengthForUpdate(street)) {
+                                Library library = new Library();
+                                library.setLibraryId(optionalLibrary.get().getLibraryId());
+                                library.setCity(city != "" ? city : optionalLibrary.get().getCity());
+                                library.setStreet(street != "" ? street : optionalLibrary.get().getStreet());
+                                library.setStatus(optionalLibrary.get().getStatus());
+                                libraryDAO.update(library);
+                                return true;
+                            }
+                        } else {
+                            return false;
                         }
-                    } else {
-                        throw new ServiceException("Services error while updating the library. The length of the word " +
-                                "is longer.");
-                    }
                 } else {
                     throw new ServiceException("Trying to get a library by ID using a text string that does not " +
                             "have a digit");

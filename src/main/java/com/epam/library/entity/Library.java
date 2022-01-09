@@ -23,6 +23,11 @@ public class Library implements Serializable {
         this.street = street;
     }
 
+    public Library(String city, String street) {
+        this.city = city;
+        this.street = street;
+    }
+
     public Library() {
     }
 

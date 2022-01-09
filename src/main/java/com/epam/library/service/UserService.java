@@ -16,7 +16,7 @@ public interface UserService {
 
     List<User> getUsers() throws ServiceException;
 
-    long showCountUsers() throws ServiceException;
+    long showCountByStatus(String status) throws ServiceException;
 
     List<User> showUserByStatus(String status) throws ServiceException;
 

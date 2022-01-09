@@ -5,22 +5,19 @@
   Time: 13:17
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
-    </tr>
-</table>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
 <br><br><br>
 <table>
     <tr>
-        <td>Количество новых заказов</td>
+        <td><fmt:message key="message_count_new_order"></fmt:message></td>
         <td>${countOrders}</td>
     </tr>
 </table>
@@ -29,50 +26,46 @@
         <c:if test="${not empty user.role and user.role eq 'MANAGER'}">
             <p>
                 <tr>
-                    <td>Действия с администраторами</td>
-                    <td><a href="Controller?command=ManagerCatalog"><input type="submit" value="Catalog user"></a></td>
+                    <td><fmt:message key="admin_menu_action_with-admin"></fmt:message></td>
+                    <td><a href="Controller?command=ManagerCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
                 </tr>
                 <tr>
-                    <td>Библиотеки</td>
-                    <td><a href="Controller?command=GoToLibrary"><input type="submit" value="Перейти"></a></td>
+                    <td><fmt:message key="admin_menu_libraries"></fmt:message></td>
+                    <td><a href="Controller?command=LibraryCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
                 </tr>
             </p>
         </c:if>
         <tr>
-            <td>Выдача книг</td>
-            <td><a href="Controller?command=GoToGiveOutBookUser"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="admin_menu_issuing_books"></fmt:message></td>
+            <td><a href="Controller?command=GiveOutBookUser"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Возврат книг</td>
-            <td><a href="Controller?command=GoToReturnBookCatalog"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="admin_menu_return_books"></fmt:message></td>
+            <td><a href="Controller?command=ReturnBookCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Каталог книг</td>
-            <td><a href="Controller?command=CatalogBook"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="admin_menu_catalog_books"></fmt:message></td>
+            <td><a href="Controller?command=CatalogBook"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Каталог карт выдачи</td>
-            <td><a href="Controller?command=GoToLoanCardCatalog"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="admin_menu_catalog_loan_card"></fmt:message></td>
+            <td><a href="Controller?command=LoanCardCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Каталог пользователей</td>
-            <td><a href="Controller?command=UserCatalog"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="admin_menu_catalog_user"></fmt:message></td>
+            <td><a href="Controller?command=UserCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Добавить книгу</td>
-            <td><a href="Controller?command=GoToAddBook"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="admin_menu_add_book"></fmt:message></td>
+            <td><a href="Controller?command=CreateBook"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Каталог заказов</td>
-            <td><a href="Controller?command=GoToOrderCatalog"><input type="submit" value="Requests Catalog"></a></td>
+            <td><fmt:message key="admin_menu_catalog_order"></fmt:message></td>
+            <td><a href="Controller?command=OrderCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
-<%--        <tr>--%>
-<%--            <td>Каталог пользователей</td>--%>
-<%--            <td><a href="user/userCatalogPage.jsp"><input type="submit" value="Catalog user"></a></td>--%>
-<%--        </tr>--%>
         <tr>
-            <td>Статистика</td>
-            <td><a href="Controller?command=GoToStatistics"><input type="submit" value="Catalog user"></a></td>
+            <td><fmt:message key="admin_menu_statistic"></fmt:message></td>
+            <td><a href="Controller?command=GoToStatistics"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
     </table>
 </div>

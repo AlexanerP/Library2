@@ -1,12 +1,11 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.BookDtoService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
-import com.epam.library.service.impl.BookDtoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,40 +28,34 @@ public class ShowCatalogByPageCommand implements Command {
             String next = req.getParameter("next");
             String back = req.getParameter("back");
             String pageLine = req.getParameter("jumpPage");
-            List<BookDto> bookResult;
-            Integer page = 0;
+            Integer page = (Integer) req.getSession().getAttribute("pageCatalog");
+            List<BookDto> books;
+            System.out.println("Page line" + pageLine);
+            if (page == null) {
+                page = Integer.valueOf(1);
+            }
             int limit = 20;
-//            if (pageLine != null) {
-//                if (pageLine.length() >= 1) {
-//                    page = Integer.parseInt(pageLine);
-//                } else {
-//                    page = 1;
-//                }
-//            } else {
-//                page = Integer.parseInt(req.getParameter("pageCatalog"));
-//            }
-
             if (next != null) {
                 page++;
             } else if (back != null) {
                 page--;
+                if (page <= 0) {
+                    page = 1;
+                }
             } else if (pageLine != null) {
-//               if (pageLine.length() >= 1) {
                     page = Integer.parseInt(pageLine);
-//                } else {
-//                    page = 1;
-//                }
             } else {
-                page = 1;
+                page = Integer.valueOf(1);
             }
-            bookResult = bookDtoService.showByPage(page, limit);
-            req.setAttribute("pageCatalog", page);
-            req.setAttribute("bookList", bookResult);
+            books = bookDtoService.showByPage(page, limit);
+            req.getSession().setAttribute("pageCatalog", page);
+//            req.setAttribute("pageCatalog", page);
+            req.setAttribute("bookList", books);
 
-            req.getRequestDispatcher(PathFile.BOOK_CATALOG_BY_PAGE).forward(req, resp);
+            req.getRequestDispatcher(PathJsp.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("An error occurred while browsing the book catalog.", e);
-            resp.sendRedirect("error.jsp");
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

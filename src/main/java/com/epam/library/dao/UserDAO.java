@@ -30,7 +30,7 @@ public interface UserDAO {
 
     List<User> getUsersByRole(UserRole role) throws DAOException;
 
-    int getCount(UserStatus status) throws DAOException;
+    long getCountByStatus(UserStatus status) throws DAOException;
 
     List<User> getUsersByPeriod(LocalDate start, LocalDate finish) throws DAOException;
 }

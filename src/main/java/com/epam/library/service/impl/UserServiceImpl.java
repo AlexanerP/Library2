@@ -80,17 +80,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long showCountUsers() throws ServiceException {
+    public long showCountByStatus(String status) throws ServiceException {
         try {
             UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
-            long activeCount = userDAO.getCount(UserStatus.ACTIVE);
-            long blockedCount = userDAO.getCount(UserStatus.BLOCKED);
-            long deleteCount = userDAO.getCount(UserStatus.DELETE);
-
-            return activeCount + blockedCount + deleteCount;
+            if (status != null) {
+                if (status.equalsIgnoreCase(UserStatus.ACTIVE.name())
+                        || status.equalsIgnoreCase(UserStatus.BLOCKED.name())
+                        || status.equalsIgnoreCase(UserStatus.DELETE.name())) {
+                    return userDAO.getCountByStatus(UserStatus.valueOf(status.toUpperCase()));
+                } else {
+                    throw new ServiceException("Unknown user status.");
+                }
+            } else {
+                throw new ServiceException("The value is empty.");
+            }
         }catch (DAOException e) {
-            logger.error("Error in services when getting the number of users.");
-            throw new ServiceException("Error in services when getting the number of users.", e);
+            logger.error("Error in services when getting the number of users by status.");
+            throw new ServiceException("Error in services when getting the number of users by status.", e);
         }
     }
 
@@ -167,8 +173,8 @@ public class UserServiceImpl implements UserService {
         try {
             UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (validator.isLength(secondName) && validator.isLength(lastName)
-                    && validator.isEmail(email.trim()) && validator.isNumber(userId)) {
+            if (validator.isLengthForUpdate(secondName) && validator.isLengthForUpdate(lastName)
+                    && validator.isLengthForUpdate(email.trim()) && validator.isLengthForUpdate(userId)) {
                 Optional<User> optionalUser = userDAO.getUserById(Long.parseLong(userId.trim()));
                 if (optionalUser.isPresent()) {
                     User user = optionalUser.get();

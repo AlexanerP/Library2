@@ -296,7 +296,7 @@ public class UserDAOImpl extends DAOHelper implements UserDAO {
     }
 
     @Override
-    public int getCount(UserStatus status) throws DAOException {
+    public long getCountByStatus(UserStatus status) throws DAOException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         int countUsers = 0;

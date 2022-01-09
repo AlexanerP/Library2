@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Александр
@@ -6,40 +6,43 @@
   Time: 21:52
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="title_update_book"></fmt:message></title>
 </head>
 <body>
-<button type="button" name="back" onclick="history.back()">Назад</button>
-<div align="center"><h1>Обновление книги</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="title_update_book"></fmt:message></h1></div>
+
 <div align="center">
     <form>
         <input type="hidden" name="command" value="UpdateBook">
         <table>
             <tr>
                 <td></td>
-                <td>Старые данные</td>
-                <td>Введите новое значение</td>
+                <td><fmt:message key="old_data"></fmt:message></td>
+                <td><fmt:message key="new_data"></fmt:message></td>
             </tr>
             <tr>
-                <td>ID</td>
+                <td><fmt:message key="id"></fmt:message></td>
                 <td><c:out value="${book.bookDtoId}"></c:out></td>
-                <td><input type="text" value="${book.bookDtoId}" name="bookId"></td>
+                <td>${book.bookDtoId}</td>
             </tr>
             <tr>
-                <td>Название</td>
+                <td><fmt:message key="book_title"></fmt:message></td>
                 <td><c:out value="${book.title}"></c:out></td>
-                <td><input type="text" name="title"></td>
+                <td><input type="text" name="title" placeholder="<fmt:message key="book_title"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>ISBN</td>
+                <td><fmt:message key="book_isbn"></fmt:message></td>
                 <td><c:out value="${book.isbn}"></c:out></td>
-                <td><input type="text" name="isbn"></td>
+                <td><input type="text" name="isbn" placeholder="<fmt:message key="book_isbn"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>Библиотека</td>
+                <td><fmt:message key="library_city"></fmt:message></td>
                 <td><c:out value="${book.cityLibrary}"></c:out></td>
                 <td>
                     <select name="cityLibrary">
@@ -48,59 +51,57 @@
                         </c:forEach>
                     </select>
                 </td>
-<%--                <td><input type="text" name="cityLibrary" value="${book.cityLibrary}"></td>--%>
             </tr>
             <tr>
-                <td>Авторы</td>
+                <td><fmt:message key="author_name"></fmt:message></td>
                 <td>
                     <c:forEach var="author" items="${book.authors}">
                         <c:out value="${author.name}"></c:out>
                     </c:forEach>
                 </td>
-                <td><input type="text" name="author"></td>
+                <td><input type="text" name="author" placeholder="<fmt:message key="author_name"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>Жанр</td>
+                <td><fmt:message key="genre_category"></fmt:message></td>
                 <td>
                     <c:forEach var="genre" items="${book.genres}">
                         <c:out value="${genre.category}"></c:out>
                     </c:forEach>
                 </td>
-                <td> <input type="text" name="genre"></td>
+                <td> <input type="text" name="genre" placeholder="<fmt:message key="genre_category"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>Издательство</td>
+                <td><fmt:message key="book_publisher"></fmt:message></td>
                 <td><c:out value="${book.publisher}"></c:out></td>
-                <td><input type="text" name="publisher"></td>
+                <td><input type="text" name="publisher" placeholder="<fmt:message key="book_publisher"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>Год</td>
+                <td><fmt:message key="book_year"></fmt:message></td>
                 <td><c:out value="${book.year}"></c:out></td>
-                <td><input type="text" name="year"></td>
+                <td><input type="text" name="year" placeholder="<fmt:message key="book_year"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>Полка</td>
+                <td><fmt:message key="book_shelf"></fmt:message></td>
                 <td><c:out value="${book.shelf}"></c:out></td>
-                <td><input type="text" name="shelf"></td>
+                <td><input type="text" name="shelf" placeholder="<fmt:message key="book_shelf"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>Количество</td>
+                <td><fmt:message key="book_quantity"></fmt:message></td>
                 <td><c:out value="${book.quantity}"></c:out></td>
-                <td><input type="number" name="quantity" min="1"></td>
+                <td><input type="number" name="quantity" min="1" placeholder="<fmt:message key="book_quantity"></fmt:message>"></td>
             </tr>
             <tr>
-                <td>Описание</td>
+                <td><fmt:message key="book_description"></fmt:message></td>
                 <td><c:out value="${book.description}"></c:out></td>
-                <td><textarea rows="5" cols="50" name="description"></textarea></td>
+                <td><textarea rows="5" cols="50" name="description" placeholder="<fmt:message key="book_description"></fmt:message>"></textarea></td>
             </tr>
             <td colspan="3">
-                <p align="center">*Если авторов (жанров) несколько, вводить через "/"</p>
+                <p align="center"><fmt:message key="message_for_add_book_about_authors"></fmt:message></p>
             </td>
             <td colspan="3">
-                <td><input type="submit" value="Обновить"></td>
+                <td><input type="submit" value="<fmt:message key="update_command"></fmt:message>"></td>
             </td>
         </table>
-
     </form>
 </div>
 </body>

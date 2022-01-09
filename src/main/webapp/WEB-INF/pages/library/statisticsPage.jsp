@@ -5,19 +5,16 @@
   Time: 14:04
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="admin_menu_statistic"></fmt:message></title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
-    </tr>
-</table>
-<div align="center"><h1>Статистика библиотеки</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="admin_menu_statistic"></fmt:message></h1></div>
 <div align="center">
     <table>
         <tr>
@@ -25,34 +22,36 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Статистика пользователей</th>
+                        <th><fmt:message key="statistic_user"></fmt:message></th>
                     </tr>
                     </thead>
                     <tr>
-                        <td>Количество пользователей в библиотеке</td>
+                        <td><fmt:message key="statistic_user_count"></fmt:message></td>
                         <td>${countUsers}</td>
                     </tr>
                     <tr>
-                        <td>Количество активных пользователей в библиотеке</td>
+                        <td><fmt:message key="statistic_user_count_active"></fmt:message></td>
                         <td>${countUsersActive}</td>
                     </tr>
                     <tr>
-                        <td>Количество заблокированных пользователей в библиотеке</td>
+                        <td><fmt:message key="statistic_user_count_blocked"></fmt:message></td>
                         <td>${countUsersBlocked}</td>
                     </tr>
                     <tr>
-                        <td>Количество удаленных пользователей в библиотеке</td>
+                        <td><fmt:message key="statistic_user_count_count_delete"></fmt:message></td>
                         <td>${countUsersDelete}</td>
                     </tr>
                     <tr>
                         <td>Количество новых пользователей в этом месяце</td>
-                        <td>${countUsersBlocked}</td>
+                        <td>-</td>
+<%--                        <td>${countNewUsersMonth}</td>--%>
                     </tr>
                     </td>
                     <td>
                         <tr>
                             <td>Количество новых пользователей в этом году</td>
-                            <td>${countUsersBlocked}</td>
+                            <td>-</td>
+<%--                            <td>${countNewUsersYear}</td>--%>
                         </tr>
                 </table>
             </td>
@@ -60,23 +59,23 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Статистика книг</th>
+                        <th><fmt:message key="statistic_book"></fmt:message></th>
                     </tr>
                     </thead>
                     <tr>
-                        <td>Количество книг в библиотеке</td>
-                        <td>${countUsers}</td>
+                        <td><fmt:message key="statistic_book_count"></fmt:message></td>
+                        <td>${countBooks}</td>
                     </tr>
                     <tr>
                         <td>Количество новых книг в этом месяце</td>
-                        <td>${countUsersBlocked}</td>
+                        <td>-</td>
+<%--                        <td>${countNewBookMonth}</td>--%>
+                    </tr>
+                    <tr>
+                        <td>Количество новых книг в этом году</td>
+                        <td>${countNewBookYear}</td>
                     </tr>
                     </td>
-                    <td>
-                        <tr>
-                            <td>Количество новых книг в этом году</td>
-                            <td>${countUsersBlocked}</td>
-                        </tr>
                 </table>
             </td>
         </tr>
@@ -85,16 +84,16 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Статистика карт выдачи</th>
+                        <th><fmt:message key="statistic_loan_card"></fmt:message></th>
                     </tr>
                     </thead>
                     <tr>
-                        <td>Количество книг на выдаче за всё время</td>
-                        <td>${countUsers}</td>
+                        <td><fmt:message key="statistic_loan_card_count_all_time"></fmt:message></td>
+                        <td>${countLoanCard}</td>
                     </tr>
                     <tr>
-                        <td>Количество активных книг на выдаче</td>
-                        <td>${countUsersActive}</td>
+                        <td><fmt:message key="statistic_loan_card_count_active"></fmt:message></td>
+                        <td>${countLoanCardOpen}</td>
                     </tr>
                 </table>
             </td>
@@ -102,12 +101,56 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Статистика заказов</th>
+                        <th><fmt:message key="statistic_orders"></fmt:message></th>
                     </tr>
                     </thead>
                     <tr>
-                        <td>Количество заказов на книги</td>
-                        <td>${countUsers}</td>
+                        <td><fmt:message key="statistic_orders_count_open"></fmt:message></td>
+                        <td>${ordersOpen}</td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="statistic_orders_count_approved"></fmt:message></td>
+                        <td>${ordersApproved}</td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="statistic_orders_count_rejected"></fmt:message></td>
+                        <td>${ordersRejected}</td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="statistic_orders_count_arrived"></fmt:message></td>
+                        <td>${ordersArrived}</td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="statistic_orders_count_closed"></fmt:message></td>
+                        <td>${ordersClosed}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><fmt:message key="statistic_authors"></fmt:message></th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td><fmt:message key="statistic_author_count"></fmt:message></td>
+                        <td>${countAuthor}</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><fmt:message key="statistic_genres"></fmt:message></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><fmt:message key="statistic_genres_count"></fmt:message></td>
+                        <td>${countGenre}</td>
                     </tr>
                 </table>
             </td>

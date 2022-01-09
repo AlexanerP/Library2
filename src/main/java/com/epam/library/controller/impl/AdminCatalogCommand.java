@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.UserRole;
 import com.epam.library.service.ServiceException;
@@ -16,11 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class AdminCatalogPage implements Command {
+public class AdminCatalogCommand implements Command {
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminCatalogPage.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminCatalogCommand.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,10 +38,10 @@ public class AdminCatalogPage implements Command {
                 users.addAll(userService.showUserByRole(UserRole.MANAGER.name()));
             }
             req.setAttribute("users", users);
-            req.getRequestDispatcher(PathFile.MANAGER_CATALOG_PAGE).forward(req, resp);
+            req.getRequestDispatcher(PathJsp.MANAGER_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while searching for administrators.", e);
-            resp.sendRedirect(PathFile.ERROR_PAGE);
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

@@ -1,7 +1,7 @@
-package com.epam.library.controller.impl.go_command;
+package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.dto.OrderDto;
 import com.epam.library.service.OrderDtoService;
@@ -17,9 +17,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-public class GoToOrderUserCommand implements Command {
+public class OrderUserCommand implements Command {
 
-    private final static Logger logger = LoggerFactory.getLogger(GoToOrderUserCommand.class);
+    private final static Logger logger = LoggerFactory.getLogger(OrderUserCommand.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,18 +28,17 @@ public class GoToOrderUserCommand implements Command {
             OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
             HttpSession session = req.getSession();
             User user = (User) session.getAttribute("user");
-            String secondName = user.getSecondName();    //Optional.map
-            String lastName = user.getLastName();    //Optional.map
+            String secondName = user.getSecondName();
+            String lastName = user.getLastName();
             List<OrderDto> orders = orderDtoService.showOrdersUser(user.getUserId() + "");
 
             req.setAttribute("secondName", secondName);
             req.setAttribute("lastName", lastName);
             req.setAttribute("orders", orders);
-            req.getRequestDispatcher(PathFile.ORDER_USER_PAGE).forward(req, resp);
+            req.getRequestDispatcher(PathJsp.ORDER_USER_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.warn("Error while viewing user's orders.", e);
-//            resp.sendRedirect(PathFile.MESSAGE_PAGE);
-            e.printStackTrace();
+            resp.sendRedirect(PathJsp.MESSAGE_PAGE);
         }
     }
 }

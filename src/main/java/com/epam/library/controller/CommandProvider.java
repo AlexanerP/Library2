@@ -11,83 +11,63 @@ public final class CommandProvider {
     private  final Map<String, Command> commands = new HashMap<>();
 
     public CommandProvider() {
-        commands.put("SignIn", new SingInCommand());
-        commands.put("Registration", new RegistrationCommand());
-//        commands.put("UserAction", new UserCommand());
-//        commands.put("AdminAction", new AdminCommand());
-////        commands.put("BookAction", new SearchBookCommand());
-        commands.put("GoToRegistration", new GoToRegistration());
-        commands.put("GoToCatalog", new GoToCatalogCommand());
-        commands.put("ShowCatalogByPage", new ShowCatalogByPageCommand());
-        commands.put("SearchBooks", new SearchBookCommand());
-        commands.put("UserCatalog", new UserCatalogCommand());
+        commands.put(CommandType.ACTION_AUTHOR, new ActionAuthorCommand());
+        commands.put(CommandType.ACTION_GENRE, new ActionGenreCommand());
+        commands.put(CommandType.ACTION_GIVE_OUT_BOOK, new ActionGiveOutBookCommand());
+        commands.put(CommandType.ACTION_USER_ORDER, new ActionUserOrderCommand());
+        commands.put(CommandType.ACTION_ADMIN_COMMAND, new ActionAdminCommand());
+        commands.put(CommandType.ACTION_ORDER, new ActionOrderCommand());
+        commands.put(CommandType.ACTION_USER, new ActionUserCommand());
+        commands.put(CommandType.ACTION_LIBRARY, new ActionLibraryCommand());
+        commands.put(CommandType.ACTION_RETURN_BOOK, new ActionReturnBookCommand());
+        commands.put(CommandType.ACTION_WISH_BOOK, new ActionWishBookCommand());
 
-        commands.put("GoToOrder", new GoToOrderCommand());
-        commands.put("Order", new OrderCommand());
+        commands.put(CommandType.SIGN_IN, new SingInCommand());
+        commands.put(CommandType.SIGN_OUT, new SingOutCommand());
+        commands.put(CommandType.REGISTRATION, new RegistrationCommand());
 
-//        commands.put("GoToBookDetails", new GoToBookDetailsCommand());
-        commands.put("CatalogBook", new CatalogBookCommand());
+        commands.put(CommandType.SEARCH_BOOKS, new SearchBookCommand());
+        commands.put(CommandType.ORDER_BOOK, new OrderBookCommand());
 
-        commands.put("GoToOrderUser", new GoToOrderUserCommand());
-        commands.put("GoToWishBooksUserPage", new GoToWishBooksUserCommand());  //+
+        commands.put(CommandType.CREATE_LIBRARY, new CreateLibraryCommand());
+        commands.put(CommandType.CREATE_BOOK, new CreateBookCommand());
 
-        commands.put("OrderCatalog", new OrderCatalogCommand());
-        commands.put("GoToOrderCatalog", new GoToOrderCatalogCommand());
+        commands.put(CommandType.UPDATE_BOOK, new UpdateBookCommand());
+        commands.put(CommandType.UPDATE_USER_PASSWORD, new UpdateUserPasswordCommand());
+        commands.put(CommandType.UPDATE_USER, new UpdateUserCommand());
+        commands.put(CommandType.UPDATE_LIBRARY, new UpdateLibraryCommand());
 
-        commands.put("GoToLoanCardUser", new GoToLoanCardUserCommand());
-        commands.put("PersonalCard", new PersonalCardCommand());
+        commands.put(CommandType.ADMIN_PAGE, new AdminPageCommand());
 
-        commands.put("GoToAddBook", new GoToAddBookPage());
-        commands.put("CreateBook", new CreateBookCommand());
+        commands.put(CommandType.MANAGER_CATALOG, new AdminCatalogCommand());
+        commands.put(CommandType.LIBRARY_CATALOG, new LibraryCatalogCommand());
+        commands.put(CommandType.LOAN_CARD_CATALOG, new LoanCardCatalogCommand());
+        commands.put(CommandType.SHOW_CATALOG_BY_PAGE, new ShowCatalogByPageCommand());
 
-        commands.put("GoToStoryLoanCardUser", new GoToStoryLoanCardCommand());
+        commands.put("CatalogByPage", new ShowCatalogByPageCommand());
 
+        commands.put(CommandType.USER_CATALOG, new UserCatalogCommand());
+        commands.put(CommandType.CATALOG_BOOK, new CatalogBookCommand());
+        commands.put(CommandType.ORDER_CATALOG, new OrderCatalogCommand());
+        commands.put(CommandType.RETURN_BOOK_CATALOG, new ReturnBookCatalogCommand());
 
-        commands.put("GoToPrivateRoom", new GoToPrivateRoomCommand());
+        commands.put(CommandType.GO_TO_CATALOG_BY_PAGE, new GoToCatalogByPageCommand());
+        commands.put(CommandType.GO_TO_ORDER, new GoToOrderBookCommand());
+        commands.put(CommandType.ORDER_USER, new OrderUserCommand());
+        commands.put(CommandType.WISH_BOOKS_USER_PAGE, new WishBooksUserCommand());  //+
+        commands.put(CommandType.LOAN_CARD_USER, new LoanCardUserCommand());
+//        commands.put(CommandType.GO_TO_ADD_BOOK, new GoToAddBookCommand());
+        commands.put(CommandType.GO_TO_MAIN_PAGE, new GoToMainPageCommand());
+        commands.put(CommandType.GO_TO_HOME, new GoToHomeCommand());
+        commands.put(CommandType.GO_TO_MESSAGE_PAGE, new GoToMessagePageCommand());
+        commands.put(CommandType.GO_TO_ADMIN_PAGE, new GoToAdminPageCommand());
+        commands.put(CommandType.GO_TO_UPDATE_BOOK, new GoToUpdateBookCommand());
+        commands.put(CommandType.GO_TO_STATISTICS, new GoToStatisticLibraryCommand());
+        commands.put(CommandType.GO_TO_UPDATE_LIBRARY, new GoToUpdateLibraryCommand());
+        commands.put(CommandType.GIVE_OUT_BOOK_USER, new GiveOutBookCatalogCommand());
 
-        commands.put("UpdateUserPassword", new UpdateUserPasswordCommand());
-        commands.put("UpdateUser", new UpdateUserCommand());
-        commands.put("GoToUpdateUser", new GoToUpdateUserCommand());
-
-        commands.put("GoToMainPage", new GoToMainPageCommand());
-
-
-        commands.put("GoToHome", new GoToHomeCommand());        //+
-        commands.put("GoToMessagePage", new GoToMessagePageCommand());
-        commands.put("GoToHello", new GOTOTest());
-
-        commands.put("GoToAdminPage", new GoToAdminPageCommand());
-        commands.put("AdminPage", new AdminPageCommand());
-        commands.put("ManagerCatalog", new AdminCatalogPage());
-        commands.put("ActionAdminCommand", new ActionAdminCommand());
-        commands.put("GoToUpdateBook", new GoToUpdateBook());
-        commands.put("UpdateBook", new UpdateBookCommand());
-
-        commands.put("SignOut", new SingOutCommand());
-
-//        commands.put("GoToUserDetails", new GoToUserDetailsCommand());
-
-//        commands.put("AdminPage", new AdminPageCommand());
-
-        commands.put("GoToStatistics", new GoToStatisticLibraryCommand());
-        commands.put("ActionOrder", new ActionOrderCommand());
-        commands.put("ActionUser", new ActionUserCommand());
-
-        commands.put("ActionLibrary", new ActionLibraryCommand());
-        commands.put("GoToLibrary", new GoToLibraryCommand());
-        commands.put("UpdateLibrary", new UpdateLibraryCommand());
-        commands.put("GoToUpdateLibrary", new GoToUpdateLibraryCommand());
-        commands.put("ActionGiveOutBook", new ActionGiveOutBookCommand());
-        commands.put("GiveOutBookUser", new GiveOutBookCatalogCommand());
-        commands.put("GoToGiveOutBookUser", new GoToGiveOutBookCatalogCommand());
-
-        commands.put("ReturnBookCatalog", new ReturnBookCatalogCommand());
-        commands.put("GoToReturnBookCatalog", new GoToReturnBookCatalogCommand());
-        commands.put("ActionReturnBook", new ActionReturnBookCommand());
-        commands.put("ActionWishBook", new ActionWishBookCommand());
-
-        commands.put("LoanCardCatalog", new LoanCardCatalogCommand());
-        commands.put("GoToLoanCardCatalog", new GoToLoanCardCatalogCommand());
+        commands.put(CommandType.GO_TO_STATISTIC_AUTHOR, new GoToStatisticAuthorCommand());
+        commands.put(CommandType.GO_TO_STATISTIC_GENRE, new GoToStatisticGenreCommand());
     }
 
     public final Command getCommand(String command) {

@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Александр
@@ -6,71 +5,52 @@
   Time: 12:07
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Title</title>
+    <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
 </head>
 <body>
-<p>
-    <a href="Controller?command=GoToMainPage"><input type="submit" value="На главную страницу"></a>
-</p>
-<div align="center"><h1>Welcome ${user.secondName} ${user.lastName}</h1></div>
+
+<div align="center"><h1><fmt:message key="title_welcome"></fmt:message> ${user.secondName} ${user.lastName}</h1></div>
 <br><br>
 <div align="center">
     <table border="1" cellpadding="5">
         <c:if test="${not empty user.role and user.role eq 'ADMIN' or user.role eq 'MANAGER'}">
             <p>
                 <tr>
-                    <td>Страница администратора</td>
-                    <td><a href="Controller?command=AdminPage"><input type="submit" value="Перейти"></a></td>
+                    <td><fmt:message key="user_menu_admin_page"></fmt:message></td>
+                    <td><a href="Controller?command=AdminPage"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
                 </tr>
             </p>
         </c:if>
         <tr>
-            <td>Просмотр каталога</td>
-            <td><a href="Controller?command=GoToCatalog"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="user_menu_show_catalog_page"></fmt:message></td>
+            <td><a href="Controller?command=CatalogByPage"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Поиск книги</td>
-            <td><a href="index.jsp"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="user_menu_search_book"></fmt:message></td>
+            <td><a href="index.jsp"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>История моих книг</td>
-            <td><a href="Controller?command=GoToLoanCardUser"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="user_menu_story_book_user"></fmt:message></td>
+            <td><a href="Controller?command=LoanCardUser"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Обновить пользователя</td>
-            <td><a href="Controller?command=GoToUpdateUser"><input type="submit" value="Перейти"></a></td>
-        </tr>
-<%--        <tr>--%>
-<%--            <td>Работа с пользователями</td>--%>
-<%--            <td><a href="Controller?command=GoToWorkWithUsers"><input type="submit" value="Перейти"></a></td>--%>
-<%--        </tr>--%>
-<%--        <tr>--%>
-<%--            <td>Добавить книгу</td>--%>
-<%--            <td><a href="Controller?command=GoToAddBook"><input type="submit" value="Перейти"></a></td>--%>
-<%--        </tr>--%>
-<%--        <tr>--%>
-<%--            <td>Каталог запросов материала</td>--%>
-<%--            <td><a href="Controller?command=GoToRequestsCatalog" target="_blank"><input type="submit" value="Requests Catalog"></a></td>--%>
-<%--        </tr>--%>
-        <tr>
-            <td>Мои запросы</td>
-            <td><a href="Controller?command=GoToOrderUser&userId=${user.userId}"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="user_menu_update_user"></fmt:message></td>
+            <td><a href="Controller?command=UpdateUser"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
-            <td>Мои избранные книги</td>
-            <td><a href="Controller?command=GoToWishBooksUserPage"><input type="submit" value="Перейти"></a></td>
+            <td><fmt:message key="user_menu_my_order"></fmt:message></td>
+            <td><a href="Controller?command=OrderUser"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
-<%--        <tr>--%>
-<%--            <td>Personal card</td>--%>
-<%--            <td><a href="Controller?command=GoToPersonalCard"><input type="submit" value="Personal card"></a></td>--%>
-<%--        </tr>--%>
-<%--        <tr>--%>
-<%--            <td>Catalog User</td>--%>
-<%--            <td><a href="Controller?command=UserCatalog"><input type="submit" value="Catalog user"></a></td>--%>
-<%--        </tr>--%>
+        <tr>
+            <td><fmt:message key="user_menu_my_wish_list"></fmt:message></td>
+            <td><a href="Controller?command=WishBooksUser"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+        </tr>
     </table>
 </div>
 </body>

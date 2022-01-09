@@ -56,6 +56,10 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
             TableName.ORDER_STATUS, TableName.ORDER, ColumnName.ORDER_ID_STATUS, TableName.ORDER_STATUS,
             ColumnName.ORDER_STATUS_ID_STATUS, TableName.ORDER, ColumnName.ORDER_ID_REQUEST);
 
+    private final static String GET_ORDER_BY_STATUS_QUERY = String.format("SELECT * from %s where %s=(Select %s " +
+            "from %s where %s=?)", TableName.ORDER, ColumnName.ORDER_ID_STATUS, ColumnName.ORDER_STATUS_ID_STATUS,
+            TableName.ORDER_STATUS, ColumnName.ORDER_STATUS_STATUS);
+
 
     @Override
     public boolean create(Order order) throws DAOException {
@@ -103,6 +107,29 @@ public class OrderDaoImpl extends DAOHelper implements OrderDao {
             logger.error("Error when deleting order. id - {}", id);
             throw new DAOException("Error when deleting order.", sqlE);
         } finally {
+            closePreparedStatement(prStatement);
+        }
+    }
+
+    @Override
+    public long countOrderByStatus(OrderStatus status) throws DAOException {
+        logger.info("Receiving count orders by status.");
+        OrderDtoMapper mapper = new OrderDtoMapper();
+        PreparedStatement prStatement = null;
+        ResultSet resultSet = null;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
+            prStatement = createPreparedStatement(connection, GET_ORDER_BY_STATUS_QUERY, status.name());
+            resultSet = prStatement.executeQuery();
+            long countOrder = 0;
+            while (resultSet.next()) {
+                countOrder = resultSet.getLong(1);
+            }
+            return countOrder;
+        } catch (SQLException sqlE) {
+            logger.error("Count order by status not received. Status - {}", status);
+            throw new DAOException("Count order by status not received.", sqlE);
+        } finally {
+            closeResultSet(resultSet);
             closePreparedStatement(prStatement);
         }
     }

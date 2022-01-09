@@ -5,158 +5,138 @@
   Time: 20:54
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="error.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%--<fmt:setLocale value="${sessionScope.language != null ? sessionScope.language : 'en'}"/>--%>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <html>
 <head>
     <title>Main page</title>
 </head>
 <body>
+
 <c:if test="${empty user.role}">
     <form action="Controller" width="400" height="300" align="right" method="POST">
         <input type="hidden" name="command" value="SignIn">
-        <p><input type="text" placeholder="Введите E-mail" name="email"></p>
-        <p><input type="password" placeholder="Введите пароль" name="password"></p>
-        <p><input type="submit" value="Войти"></p>
+        <p><input type="text" placeholder="<fmt:message key="enter_email"></fmt:message>" name="email"></p>
+        <p><input type="password" placeholder="<fmt:message key="enter_password"></fmt:message>" name="password"></p>
+        <p><input type="submit" value="<fmt:message key="login_sign_in"></fmt:message>"></p>
     </form>
     <p><div align="right">
-    <a href="Controller?command=GoToRegistration"><input type="submit" value="Регистрация"></a>
+    <a href="Controller?command=Registration"><input type="submit" value="<fmt:message key="registration"></fmt:message>"></a>
 </div></p>
 </c:if>
 <c:if test="${not empty user.role}">
     <p>
-        <a href="Controller?command=GoToHome"><input type="submit" value="Личный кабинет"></a>
+        <a href="Controller?command=GoToHome"><input type="submit" value="<fmt:message key="private_room"></fmt:message>"></a>
     </p>
     <form width="400" height="300" align="right">
-        <input type="hidden" name="command" value="Выйти">
-        <p><input type="submit" value="Выйти"></p>
+        <input type="hidden" name="command" value="SignOut">
+        <p><input type="submit" value="<fmt:message key="login_sign_out"></fmt:message>"></p>
     </form>
 </c:if>
-<br><br><br><br>
+
+<table>
+    <tr>
+        <td><fmt:message key="message_count_book_library"></fmt:message></td>
+        <td>${countBooks}</td>
+    </tr>
+    <tr>
+        <td><fmt:message key="message_count_author_library"></fmt:message></td>
+        <td>${countAuthors}</td>
+    </tr>
+    <tr>
+        <td><fmt:message key="message_count_genre_library"></fmt:message></td>
+        <td>${countGenres}</td>
+    </tr>
+</table>
+<br><br>
+
 <div align="center">
     <form action="Controller">
         <input type="hidden" name="command" value="SearchBooks">
         <table>
             <%--        <tbody>--%>
             <tr>
-                <td>Введите название книги</td>
-                <td><input type="text" placeholder="Название книги" name="title"></td>
-                <td>Введите ISBN книги</td>
-                <td><input type="text" placeholder="ISBN" name="isbn"></td>
+                <td><fmt:message key="book_enter_title"></fmt:message></td>
+                <td><input type="text" placeholder="<fmt:message key="book_enter_title"></fmt:message>" name="title"></td>
+                <td><fmt:message key="book_enter_isbn"></fmt:message></td>
+                <td><input type="text" placeholder="<fmt:message key="book_enter_isbn"></fmt:message>" name="isbn"></td>
             </tr>
             <tr>
-                <td>Введите категорию</td>
-                <td><input type="text" placeholder="Жанр" name="genre"></td>
-                <td>Введите автора</td>
-                <td><input type="text" placeholder="Автор" name="author"></td>
+                <td><fmt:message key="book_enter_genre"></fmt:message></td>
+                <td><input type="text" placeholder="<fmt:message key="book_enter_genre"></fmt:message>" name="genre"></td>
+                <td><fmt:message key="book_enter_author"></fmt:message></td>
+                <td><input type="text" placeholder="<fmt:message key="book_enter_author"></fmt:message>" name="author"></td>
             </tr>
-            <tr>
-                <%--            <input type="submit" value="Поиск">--%>
-                <%--            <input type="reset" value="Сбросить">--%>
-            </tr>
-            <%--        <tr>--%>
-            <%--            <td>Введите категорию</td>--%>
-            <%--            <td><input type="text" placeholder="Жанр" name="genre"></td>--%>
-            <%--            <td>Введите автора</td>--%>
-            <%--            <td><input type="text" placeholder="Автор" name="author"></td>--%>
-            <%--        </tr>--%>
-            <%--        </tbody>--%>
-            <%--        <tfoot>--%>
-            <%--            <input type="submit" value="Поиск">--%>
-            <%--            <input type="reset" value="Сбросить">--%>
-            <%--        </tfoot>--%>
         </table>
-        <input type="submit" value="Поиск">
-        <input type="reset" value="Сбросить">
+        <input type="submit" value="<fmt:message key="book_search"></fmt:message>">
+        <input type="reset" value="<fmt:message key="book_reset"></fmt:message>">
     </form>
 </div>
 
 <table border="1" align="center">
   <div align="center">
       <c:if test="${not empty booksDTO}">
-        <p>Количество найденных результатов - <c:out value="${booksDTOSize}"/></p>
+        <p><fmt:message key="message_count_found_result"></fmt:message><c:out value="${booksDTOSize}"/></p>
       </c:if>
   </div>
 <c:if test="${not empty booksDTO}">
     <tr>
-    <th>#</th>
-    <th>ID</th>
-    <th>Название</th>
-    <th>Автор</th>
-    <th>ISBN</th>
-    <th>Жанр</th>
-    <th>Издательство</th>
-    <th>Год</th>
-    <c:if test="${not empty user}">
-            <th>Заказать</th>
-                <th>Добавить в избранные</th>
-            </c:if>
+        <th>#</th>
+        <th><fmt:message key="book_id"></fmt:message></th>
+        <th><fmt:message key="book_title"></fmt:message></th>
+        <th><fmt:message key="book_author"></fmt:message></th>
+        <th><fmt:message key="book_isbn"></fmt:message></th>
+        <th><fmt:message key="book_author"></fmt:message></th>
+        <th><fmt:message key="book_genre"></fmt:message></th>
+        <th><fmt:message key="book_publisher"></fmt:message></th>
+        <th><fmt:message key="book_year"></fmt:message></th>
+        <c:if test="${not empty user}">
+                <th><fmt:message key="order_book"></fmt:message></th>
+                    <th><fmt:message key="add_to_wish_list"></fmt:message></th>
+                </c:if>
+    </tr>
+        <c:forEach var="booksDTO" items="${booksDTO}" varStatus="status">
+            <tr>
+                <td><c:out value="${status.index + 1}"></c:out></td>
+                <td><c:out value="${booksDTO.bookDtoId}"></c:out></td>
+                <td><c:out value="${booksDTO.title}"></c:out></td>
+                <td><c:out value="${booksDTO.isbn}"></c:out></td>
+                <td>
+                    <c:forEach var="author" items="${booksDTO.authors}">
+                        <c:out value="${author.name}"></c:out>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach var="genre" items="${booksDTO.genres}">
+                        <c:out value="${genre.category}"></c:out>
+                    </c:forEach>
+                </td>
+                <td><c:out value="${booksDTO.publisher}"></c:out></td>
+                <td><c:out value="${booksDTO.year}"></c:out></td>
+                <c:if test="${not empty user}">
+                    <td>
+                        <a href="?command=GoToOrder&bookId=${booksDTO.bookDtoId}"><fmt:message key="order_command"></fmt:message></a>
+                    </td>
+                        <td><a href="?command=ActionWishBook&bookId=${booksDTO.bookDtoId}"><fmt:message key="wish_command"></fmt:message></a></td>
+                </c:if>
             </tr>
-                 <c:forEach var="booksDTO" items="${booksDTO}" varStatus="status">
-                    <tr>
-                        <td><c:out value="${status.index + 1}"></c:out></td>
-                        <td><c:out value="${booksDTO.bookDtoId}"></c:out></td>
-                        <td><c:out value="${booksDTO.title}"></c:out></td>
-                        <td>
-                            <c:forEach var="author" items="${booksDTO.authors}">
-                                <c:out value="${author.name}"></c:out>
-                            </c:forEach>
-                        </td>
-                        <td><c:out value="${booksDTO.isbn}"></c:out></td>
-                        <td>
-                            <c:forEach var="genre" items="${booksDTO.genres}">
-                                <c:out value="${genre.category}"></c:out>
-                            </c:forEach>
-                        </td>
-                        <td><c:out value="${booksDTO.publisher}"></c:out></td>
-                        <td><c:out value="${booksDTO.year}"></c:out></td>
-                        <c:if test="${not empty user}">
-                        <td>
-            <%--                <c:if test="${booksDTO.borrow < bookDTO.quantity}">--%>
-                            <a href="?command=GoToOrder&bookId=${booksDTO.bookDtoId}">Заказать</a>
-            <%--                <a href="?command=GoToOrder"><input type="submit" value="Request this Book">--%>
-            <%--                    <c:set var="bookId" scope="request" value="${bookDTO.bookId}"></c:set>--%>
-                            </a>
-            <%--            </c:if>--%>
-                        </td>
-                            <td><a href="?command=ActionWishBook&bookId=${booksDTO.bookDtoId}">В избранные</a></td>
-                        </c:if>
-                    </tr>
     </c:forEach>
     </table>
 </c:if>
 <table>
-    <em>Наши представительства</em>
+    <em><fmt:message key="our_library"></fmt:message></em>
     <c:if test="${not empty libraries}">
         <c:forEach var="library" items="${libraries}">
             <tr>
-                <td><c:out value="${library.city}"></c:out></td>
-                <td><c:out value="${library.street}"></c:out></td>
+                <td><c:out value="${library.city}"></c:out> <c:out value="${library.street}"></c:out></td>
             </tr>
         </c:forEach>
     </c:if>
 </table
-
-
-
-
-<%--<br><br><br><br>--%>
-<%--<a href="Controller?command=UserCatalog"><input type="submit" value="Catalog user"></a>--%>
-
-<%--<br><br><br><br>--%>
-<%--<a href="Controller?command=GoToPrivateRoom"><input type="submit" value="Privaaet room"></a>--%>
-
-<%--<br><br><br><br>--%>
-<%--<a href="Controller?command=GoToHello"><input type="submit" value="Catalog"></a>--%>
-
-<%--<br><br><br><br>--%>
-<%--<a href="Controller?command=GoToStoryLoanCardUser"><input type="submit" value="Personal card story user"></a>--%>
-<%--<br><br><br><br>--%>
-<%--<a href="Controller?command=GoToRequestsUser" target="_blank"><input type="submit" value="Requests"></a>--%>
-<%--<br><br><br><br>--%>
-<%--<a href="Controller?command=GoToRequestsCatalog" target="_blank"><input type="submit" value="Requests Catalog"></a>--%>
-
-
 </body>
 </html>

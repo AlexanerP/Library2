@@ -37,9 +37,9 @@ public class BookServiceImpl implements BookService {
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             Book newBook = new Book();
             if (bookId != null) {
-                if (validator.isLength(book.getTitle()) && validator.isLength(book.getIsbn()) &&
-                        validator.isLength(book.getPublisher()) && validator.isLength(book.getYear()) &&
-                        validator.isLength(book.getShelf())) {
+                if (validator.isLengthForUpdate(book.getTitle()) && validator.isLengthForUpdate(book.getIsbn()) &&
+                        validator.isLengthForUpdate(book.getPublisher()) && validator.isLengthForUpdate(book.getYear()) &&
+                        validator.isLengthForUpdate(book.getShelf())) {
 
                     Optional<Book> optionalBook = bookDao.getBookById(Long.parseLong(bookId));
                     Optional<Library> optionalLibrary = libraryService.showByCity(cityLibrary);
@@ -74,9 +74,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean updateBorrow(String bookId) throws ServiceException {
+    public boolean addBorrow(String bookId) throws ServiceException {
         try {
-            System.out.println("updateBorrow");
             BookDao bookDao = DAOFactory.getInstance().getBookDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (bookDao != null) {
@@ -85,7 +84,6 @@ public class BookServiceImpl implements BookService {
                     if (optionalBook.get().getBorrow() < optionalBook.get().getQuantity()) {
                         Book book = optionalBook.get();
                         book.setBorrow(optionalBook.get().getBorrow() + 1);
-
                         bookDao.update(book);
                     } else {
                         return false;
@@ -98,6 +96,55 @@ public class BookServiceImpl implements BookService {
         } catch (DAOException e) {
             logger.error("The column 'On issue' has not been updated.");
             throw new ServiceException("The column 'On issue' has not been updated.", e);
+        }
+    }
+
+    @Override
+    public boolean deleteBorrow(String bookId) throws ServiceException {
+        try {
+            BookDao bookDao = DAOFactory.getInstance().getBookDao();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (bookDao != null) {
+                if (validator.isNumber(bookId)) {
+                    Optional<Book> optionalBook = bookDao.getBookById(Long.parseLong(bookId));
+                    if (optionalBook.isPresent()) {
+                        Book book = bookDao.getBookById(Long.parseLong(bookId)).get();
+                        book.setBorrow(optionalBook.get().getBorrow() - 1);
+                        bookDao.update(book);
+                        return true;
+                    } else {
+                        throw new ServiceException("The book does not exist.");
+                    }
+                } else {
+                    throw new ServiceException("Book ID is not valid.");
+                }
+
+            } else {
+                throw new ServiceException("The book ID value is empty.");
+            }
+        } catch (DAOException e) {
+            logger.error("The column 'On issue' has not been updated.");
+            throw new ServiceException("The column 'On issue' has not been updated.", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> showBookById(String bookId) throws ServiceException {
+        try {
+            BookDao bookDao = DAOFactory.getInstance().getBookDao();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            if (bookId != null) {
+                if (validator.isNumber(bookId)) {
+                    return bookDao.getBookById(Long.parseLong(bookId.trim()));
+                } else {
+                    throw new ServiceException("The value is not a number.");
+                }
+            } else {
+                throw new ServiceException("The book ID is empty.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when retrieving a book by ID.");
+            throw new ServiceException("Error in services when retrieving a book by ID.", e);
         }
     }
 }

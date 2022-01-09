@@ -1,8 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
-import com.epam.library.entity.User;
+import com.epam.library.controller.PathJsp;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +14,6 @@ public class SingOutCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.invalidate();
-        System.out.println("INVALID");
-        resp.sendRedirect("Controller?command=GoToMainPage");
-//        req.getRequestDispatcher(PathFile.INDEX_PAGE).forward(req, resp);
-//        req.getRequestDispatcher(PathFile.INDEX_PAGE).include(req, resp);
+        resp.sendRedirect(PathJsp.INDEX_PAGE);
     }
 }

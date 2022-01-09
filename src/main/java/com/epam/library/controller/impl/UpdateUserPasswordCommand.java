@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
 import com.epam.library.service.UserService;
@@ -38,7 +38,7 @@ public class UpdateUserPasswordCommand implements Command {
                     resp.sendRedirect("Controller?command=GoToMessagePage");
                 }
             } else {
-                req.getRequestDispatcher(PathFile.UPDATE_USER_PAGE).forward(req, resp);
+                req.getRequestDispatcher(PathJsp.UPDATE_USER_PAGE).forward(req, resp);
             }
 
         }catch (ServiceException e) {

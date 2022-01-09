@@ -14,5 +14,7 @@ public interface OrderService {
 
     boolean delete(String orderId) throws ServiceException;
 
+    long showCountByStatus(String status) throws ServiceException;
+
     Optional<Order> showById(String orderId) throws ServiceException;
 }

@@ -1,7 +1,8 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.service.BookService;
+import com.epam.library.controller.PathJsp;
+import com.epam.library.service.LoanCardService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
 import org.slf4j.Logger;
@@ -19,15 +20,27 @@ public class ActionGiveOutBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-//            String bookId = req.getParameter("bookId");
-            String bookId = "1";
-            // userId
-            System.out.println("bookId - " + bookId);
+            LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();
+            String orderId = req.getParameter("orderId");
+            String typeUseBook = req.getParameter("type_use");
 
-            BookService bookService = ServiceFactory.getInstance().getBookService();
-            bookService.updateBorrow(bookId);
+            if (orderId != null && typeUseBook != null) {
+                boolean resultOperation = loanCardService.create(orderId, typeUseBook);
+                if (resultOperation) {
+                    String successfulMessage = "Operation successful";
+                    req.getSession().setAttribute("successfulMessage", successfulMessage);
+                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                } else {
+                    String negativeMessage = "Operation failed";
+                    req.getSession().setAttribute("negativeMessage", negativeMessage);
+                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                }
+            } else {
+                req.getRequestDispatcher(PathJsp.GIVE_OUT_BOOK_PAGE).forward(req, resp);
+            }
         }catch (ServiceException e) {
-            logger.error("Error while issuing a book.");
+            logger.error("Error while issuing a book.", e);
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.epam.library.service.impl;
 
 import com.epam.library.entity.User;
+import com.epam.library.entity.UserStatus;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
 import com.epam.library.service.UserService;
@@ -62,7 +63,7 @@ class UserServiceImplTest {
     @Test
     void getCountUsers() {
         try {
-            long count = userService.showCountUsers();
+            long count = userService.showCountByStatus(UserStatus.BLOCKED.name());
             System.out.println(count);
             assertTrue(count > 0);
         }catch (ServiceException e) {

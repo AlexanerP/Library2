@@ -5,28 +5,24 @@
   Time: 23:37
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Request Catalog</title>
+    <title><fmt:message key="admin_menu_catalog_order"></fmt:message></title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
-    </tr>
-</table>
-<div align="center"><h1>Каталог заказов</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="admin_menu_catalog_order"></fmt:message></h1></div>
 
 <form>
     <input type="hidden" name="command" value="OrderCatalog">
     <table>
         <tr>
-            <td>Поиск по ID пользователя</td>
-            <td><input type="number" name="userId" min="1" placeholder="ID user"></td>
-            <td><input type="submit" value="Найти"></td>
+            <td><fmt:message key="search_user_id"></fmt:message></td>
+            <td><input type="number" name="userId" min="1" placeholder="<fmt:message key="search_user_id"></fmt:message>"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
         <tr>
     </table>
@@ -35,9 +31,9 @@
     <input type="hidden" name="command" value="OrderCatalog">
     <table>
         <tr>
-            <td>Поиск по ID заказа</td>
-            <td><input type="number" name="orderId" min="1" placeholder="ID order"></td>
-            <td><input type="submit" value="Найти"></td>
+            <td><fmt:message key="search_order_id"></fmt:message></td>
+            <td><input type="number" name="orderId" min="1" placeholder="<fmt:message key="search_order_id"></fmt:message>"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
         <tr>
     </table>
@@ -45,7 +41,7 @@
 <form>
     <input type="hidden" name="command" value="OrderCatalog">
     <table>
-            <td>Поиск по городу</td>
+            <td><fmt:message key="order_show_by_city"></fmt:message></td>
             <td>
                 <select name="city">
                     <c:forEach var="libraries" items="${libraries}">
@@ -54,7 +50,7 @@
                 </select>
             </td>
 
-            <td><input type="submit" value="Найти"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
 </table>
 </form>
@@ -62,16 +58,17 @@
     <input type="hidden" name="command" value="OrderCatalog">
     <table>
         <tr>
-            <td>Поиск по статусу</td>
+            <td><fmt:message key="order_show_by_status"></fmt:message></td>
             <td>
                 <select name="status">
-                    <option value="opened">Открыта</option>
-                    <option value="approved">Одобрено</option>
-                    <option value="rejected">Отказано</option>
-                    <option value="arrived">Прибыла</option>
+                    <option value="opened"><fmt:message key="order_status_opened"></fmt:message></option>
+                    <option value="approved"><fmt:message key="order_status_approved"></fmt:message></option>
+                    <option value="rejected"><fmt:message key="order_status_rejected"></fmt:message></option>
+                    <option value="arrived"><fmt:message key="order_status_arrived"></fmt:message></option>
+                    <option value="closed"><fmt:message key="order_status_closed"></fmt:message></option>
                 </select>
             </td>
-            <td><input type="submit" value="Найти"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
 </table>
 </form>
@@ -79,21 +76,22 @@
     <input type="hidden" name="command" value="OrderCatalog">
     <table>
         <tr>
-            <td>Показать по городу и статусу</td>
+            <td><fmt:message key="order_show_by_city_and_status"></fmt:message></td>
             <td>
-                <select name="city">
+                <select name="library">
                     <c:forEach var="libraries" items="${libraries}">
                         <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
                     </c:forEach>
                 </select>
                 <select name="status">
-                    <option value="opened">Открыта</option>
-                    <option value="approved">Одобрено</option>
-                    <option value="rejected">Отказано</option>
-                    <option value="arrived">Прибыла</option>
+                    <option value="opened"><fmt:message key="order_status_opened"></fmt:message></option>
+                    <option value="approved"><fmt:message key="order_status_approved"></fmt:message></option>
+                    <option value="rejected"><fmt:message key="order_status_rejected"></fmt:message></option>
+                    <option value="arrived"><fmt:message key="order_status_arrived"></fmt:message></option>
+                    <option value="closed"><fmt:message key="order_status_closed"></fmt:message></option>
                 </select>
             </td>
-            <td><input type="submit" value="Показать"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -101,8 +99,8 @@
     <input type="hidden" name="command" value="OrderCatalog">
     <table>
         <tr>
-            <td>Показать все заказы</td>
-            <td><input type="submit" value="Показать" name="allOrders"></td>
+            <td><fmt:message key="order_show_all"></fmt:message></td>
+            <td><input type="submit" value="<fmt:message key="order_show_all"></fmt:message>" name="allOrders"></td>
         </tr>
 </table>
 </form>
@@ -111,25 +109,25 @@
 <div align="center">
     <form>
         <c:if test="${not empty orders}">
-            <p>Количество найденных результатов - <c:out value="${ordersSize}"/></p>
+            <p><fmt:message key="message_count_found_result"></fmt:message> <c:out value="${ordersSize}"/></p>
         </c:if>
 
         <c:if test="${not empty orders}">
-        <table>
+        <table border="1" cellpadding="5">
             <tr>
-                <td>#</td>
-                <td>ID Заказ</td>
-                <td>ID Пользователя</td>
-                <td>ID Админ</td>
-                <td>ID Книги</td>
-                <td>Название</td>
-                <td>ISBN</td>
-                <td>Год</td>
-                <td>Дата заказа</td>
-                <td>Библиотека</td>
-                <td>Комментарий</td>
-                <td>Статус</td>
-                <td>Изменить статус</td>
+                <th>#</th>
+                <th><fmt:message key="id"></fmt:message></th>
+                <th><fmt:message key="user_id"></fmt:message></th>
+                <th><fmt:message key="order_id_admin"></fmt:message></th>
+                <th><fmt:message key="book_id"></fmt:message></th>
+                <th><fmt:message key="book_title"></fmt:message></th>
+                <th><fmt:message key="book_isbn"></fmt:message></th>
+                <th><fmt:message key="book_year"></fmt:message></th>
+                <th><fmt:message key="order_date"></fmt:message></th>
+                <th><fmt:message key="library_city"></fmt:message></th>
+                <th><fmt:message key="order_comment"></fmt:message></th>
+                <th><fmt:message key="status"></fmt:message></th>
+                <th><fmt:message key="change_status"></fmt:message></th>
             </tr>
             <c:forEach var="orders" items="${orders}" varStatus="status">
                 <tr>
@@ -146,9 +144,9 @@
                     <td><c:out value="${orders.comment}"></c:out></td>
                     <td><c:out value="${orders.status}"></c:out></td>
                     <td>
-                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=approved">Одобрено</a>
-                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=rejected">Отказано</a>
-                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=arrived">Прибыло в библиотеку</a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=approved"><fmt:message key="order_status_approved"></fmt:message></a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=rejected"><fmt:message key="order_status_rejected"></fmt:message></a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=arrived"><fmt:message key="order_status_arrived"></fmt:message></a>
                     </td>
                 </tr>
             </c:forEach>

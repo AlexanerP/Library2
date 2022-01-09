@@ -2,7 +2,9 @@ package com.epam.library.service.impl;
 
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.OrderBookDtoDao;
 import com.epam.library.dao.OrderDao;
+import com.epam.library.entity.Book;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.Order;
 import com.epam.library.entity.OrderStatus;
@@ -26,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
                 if (validator.isNumber(bookId) && validator.isNumber(userId)) {
                     Optional<Library> optionalLibrary = libraryService.showByCity(city);
                     if (optionalLibrary.isPresent()) {
+
                         Order order = new Order();
                         order.setBookId(Long.parseLong(bookId.trim()));
                         order.setAdminId(0);
@@ -59,7 +62,8 @@ public class OrderServiceImpl implements OrderService {
                     if (status.equalsIgnoreCase(OrderStatus.OPENED.name())
                             || status.equalsIgnoreCase(OrderStatus.APPROVED.name())
                             || status.equalsIgnoreCase(OrderStatus.ARRIVED.name())
-                            || status.equalsIgnoreCase(OrderStatus.REJECTED.name())) {
+                            || status.equalsIgnoreCase(OrderStatus.REJECTED.name())
+                            || status.equalsIgnoreCase(OrderStatus.CLOSED.name())) {
                         Optional<Order> optionalOrder = orderDao.getOrderById(Long.parseLong(orderId.trim()));
                         if (optionalOrder.isPresent()) {
                             Order order = optionalOrder.get();
@@ -143,6 +147,28 @@ public class OrderServiceImpl implements OrderService {
             throw new ServiceException("Error in services when deleting an order.", e);
         }
         return false;
+    }
+
+    @Override
+    public long showCountByStatus(String status) throws ServiceException {
+        try {
+            OrderDao orderDao = DAOFactory.getInstance().getOrderDao();
+            if (status != null) {
+                if (status.equalsIgnoreCase(OrderStatus.OPENED.name()) || status.equalsIgnoreCase(OrderStatus.APPROVED.name())
+                        || status.equalsIgnoreCase(OrderStatus.ARRIVED.name())
+                        || status.equalsIgnoreCase(OrderStatus.REJECTED.name())
+                        || status.equalsIgnoreCase(OrderStatus.CLOSED.name())) {
+                    return orderDao.countOrderByStatus(OrderStatus.valueOf(status.toUpperCase()));
+                } else {
+                    throw new ServiceException("Invalid order status.");
+                }
+            } else {
+                throw new ServiceException("The status value is empty.");
+            }
+        }catch (DAOException e) {
+            logger.error("Error in services when receiving count orders by status.");
+            throw new ServiceException("Error in services when receiving count orders by status.", e);
+        }
     }
 
     @Override

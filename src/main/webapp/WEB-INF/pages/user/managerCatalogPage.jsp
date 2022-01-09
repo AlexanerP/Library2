@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Александр
@@ -6,27 +5,23 @@
   Time: 19:27
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
-    </tr>
-</table>
-<div align="center"><h1>Работа с администраторами</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="title_work_with_admin"></fmt:message></h1></div>
 <form action="Controller" method="get">
     <input type="hidden" name="command" value="ManagerCatalog">
     <table>
         <tr>
-            <td>Поиск по id</td>
-            <td><input type="number" name="userIdFind" min="1"></td>
-            <td><input type="submit" value="Найти"></td>
-<%--            <td><a href="?command=ManagerCatalog&userIdFind=${userIdFind}">Найти</a></td>--%>
+            <td><fmt:message key="enter_admin_id"></fmt:message></td>
+            <td><input type="number" name="userIdFind" min="1" placeholder="<fmt:message key="enter_admin_id"></fmt:message>"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -34,10 +29,9 @@
     <input type="hidden" name="command" value="ManagerCatalog">
     <table>
         <tr>
-            <td>Поиск по email</td>
-            <td><input type="text" name="email"></td>
-            <td><input type="submit" value="Найти"></td>
-<%--            <td><a href="?command=ManagerCatalog&email=email">Найти</a></td>--%>
+            <td><fmt:message key="enter_admin_email"></fmt:message></td>
+            <td><input type="text" name="email" placeholder="<fmt:message key="enter_admin_email"></fmt:message>"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -45,27 +39,26 @@
     <input type="hidden" name="command" value="ManagerCatalog">
     <table>
         <tr>
-            <td>Показать всех администраторов</td>
-            <td><input type="submit" value="Найти" name="allAdmins"></td>
-<%--            <td><a href="?command=ManagerCatalog&allAdmins=allAdmins">Найти</a></td>--%>
+            <td><fmt:message key="show_all_admin"></fmt:message></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="allAdmins"></td>
         </tr>
     </table>
 </form>
 
 <c:if test="${not empty users}">
-
-<table align="center">
+<div align="center">
+<table border="1" cellpadding="5">
     <tr>
-        <td>#</td>
-        <td>User id</td>
-        <td>Second name</td>
-        <td>Last name</td>
-        <td>Email</td>
-        <td>Date registration</td>
-        <td>Number of violations</td>
-        <td>Role</td>
-        <td>Status</td>
-        <td>Изменить роль</td>
+        <th>#</th>
+        <th><fmt:message key="enter_user_id"></fmt:message></th>
+        <th><fmt:message key="user_second_name"></fmt:message></th>
+        <th><fmt:message key="user_last_name"></fmt:message></th>
+        <th><fmt:message key="user_email"></fmt:message></th>
+        <th><fmt:message key="user_date_registration"></fmt:message></th>
+        <th><fmt:message key="user_number_of_violations"></fmt:message></th>
+        <th><fmt:message key="user_role"></fmt:message></th>
+        <th><fmt:message key="status"></fmt:message></th>
+        <th><fmt:message key="change_status"></fmt:message></th>
     </tr>
     <c:forEach var="users" items="${users}" varStatus="status">
     <tr>
@@ -86,6 +79,7 @@
     </tr>
     </c:forEach>
         </table>
+</div>
 </c:if>
 </body>
 </html>

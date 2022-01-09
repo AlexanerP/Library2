@@ -5,34 +5,30 @@
   Time: 12:21
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="user_menu_my_wish_list"></fmt:message></title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
-    </tr>
-</table>
-<div align="center"><h1>Мои избранные книги</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="user_menu_my_wish_list"></fmt:message></h1></div>
 <form action="Controller">
     <input type="hidden" name="command" value="GoToOrder">
     </div>
     <table border="1" align="center">
         <tr>
             <th>#</th>
-            <th>ID книги</th>
-            <th>Название</th>
-            <th>ISBN</th>
-            <th>Издательство</th>
-            <th>Год</th>
-            <th>Полка</th>
-            <th>Заказать книгу</th>
-            <th>Удалить из списка</th>
+            <th><fmt:message key="book_id"></fmt:message></th>
+            <th><fmt:message key="book_title"></fmt:message></th>
+            <th><fmt:message key="book_isbn"></fmt:message></th>
+            <th><fmt:message key="book_publisher"></fmt:message></th>
+            <th><fmt:message key="book_year"></fmt:message></th>
+            <th><fmt:message key="book_shelf"></fmt:message></th>
+            <th><fmt:message key="order_command"></fmt:message></th>
+            <th><fmt:message key="delete_command"></fmt:message></th>
         </tr>
         <c:forEach var="wishBook" items="${books}" varStatus="status">
             <tr>
@@ -45,13 +41,12 @@
                 <td><c:out value="${wishBook.shelf}"></c:out></td>
 
                 <td><c:if test="${wishBook.borrow < wishBook.quantity}">
-                    <a href="?command=GoToOrder&bookId=${wishBook.bookId}">Заказать книгу</a>
+                    <a href="?command=GoToOrder&bookId=${wishBook.bookId}"><fmt:message key="order_command"></fmt:message></a>
                 </c:if></td>
-                <td><a href="?command=ActionWishBook&wish_book_id=${wishBook.wishBooksId}">DELETE</a></td>
+                <td><a href="?command=ActionWishBook&wish_book_id=${wishBook.wishBooksId}"><fmt:message key="delete_command"></fmt:message></a></td>
             </tr>
         </c:forEach>
     </table>
 </form>
-
 </body>
 </html>

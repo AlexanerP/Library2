@@ -5,20 +5,16 @@
   Time: 22:58
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>История выдачи книг</title>
+    <title><fmt:message key="user_menu_story_book_user"></fmt:message></title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToHome">Домашний кабинет</a></td>
-    </tr>
-</table>
-<div align="center"><h1>История выдачи книг</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="user_menu_story_book_user"></fmt:message></h1></div>
 <div align="center"><h3><c:out value="${secondName} ${lastName}"></c:out></h3></div>
 <br><br><br>
     <div align="center">
@@ -26,16 +22,16 @@
             <c:if test="${not empty loanCards}">
             <table cellpadding="5">
                 <tr>
-                    <td>#</td>
-                    <td>ID книги</td>
-                    <td>Название</td>
-                    <td>ISBN</td>
-                    <td>Взятие книги</td>
-                    <td>Срок возврата книги</td>
-                    <td>Книга возвращена</td>
-                    <td>Библиотека</td>
-                    <td>Тип использования</td>
-                    <td>Статус</td>
+                    <th>#</th>
+                    <th><fmt:message key="book_id"></fmt:message></th>
+                    <th><fmt:message key="book_title"></fmt:message></th>
+                    <th><fmt:message key="book_isbn"></fmt:message></th>
+                    <th><fmt:message key="loan_card_taking_date"></fmt:message></th>
+                    <th><fmt:message key="loan_card_deadline"></fmt:message></th>
+                    <th><fmt:message key="loan_card_return"></fmt:message></th>
+                    <th><fmt:message key="library_city"></fmt:message></th>
+                    <th><fmt:message key="loan_card_type_use"></fmt:message></th>
+                    <th><fmt:message key="status"></fmt:message></th>
                 </tr>
                     <c:forEach var="card" items="${loanCards}" varStatus="status">
                         <tr>

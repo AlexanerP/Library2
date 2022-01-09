@@ -15,12 +15,14 @@ public interface AuthorDAO {
 
     Optional<Author> getAuthorByName(String name) throws DAOException;
 
-    List<Author> getAuthorsByIdBook(Long bookId) throws DAOException;
+    Optional<Author> getAuthorById(long authorId) throws DAOException;
+
+    int getCountAuthors() throws DAOException;
+
+    int getCountBooksByAuthor(String author) throws DAOException;
 
     List<Author> getAuthors() throws DAOException;
 
     List<Author> getAllAuthorByPartName(String partName);
-
-    int getCount() throws DAOException;
 
 }

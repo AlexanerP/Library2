@@ -16,6 +16,8 @@ public interface BookDtoService {
 
     Optional<BookDto> showBookById(String bookId) throws ServiceException;
 
+    List<BookDto> showBookByCity(String city) throws ServiceException;
+
     List<BookDto> showBookByParameter(String title, String isbn, String genre, String author) throws ServiceException;
 
     List<BookDto> showByPage(int page, int limit) throws ServiceException;

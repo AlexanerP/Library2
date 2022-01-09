@@ -87,12 +87,12 @@ public class BookDaoImpl extends DAOHelper implements BookDao {
         logger.info("Getting count books.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
-        int countBook = 0;
+        long countBook = 0;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
             prStatement = connection.prepareStatement(GET_COUNT_BOOKS_QUERY);
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
-                countBook = resultSet.getInt(1);
+                countBook = resultSet.getLong(1);
             }
         } catch (SQLException sqlE) {
             logger.error("Number of books not received");

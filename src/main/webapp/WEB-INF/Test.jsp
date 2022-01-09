@@ -12,7 +12,11 @@
     <title>Title</title>
 </head>
 <body>
-<h1>TEST.JSP</h1>
-<c:out value="${requestScope.message}"></c:out>
+<table>
+    <tr>
+        <td><button type="button" name="back" onclick="history.back()">Назад TEST</button></td>
+        <td><a href="?command=GoToAdminPage">Кабинет администратора TEST</a></td>
+    </tr>
+</table>
 </body>
 </html>

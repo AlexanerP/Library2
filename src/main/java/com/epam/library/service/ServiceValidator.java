@@ -13,6 +13,13 @@ public class ServiceValidator {
         return false;
     }
 
+    public boolean isLengthForUpdate(String line) {
+        if (line != null && line.length() <= MAX_LENGTH) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isNumber(String line) {
         if (line != "") {
             return line.trim().matches("\\d+");

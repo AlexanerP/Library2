@@ -1,7 +1,5 @@
 package com.epam.library.dao;
 
-import com.epam.library.dao.impl.AuthorDAOImpl;
-import com.epam.library.dao.impl.GenreDAOImpl;
 
 import com.epam.library.dao.test_impl.*;
 
@@ -17,8 +15,8 @@ public class DAOFactory {
     private WishBookDtoDao wishBookDtoDao = new WishBookDtoDaoImpl();
     private OrderBookDtoDao orderBookDtoDao = new OrderBookDtoDaoImpl();
     private OrderDao orderDao = new OrderDaoImpl();
-    private AuthorDAO authorDAO = new AuthorDAOImpl();
-    private GenreDAO genreDAO = new GenreDAOImpl();
+    private AuthorDAO authorDAO = new AuthorDaoImpl();
+    private GenreDAO genreDAO = new GenreDaoImpl();
     private LoanCardDtoDao loanCardDtoDao = new LoanCardDtoDaoImpl();
     private LoanCardDao loanCardDao = new LoanCardDaoImpl();
 

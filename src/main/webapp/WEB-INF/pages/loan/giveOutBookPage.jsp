@@ -5,27 +5,23 @@
   Time: 21:53
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="admin_menu_issuing_books"></title>
 </head>
 <body>
-<table>
-    <tr>
-        <td><button type="button" name="back" onclick="history.back()">Назад</button></td>
-        <td><a href="?command=GoToAdminPage">Кабинет администратора</a></td>
-    </tr>
-</table>
-<div align="center"><h1>Выдача книги</h1></div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<div align="center"><h1><fmt:message key="admin_menu_issuing_books"></fmt:message></h1></div>
 <form>
     <input type="hidden" name="command" value="GiveOutBookUser">
     <table>
         <tr>
-            <td>Введите ID заказа: </td>
-            <td><input type="number" name="orderId"></td>
-            <td><input type="submit" value="Поиск"></td>
+            <td><fmt:message key="order_enter_id"></fmt:message></td>
+            <td><input type="number" name="orderId" min="1" placeholder="<fmt:message key="order_enter_id"></fmt:message>"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -33,15 +29,15 @@
     <input type="hidden" name="command" value="GiveOutBookUser">
     <table>
         <tr>
-            <td>Показать заказы по городу: </td>
+            <td><fmt:message key="order_show_by_city"></fmt:message></td>
             <td>
-                <select name="city">
+                <select name="library">
                     <c:forEach var="libraries" items="${libraries}">
                         <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
                     </c:forEach>
                 </select>
             </td>
-            <td><input type="submit" value="Поиск"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -49,7 +45,32 @@
     <input type="hidden" name="command" value="GiveOutBookUser">
     <table>
         <tr>
-            <input type="submit" value="Показать все одобренные" name="getAll">
+            <td><fmt:message key="order_show_by_city_and_status"></fmt:message></td>
+            <td>
+                <select name="library">
+                    <c:forEach var="libraries" items="${libraries}">
+                        <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>
+                <select name="status">
+                    <option value="opened"><fmt:message key="order_status_opened"></fmt:message>"></option>
+                    <option value="approved"><fmt:message key="order_status_approved"></fmt:message>"></option>
+                    <option value="rejected"><fmt:message key="order_status_rejected"></fmt:message>"></option>
+                    <option value="arrived"><fmt:message key="order_status_arrived"></fmt:message>"></option>
+                    <option value="closed"><fmt:message key="order_status_closed"></fmt:message>"></option>
+                </select>
+            </td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
+        </tr>
+    </table>
+</form>
+<form>
+    <input type="hidden" name="command" value="GiveOutBookUser">
+    <table>
+        <tr>
+            <input type="submit" value="<fmt:message key="order_show_all_approved"></fmt:message>" name="getAll">
         </tr>
     </table>
 </form>
@@ -57,25 +78,25 @@
 <div align="center">
     <form>
         <c:if test="${not empty orders}">
-            <p>Количество найденных результатов - <c:out value="${ordersSize}"/></p>
+            <p><fmt:message key="message_count_found_result"></fmt:message> <c:out value="${ordersSize}"/></p>
         </c:if>
 
         <c:if test="${not empty orders}">
             <table border="1" cellpadding="5">
                 <tr>
-                    <td>#</td>
-                    <td>ID Заказ</td>
-                    <td>ID Пользователя</td>
-                    <td>ID Админ</td>
-                    <td>ID Книги</td>
-                    <td>Название</td>
-                    <td>ISBN</td>
-                    <td>Год</td>
-                    <td>Дата заказа</td>
-                    <td>Библиотека</td>
-                    <td>Комментарий</td>
-                    <td>Статус</td>
-                    <td>Выдать книгу</td>
+                    <th>#</th>
+                    <th><fmt:message key="id"></fmt:message></th>
+                    <th><fmt:message key="enter_user_id"></fmt:message></th>
+                    <th><fmt:message key="order_id_admin"></fmt:message></th>
+                    <th><fmt:message key="book_id"></fmt:message></th>
+                    <th><fmt:message key="book_title"></fmt:message></th>
+                    <th><fmt:message key="book_isbn"></fmt:message></th>
+                    <th><fmt:message key="book_year"></fmt:message></th>
+                    <th><fmt:message key="order_date"></fmt:message></th>
+                    <th><fmt:message key="library_city"></fmt:message></th>
+                    <th><fmt:message key="order_comment"></fmt:message></th>
+                    <th><fmt:message key="status"></fmt:message></th>
+                    <th><fmt:message key="order_issuing_book"></fmt:message></th>
                 </tr>
                 <c:forEach var="orders" items="${orders}" varStatus="status">
                     <tr>
@@ -93,8 +114,8 @@
                         <td><c:out value="${orders.status}"></c:out></td>
                         <td>
                             <div>
-                                <p><a href="?command=ActionGiveOutBook&orderId=${orders.orderDtoId}&type_use=read_home">Выдать на дом</a></p>
-                                <p><a href="?command=ActionGiveOutBook&orderId=${orders.orderDtoId}&type_use=read_room">Выдать вчитальный зал</a></p>
+                                <p><a href="?command=ActionGiveOutBook&orderId=${orders.orderDtoId}&type_use=take_home"><fmt:message key="order_issuing_home"></fmt:message>"></a></p>
+                                <p><a href="?command=ActionGiveOutBook&orderId=${orders.orderDtoId}&type_use=read_room"><fmt:message key="order_issuing_room"></fmt:message>"></a></p>
                             </div>
                         </td>
                     </tr>

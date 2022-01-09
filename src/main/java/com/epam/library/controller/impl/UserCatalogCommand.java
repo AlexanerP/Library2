@@ -1,7 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
-import com.epam.library.controller.PathFile;
+import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.UserRole;
 import com.epam.library.service.ServiceException;
@@ -27,7 +27,7 @@ public class UserCatalogCommand implements Command {
         try{
             String showAll = req.getParameter("allUser");
             String userRole = req.getParameter("user_role");
-            String userStatus = req.getParameter("user_status");
+            String userStatus = req.getParameter("status");
             String userId = req.getParameter("userId");
             String email = req.getParameter("email");
 
@@ -48,10 +48,10 @@ public class UserCatalogCommand implements Command {
             }
             req.setAttribute("users", users);
             req.setAttribute("userSize", users.size());
-            req.getRequestDispatcher(PathFile.USER_CATALOG_PAGE).forward(req, resp);
+            req.getRequestDispatcher(PathJsp.USER_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while working in the user directory.", e);
-            resp.sendRedirect("error.jsp");
+            resp.sendRedirect(PathJsp.ERROR_PAGE);
         }
     }
 }
