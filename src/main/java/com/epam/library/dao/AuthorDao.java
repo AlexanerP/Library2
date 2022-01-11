@@ -5,7 +5,7 @@ import com.epam.library.entity.Author;
 import java.util.List;
 import java.util.Optional;
 
-public interface AuthorDAO {
+public interface AuthorDao {
 
     boolean create(Author author) throws DAOException;
 

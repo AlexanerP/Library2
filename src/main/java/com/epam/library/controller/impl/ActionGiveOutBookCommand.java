@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.LoanCardService;
 import com.epam.library.service.ServiceException;
@@ -20,6 +21,7 @@ public class ActionGiveOutBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_GIVE_OUT_BOOK);
             LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();
             String orderId = req.getParameter("orderId");
             String typeUseBook = req.getParameter("type_use");
@@ -29,11 +31,11 @@ public class ActionGiveOutBookCommand implements Command {
                 if (resultOperation) {
                     String successfulMessage = "Operation successful";
                     req.getSession().setAttribute("successfulMessage", successfulMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 } else {
                     String negativeMessage = "Operation failed";
                     req.getSession().setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.GIVE_OUT_BOOK_PAGE).forward(req, resp);

@@ -9,16 +9,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%--<fmt:setLocale value="${sessionScope.language != null ? sessionScope.language : 'en'}"/>--%>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="interface"/>
 <html>
 <head>
-    <title>Main page</title>
+    <title><fmt:message key="main_page"></fmt:message></title>
+
 </head>
 <body>
-
-<c:if test="${empty user.role}">
+<div align="center">
+    <table>
+        <tr>
+            <td> <a href="?sessionLocale=en&command=ChangeLocale"><fmt:message key="language.en"/>  |</a>
+                <a href="?sessionLocale=ru&command=ChangeLocale"><fmt:message key="language.ru"/>  |</a>
+            </td>
+        </tr>
+    </table>
+</div>
+            <c:if test="${empty user.role}">
     <form action="Controller" width="400" height="300" align="right" method="POST">
         <input type="hidden" name="command" value="SignIn">
         <p><input type="text" placeholder="<fmt:message key="enter_email"></fmt:message>" name="email"></p>
@@ -89,7 +97,6 @@
         <th>#</th>
         <th><fmt:message key="book_id"></fmt:message></th>
         <th><fmt:message key="book_title"></fmt:message></th>
-        <th><fmt:message key="book_author"></fmt:message></th>
         <th><fmt:message key="book_isbn"></fmt:message></th>
         <th><fmt:message key="book_author"></fmt:message></th>
         <th><fmt:message key="book_genre"></fmt:message></th>
@@ -120,9 +127,11 @@
                 <td><c:out value="${booksDTO.year}"></c:out></td>
                 <c:if test="${not empty user}">
                     <td>
-                        <a href="?command=GoToOrder&bookId=${booksDTO.bookDtoId}"><fmt:message key="order_command"></fmt:message></a>
+                        <c:if test="${user.status != 'BLOCKED'}">
+                            <a href="?command=GoToOrder&bookId=${booksDTO.bookDtoId}"><fmt:message key="order_command"></fmt:message></a>
+                        </c:if>
                     </td>
-                        <td><a href="?command=ActionWishBook&bookId=${booksDTO.bookDtoId}"><fmt:message key="wish_command"></fmt:message></a></td>
+                        <td><a href="?command=ActionWishBook&bookId=${booksDTO.bookDtoId}&add=add"><fmt:message key="wish_command"></fmt:message></a></td>
                 </c:if>
             </tr>
     </c:forEach>

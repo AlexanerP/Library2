@@ -8,6 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <html>
 <head>
     <title><fmt:message key="admin_menu_catalog_order"></fmt:message></title>
@@ -21,7 +24,7 @@
     <table>
         <tr>
             <td><fmt:message key="search_user_id"></fmt:message></td>
-            <td><input type="number" name="userId" min="1" placeholder="<fmt:message key="search_user_id"></fmt:message>"></td>
+            <td><input type="number" name="userId" min="1" placeholder="<fmt:message key="user_id"></fmt:message>"></td>
             <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
         <tr>

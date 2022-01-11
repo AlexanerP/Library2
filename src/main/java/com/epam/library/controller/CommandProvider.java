@@ -44,8 +44,6 @@ public final class CommandProvider {
         commands.put(CommandType.LOAN_CARD_CATALOG, new LoanCardCatalogCommand());
         commands.put(CommandType.SHOW_CATALOG_BY_PAGE, new ShowCatalogByPageCommand());
 
-        commands.put("CatalogByPage", new ShowCatalogByPageCommand());
-
         commands.put(CommandType.USER_CATALOG, new UserCatalogCommand());
         commands.put(CommandType.CATALOG_BOOK, new CatalogBookCommand());
         commands.put(CommandType.ORDER_CATALOG, new OrderCatalogCommand());
@@ -56,6 +54,7 @@ public final class CommandProvider {
         commands.put(CommandType.ORDER_USER, new OrderUserCommand());
         commands.put(CommandType.WISH_BOOKS_USER_PAGE, new WishBooksUserCommand());  //+
         commands.put(CommandType.LOAN_CARD_USER, new LoanCardUserCommand());
+        commands.put(CommandType.CHANGE_LOCALE, new ChangeLocaleCommand());
 //        commands.put(CommandType.GO_TO_ADD_BOOK, new GoToAddBookCommand());
         commands.put(CommandType.GO_TO_MAIN_PAGE, new GoToMainPageCommand());
         commands.put(CommandType.GO_TO_HOME, new GoToHomeCommand());

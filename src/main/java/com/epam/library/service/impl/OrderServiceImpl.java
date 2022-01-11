@@ -2,9 +2,7 @@ package com.epam.library.service.impl;
 
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
-import com.epam.library.dao.OrderBookDtoDao;
 import com.epam.library.dao.OrderDao;
-import com.epam.library.entity.Book;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.Order;
 import com.epam.library.entity.OrderStatus;

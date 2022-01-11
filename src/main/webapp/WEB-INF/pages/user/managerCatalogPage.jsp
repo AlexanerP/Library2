@@ -8,6 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <html>
 <head>
     <title>Title</title>
@@ -20,7 +23,7 @@
     <table>
         <tr>
             <td><fmt:message key="enter_admin_id"></fmt:message></td>
-            <td><input type="number" name="userIdFind" min="1" placeholder="<fmt:message key="enter_admin_id"></fmt:message>"></td>
+            <td><input type="number" name="userIdFind" min="1" placeholder="<fmt:message key="id"></fmt:message>"></td>
             <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
@@ -30,7 +33,7 @@
     <table>
         <tr>
             <td><fmt:message key="enter_admin_email"></fmt:message></td>
-            <td><input type="text" name="email" placeholder="<fmt:message key="enter_admin_email"></fmt:message>"></td>
+            <td><input type="text" name="email" placeholder="<fmt:message key="user_email"></fmt:message>"></td>
             <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>

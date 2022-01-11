@@ -1,8 +1,8 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOHelper;
+import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.UserDAO;
+import com.epam.library.dao.UserDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDAOImpl extends DAOHelper implements UserDAO {
+public class UserDaoImpl extends DaoHelper implements UserDao {
 
-    private final static Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private final static String ADD_USER_QUERY = String.format("INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s) " +
                     "VALUES(?, ?, ?, ?, ?, (SELECT %s FROM %s WHERE %s=?), (SELECT %s FROM %s " +

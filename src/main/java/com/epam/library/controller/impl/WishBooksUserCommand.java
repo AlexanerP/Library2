@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.dto.WishBookDto;
@@ -25,6 +26,7 @@ public class WishBooksUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.WISH_BOOKS_USER_PAGE);
             logger.info("Getting favorite books.");
             WishBookDtoService wishBookDtoService = ServiceFactory.getInstance().getWishBookDtoService();
             HttpSession session = req.getSession();

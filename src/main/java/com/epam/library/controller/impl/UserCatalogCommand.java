@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.UserRole;
@@ -25,6 +26,7 @@ public class UserCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.USER_CATALOG);
             String showAll = req.getParameter("allUser");
             String userRole = req.getParameter("user_role");
             String userStatus = req.getParameter("status");

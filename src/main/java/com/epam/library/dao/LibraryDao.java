@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface LibraryDAO {
+public interface LibraryDao {
 
     boolean create(Library library) throws DAOException;
 

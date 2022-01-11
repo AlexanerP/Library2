@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.BookDtoService;
 import com.epam.library.service.ServiceException;
@@ -20,6 +21,7 @@ public class CreateBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.CREATE_BOOK);
             String title = req.getParameter("title");
             String isbn = req.getParameter("isbn");
             String publisher = req.getParameter("publisher");
@@ -40,11 +42,11 @@ public class CreateBookCommand implements Command {
                 if (resultOperation) {
                     String successfulMessage = "Operation successful";
                     req.getSession().setAttribute("successfulMessage", successfulMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 } else {
                     String negativeMessage = "Operation failed";
                     req.getSession().setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.ADD_BOOK_PAGE).forward(req, resp);

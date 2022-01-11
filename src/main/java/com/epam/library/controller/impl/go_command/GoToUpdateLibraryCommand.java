@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.service.LibraryService;
@@ -21,8 +22,10 @@ public class GoToUpdateLibraryCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             String libraryId = req.getParameter("libraryId");
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_UPDATE_LIBRARY + "&libraryId=" + libraryId);
             Library library = new Library();
             if (libraryId != null) {
                 library = libraryService.showById(libraryId).orElse(new Library("-", "-"));

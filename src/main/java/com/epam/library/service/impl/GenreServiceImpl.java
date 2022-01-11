@@ -2,7 +2,7 @@ package com.epam.library.service.impl;
 
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
-import com.epam.library.dao.GenreDAO;
+import com.epam.library.dao.GenreDao;
 import com.epam.library.entity.Genre;
 import com.epam.library.service.GenreService;
 import com.epam.library.service.ServiceException;
@@ -11,7 +11,6 @@ import com.epam.library.service.ServiceValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +21,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public List<Genre> getGenres() throws ServiceException {
         try {
-            GenreDAO genreDAO = DAOFactory.getInstance().getGenreDAO();
+            GenreDao genreDAO = DAOFactory.getInstance().getGenreDAO();
             return genreDAO.getGenres();
         } catch (DAOException e) {
             logger.error("Error getting genres.");
@@ -33,7 +32,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public boolean create(String category) throws ServiceException {
         try {
-            GenreDAO genreDAO = DAOFactory.getInstance().getGenreDAO();
+            GenreDao genreDAO = DAOFactory.getInstance().getGenreDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (category != null) {
                 if (validator.isLength(category)) {
@@ -56,7 +55,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public boolean update(String genreId, String category) throws ServiceException {
         try {
-            GenreDAO genreDAO = DAOFactory.getInstance().getGenreDAO();
+            GenreDao genreDAO = DAOFactory.getInstance().getGenreDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (genreId != null && category != null) {
                 if (validator.isNumber(genreId)) {
@@ -84,7 +83,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public long getCountGenres() throws ServiceException {
         try {
-            GenreDAO genreDAO = DAOFactory.getInstance().getGenreDAO();
+            GenreDao genreDAO = DAOFactory.getInstance().getGenreDAO();
             return genreDAO.getCount();
         } catch (DAOException e) {
             logger.error("Error in services when getting the number of genres.");
@@ -95,7 +94,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public long getCountBooksByGenres(String category) throws ServiceException {
         try {
-            GenreDAO genreDAO = DAOFactory.getInstance().getGenreDAO();
+            GenreDao genreDAO = DAOFactory.getInstance().getGenreDAO();
             if (category != null) {
                 return genreDAO.getCountByGenre(category);
             } else {
@@ -110,7 +109,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Optional<Genre> showGenreByCategory(String category) throws ServiceException {
         try {
-            GenreDAO genreDAO = DAOFactory.getInstance().getGenreDAO();
+            GenreDao genreDAO = DAOFactory.getInstance().getGenreDAO();
             if (category != null) {
                 return genreDAO.getGenreByGenre(category);
             } else {
@@ -125,7 +124,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Optional<Genre> showGenreById(String genreId) throws ServiceException {
         try {
-            GenreDAO genreDAO = DAOFactory.getInstance().getGenreDAO();
+            GenreDao genreDAO = DAOFactory.getInstance().getGenreDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (genreId != null) {
                 if (validator.isNumber(genreId)) {

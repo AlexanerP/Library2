@@ -1,13 +1,12 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.AuthorDAO;
+import com.epam.library.dao.AuthorDao;
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOHelper;
+import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
 import com.epam.library.dao.mapper.AuthorMapper;
-import com.epam.library.dao.mapper.RowMapper;
 import com.epam.library.entity.Author;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AuthorDAOImpl extends DAOHelper implements AuthorDAO {
+public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthorDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthorDaoImpl.class);
 
     private static final String ADD_AUTHOR_QUERY = String.format("INSERT IGNORE INTO %s(%s) VALUES(?)",
             TableName.AUTHORS, ColumnName.AUTHOR_NAME);

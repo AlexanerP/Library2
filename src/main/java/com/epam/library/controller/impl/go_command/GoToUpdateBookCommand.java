@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.LibraryStatus;
@@ -25,12 +26,10 @@ public class GoToUpdateBookCommand implements Command {
         try {
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             String bookId = req.getParameter("bookId");
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_UPDATE_BOOK + "&bookId=" + bookId);
             Optional<BookDto> optionalBook = bookDtoService.showBookById(bookId);
             if (optionalBook.isPresent()) {
                 req.getSession().setAttribute("updateBookId", optionalBook.get().getBookDtoId());
-                LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-                List<Library> libraries = libraryService.showByStatus(LibraryStatus.OPENED.name());
-                req.setAttribute("libraries", libraries);
                 req.setAttribute("book", optionalBook.get());
                 req.getRequestDispatcher(PathJsp.UPDATE_BOOK_PAGE).forward(req, resp);
             } else {

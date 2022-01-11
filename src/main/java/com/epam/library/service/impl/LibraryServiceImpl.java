@@ -2,7 +2,7 @@ package com.epam.library.service.impl;
 
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
-import com.epam.library.dao.LibraryDAO;
+import com.epam.library.dao.LibraryDao;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.LibraryStatus;
 import com.epam.library.service.LibraryService;
@@ -12,7 +12,6 @@ import com.epam.library.service.ServiceValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public boolean create(String city, String street) throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LibraryDao libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (city != null && street != null) {
                 if (validator.isLength(city) && validator.isLength(street)) {
@@ -54,7 +53,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public List<Library> showAll() throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LibraryDao libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             return libraryDAO.getLibraries();
         }catch (DAOException e) {
             logger.error("Error getting all libraries.");
@@ -65,7 +64,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public boolean updateStatus(String libraryId, String status) throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LibraryDao libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (libraryId != null && status != null) {
                 if (validator.isNumber(libraryId.trim())) {
@@ -99,7 +98,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public boolean update(String libraryId, String city, String street) throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LibraryDao libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (libraryId != null) {
                 if (validator.isNumber(libraryId.trim())) {
@@ -134,7 +133,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public Optional<Library> showById(String libraryId) throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LibraryDao libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             Optional<Library> libraryOptional = Optional.empty();
             if (libraryId != null) {
@@ -157,7 +156,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public Optional<Library> showByCity(String city) throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LibraryDao libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             Optional<Library> optionalLibrary = Optional.empty();
             if (city != null) {
@@ -177,7 +176,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public List<Library> showByStatus(String status) throws ServiceException {
         try {
-            LibraryDAO libraryDAO = DAOFactory.getInstance().getLibraryDAO();
+            LibraryDao libraryDAO = DAOFactory.getInstance().getLibraryDAO();
             if (status != null) {
                 if (status.equalsIgnoreCase(LibraryStatus.OPENED.name()) ||
                         status.equalsIgnoreCase(LibraryStatus.CLOSED.name())) {

@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.OrderStatus;
 import com.epam.library.entity.dto.OrderDto;
@@ -24,6 +25,7 @@ public class AdminPageCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ADMIN_PAGE);
             OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
             List<OrderDto> countOrders = orderDtoService.showOrdersByStatus(OrderStatus.OPENED.name());
             req.setAttribute("countOrders", countOrders.size());

@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -21,26 +22,27 @@ public class UpdateUserPasswordCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.UPDATE_USER_PASSWORD);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
             String email = req.getParameter("email");
             String oldPassword = req.getParameter("old_password");
             String newPassword = req.getParameter("new_password");
-            if (email != "" && oldPassword != "" && newPassword != "") {
+            if (email != "" && email != null && oldPassword != "" && oldPassword !=null
+                    && newPassword != "" && newPassword != null) {
                 boolean flag = userService.updatePassword(newPassword, email, oldPassword);
                 if (flag) {
                     String message = "Operation completed";
                     session.setAttribute("successfulMessage", message);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 } else {
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.UPDATE_USER_PAGE).forward(req, resp);
             }
-
         }catch (ServiceException e) {
             logger.error("Error during password update.", e);
             resp.sendRedirect("error.jsp");

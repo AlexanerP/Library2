@@ -2,7 +2,7 @@ package com.epam.library.service.impl;
 
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
-import com.epam.library.dao.UserDAO;
+import com.epam.library.dao.UserDao;
 import com.epam.library.entity.User;
 import com.epam.library.entity.UserRole;
 import com.epam.library.entity.UserStatus;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> verification(String email, String password) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             Cipher cipher = UtilFactory.getInstance().getCipher();
             String passwordCipher = cipher.getCipherString(password.trim());
             return userDAO.getUserByEmailAndPassword(email.trim(), passwordCipher);
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int create(String email, String password, String secondName, String lastName) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             Cipher cipher = UtilFactory.getInstance().getCipher();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isEmail(email.trim())) {
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers() throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             return userDAO.getUsers();
         }catch (DAOException e) {
             logger.error("Services error when getting a list of all users.");
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public long showCountByStatus(String status) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             if (status != null) {
                 if (status.equalsIgnoreCase(UserStatus.ACTIVE.name())
                         || status.equalsIgnoreCase(UserStatus.BLOCKED.name())
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> showUserByStatus(String status) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             List<User> users;
             if (status.equalsIgnoreCase(UserStatus.ACTIVE.name()) || status.equalsIgnoreCase(UserStatus.BLOCKED.name())
                 || status.equalsIgnoreCase(UserStatus.DELETE.name())) {
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> showUserByRole(String role) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             List<User> users;
             if (role.equalsIgnoreCase(UserRole.USER.name()) || role.equalsIgnoreCase(UserRole.ADMIN.name())
                     || role.equalsIgnoreCase(UserRole.MANAGER.name())) {
@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> showUserByEmail(String email) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isEmail(email.trim())) {
                 return userDAO.getUserByEmail(email.trim());
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> showUserById(String userId) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isNumber(userId.trim())) {
                 return userDAO.getUserById(Long.parseLong(userId.trim()));
@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean update(String email, String secondName, String lastName, String userId) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isLengthForUpdate(secondName) && validator.isLengthForUpdate(lastName)
                     && validator.isLengthForUpdate(email.trim()) && validator.isLengthForUpdate(userId)) {
@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateStatus(String userId, String status) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isNumber(userId)) {
                 if (status.equalsIgnoreCase(UserStatus.ACTIVE.name()) || status.equalsIgnoreCase(UserStatus.BLOCKED.name())
@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService {
     public boolean updatePassword(String newPassword, String email, String oldPassword) throws ServiceException {
         try {
 System.out.println("updatePassword");
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             Cipher cipher = UtilFactory.getInstance().getCipher();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isPassword(newPassword) && validator.isPassword(oldPassword)) {
@@ -264,7 +264,7 @@ System.out.println("updatePassword");
     @Override
     public boolean updateRole(String userId, String role) throws ServiceException {
         try {
-            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            UserDao userDAO = DAOFactory.getInstance().getUserDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isNumber(userId)) {
                 if (role.equalsIgnoreCase(UserRole.USER.name()) || role.equalsIgnoreCase(UserRole.ADMIN.name())

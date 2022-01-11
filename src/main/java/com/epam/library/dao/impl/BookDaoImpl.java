@@ -2,7 +2,7 @@ package com.epam.library.dao.impl;
 
 import com.epam.library.dao.BookDao;
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOHelper;
+import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BookDaoImpl extends DAOHelper implements BookDao {
+public class BookDaoImpl extends DaoHelper implements BookDao {
 
     private static final Logger logger = LoggerFactory.getLogger(BookDaoImpl.class);
 

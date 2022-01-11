@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOHelper;
+import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.OrderDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
@@ -10,7 +10,6 @@ import com.epam.library.dao.mapper.OrderDtoMapper;
 import com.epam.library.dao.mapper.OrderMapper;
 import com.epam.library.entity.Order;
 import com.epam.library.entity.OrderStatus;
-import com.epam.library.entity.dto.OrderDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OrderDaoImpl extends DAOHelper implements OrderDao {
+public class OrderDaoImpl extends DaoHelper implements OrderDao {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderDaoImpl.class);
 

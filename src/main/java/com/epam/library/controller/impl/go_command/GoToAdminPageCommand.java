@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.OrderStatus;
 import com.epam.library.service.*;
@@ -26,7 +27,7 @@ public class GoToAdminPageCommand implements Command {
             long countOrders = orderService.showCountByStatus(OrderStatus.OPENED.name());
             session.setAttribute("countOrders", countOrders);
 
-            resp.sendRedirect("Controller?command=AdminPage");
+            resp.sendRedirect("Controller?command=" + CommandType.ADMIN_PAGE);
 
         }catch (ServiceException e) {
             logger.error("Error getting admin page.", e);

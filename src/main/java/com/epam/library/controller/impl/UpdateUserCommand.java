@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
@@ -22,6 +23,7 @@ public class UpdateUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.UPDATE_USER);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
             String email = req.getParameter("email");
@@ -34,16 +36,15 @@ public class UpdateUserCommand implements Command {
                 if (flag) {
                     String message = "Operation completed";
                     session.setAttribute("successfulMessage", message);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 } else {
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.UPDATE_USER_PAGE).forward(req, resp);
             }
-
         }catch (ServiceException e) {
             logger.error("An error occurred while updating the user's personal data.", e);
             resp.sendRedirect(PathJsp.ERROR_PAGE);

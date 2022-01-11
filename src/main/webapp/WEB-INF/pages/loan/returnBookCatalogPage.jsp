@@ -8,6 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <html>
 <head>
     <title><fmt:message key="admin_menu_return_books"></fmt:message></title>
@@ -65,14 +68,14 @@
     <input type="hidden" name="command" value="ReturnBookCatalog">
     <table>
         <tr>
-            <input type="submit" value="<fmt:message key="loan_card_show_all_open_positions"></fmt:message>">" name="getAll">
+            <input type="submit" value="<fmt:message key="loan_card_show_all_open_positions"></fmt:message>" name="getAll">
         </tr>
     </table>
 </form>
 <div align="center">
     <form>
         <c:if test="${not empty loanCards}">
-            <p><fmt:message key="message_count_found_result"></fmt:message>"><c:out value="${loanCardSize}"/></p>
+            <p><fmt:message key="message_count_found_result"></fmt:message><c:out value="${loanCardSize}"/></p>
         </c:if>
         <c:if test="${not empty loanCards}">
         <table border="1" cellpadding="5">

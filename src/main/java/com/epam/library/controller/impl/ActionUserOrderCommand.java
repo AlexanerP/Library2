@@ -21,6 +21,7 @@ public class ActionUserOrderCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_USER_ORDER);
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             String orderUserId = req.getParameter("orderUserId");
             String action = req.getParameter("action");

@@ -7,6 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <html>
 <head>
     <title><fmt:message key="update_user_data"></fmt:message></title>

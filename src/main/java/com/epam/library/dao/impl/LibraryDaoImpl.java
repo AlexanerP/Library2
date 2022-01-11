@@ -1,8 +1,8 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.LibraryDAO;
+import com.epam.library.dao.LibraryDao;
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOHelper;
+import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class LibraryDAOImpl extends DAOHelper implements LibraryDAO {
+public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(LibraryDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(LibraryDaoImpl.class);
 
     private final static String ADD_LIBRARY_QUERY = String.format("INSERT INTO %s(%s, %s, %s) values(?, ?, " +
                     "(Select %s from %s where %s=?));", TableName.LIBRARY, ColumnName.LIBRARY_CITY,

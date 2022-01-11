@@ -5,7 +5,7 @@ import com.epam.library.entity.Genre;
 import java.util.List;
 import java.util.Optional;
 
-public interface GenreDAO {
+public interface GenreDao {
 
     boolean create(Genre genre) throws DAOException;
 

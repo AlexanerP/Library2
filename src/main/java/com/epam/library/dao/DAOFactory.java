@@ -9,14 +9,14 @@ public class DAOFactory {
 
     private BookDtoDao bookDtoDao = new BookDtoDaoImpl();
     public BookDao bookDao = new BookDaoImpl();
-    private LibraryDAO libraryDAO = new LibraryDaoImpl();
-    private UserDAO userDAO = new UserDaoImpl();
+    private LibraryDao libraryDAO = new LibraryDaoImpl();
+    private UserDao userDAO = new UserDaoImpl();
     private WishBookDao wishBookDao = new WishBookDaoImpl();
     private WishBookDtoDao wishBookDtoDao = new WishBookDtoDaoImpl();
     private OrderBookDtoDao orderBookDtoDao = new OrderBookDtoDaoImpl();
     private OrderDao orderDao = new OrderDaoImpl();
-    private AuthorDAO authorDAO = new AuthorDaoImpl();
-    private GenreDAO genreDAO = new GenreDaoImpl();
+    private AuthorDao authorDAO = new AuthorDaoImpl();
+    private GenreDao genreDAO = new GenreDaoImpl();
     private LoanCardDtoDao loanCardDtoDao = new LoanCardDtoDaoImpl();
     private LoanCardDao loanCardDao = new LoanCardDaoImpl();
 
@@ -33,11 +33,11 @@ public class DAOFactory {
         return bookDao;
     }
 
-    public LibraryDAO getLibraryDAO() {
+    public LibraryDao getLibraryDAO() {
         return libraryDAO;
     }
 
-    public UserDAO getUserDAO() {
+    public UserDao getUserDAO() {
         return userDAO;
     }
 
@@ -57,11 +57,11 @@ public class DAOFactory {
         return orderDao;
     }
 
-    public AuthorDAO getAuthorDAO() {
+    public AuthorDao getAuthorDAO() {
         return authorDAO;
     }
 
-    public GenreDAO getGenreDAO() {
+    public GenreDao getGenreDAO() {
         return genreDAO;
     }
 

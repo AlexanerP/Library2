@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
@@ -22,6 +23,7 @@ public class ActionWishBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_WISH_BOOK);
             WishBookService wishBookService = ServiceFactory.getInstance().getWishBookService();
             HttpSession session = req.getSession();
             User user = (User) session.getAttribute("user");
@@ -37,18 +39,18 @@ public class ActionWishBookCommand implements Command {
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
                 }
-                resp.sendRedirect("Controller?command=GoToMessagePage");
+                resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
             } else if (wishBookId != null) {
                 boolean result = wishBookService.delete(wishBookId);
                 if (result) {
-                    resp.sendRedirect("Controller?command=GoToWishBooksUserPage");
+                    resp.sendRedirect("Controller?command=" + CommandType.ACTION_WISH_BOOK);
                 } else {
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
-                resp.sendRedirect("Controller?command=GoToWishBooksUserPage");
+                resp.sendRedirect("Controller?command=" + CommandType.ACTION_WISH_BOOK);
             }
         }catch (ServiceException e) {
             logger.error("Error during action with selected books, when deleting or adding.", e);

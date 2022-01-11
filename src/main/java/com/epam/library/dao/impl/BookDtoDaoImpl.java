@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
+public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
 
     private static final Logger logger = LoggerFactory.getLogger(BookDtoDaoImpl.class);
 
@@ -162,8 +162,8 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
     @Override
     public boolean create(BookDto bookDto) throws DAOException {
         logger.info("Adding a bookDto.");
-        AuthorDAO authorDAO = new AuthorDAOImpl();
-        GenreDAO genreDAO = new GenreDAOImpl();
+        AuthorDao authorDAO = new AuthorDaoImpl();
+        GenreDao genreDAO = new GenreDaoImpl();
         Connection connection = null;
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -220,7 +220,7 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
             sqlE.printStackTrace();
             try {
                 connection.rollback();
-            } catch (SQLException e) {      // check
+            } catch (SQLException e) {
                 throw new DAOException("Rollback is not closed", e);
             }
             throw new DAOException("Error while adding bookDto to table.", sqlE);
@@ -238,8 +238,8 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
     @Override
     public boolean update(BookDto bookDto) throws DAOException {
         logger.info("Updating a book by ID.");
-        AuthorDAO authorDAO = new AuthorDAOImpl();
-        GenreDAO genreDAO = new GenreDAOImpl();
+        AuthorDao authorDAO = new AuthorDaoImpl();
+        GenreDao genreDAO = new GenreDaoImpl();
         Connection connection = null;
         PreparedStatement prStatement = null;
         try {
@@ -278,7 +278,7 @@ public class BookDtoDaoImpl extends DAOHelper implements BookDtoDao {
             logger.error("Error while bookDto's updating.");
             try {
                 connection.rollback();
-            } catch (SQLException e) {      // check
+            } catch (SQLException e) {
                 throw new DAOException("Rollback is not closed", e);
             }
             throw new DAOException("Error while bookDto's updating.", sqlE);

@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Author;
 import com.epam.library.entity.Library;
@@ -24,6 +25,7 @@ public class GoToStatisticAuthorCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_STATISTIC_AUTHOR);
             AuthorService authorService = ServiceFactory.getInstance().getAuthorService();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             List<Library> libraries = libraryService.showAll();

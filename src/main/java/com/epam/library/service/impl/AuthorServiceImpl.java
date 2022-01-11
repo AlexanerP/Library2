@@ -1,6 +1,6 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.AuthorDAO;
+import com.epam.library.dao.AuthorDao;
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
 import com.epam.library.entity.Author;
@@ -21,7 +21,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public boolean create(String name) throws ServiceException {
         try {
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (name != null) {
                 if (validator.isLength(name)) {
@@ -43,7 +43,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public boolean update(String authorId, String name) throws ServiceException {
         try {
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (authorId != null && name != null) {
                 if (validator.isNumber(authorId.trim())) {
@@ -71,7 +71,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public int getCountAuthors() throws ServiceException {
         try{
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
             return authorDAO.getCountAuthors();
         }catch (DAOException e) {
             logger.error("Error while getting all authors.");
@@ -82,7 +82,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public int getCountBooksByAuthors(String name) throws ServiceException {
         try {
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
             if (name != null) {
                 Optional<Author> optionalAuthor = authorDAO.getAuthorByName(name);
                 if (optionalAuthor.isPresent()) {
@@ -101,7 +101,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<Author> showAuthorById(String authorId) throws ServiceException {
         try{
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (authorId != null) {
                 if (validator.isNumber(authorId)) {
@@ -121,7 +121,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<Author> showAuthorByName(String name) throws ServiceException {
         try{
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
             return authorDAO.getAuthorByName(name);
         }catch (DAOException e) {
             logger.error("Getting an author by name.");
@@ -132,7 +132,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> showAllAuthors() throws ServiceException {
         try {
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
             return authorDAO.getAuthors();
         }catch (DAOException e) {
             logger.error("Error getting all authors.");

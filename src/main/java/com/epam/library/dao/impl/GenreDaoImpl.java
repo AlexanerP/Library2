@@ -1,8 +1,8 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOHelper;
-import com.epam.library.dao.GenreDAO;
+import com.epam.library.dao.DaoHelper;
+import com.epam.library.dao.GenreDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class GenreDAOImpl extends DAOHelper implements GenreDAO {
+public class GenreDaoImpl extends DaoHelper implements GenreDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(GenreDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(GenreDaoImpl.class);
 
     private final static String GET_GENRES_BY_ID_BOOK_QUERY = String.format("SELECT %s.%s, %s.%s, %s.%s FROM %s " +
                     "INNER JOIN %s USING(%s) INNER JOIN %s USING(%s) WHERE %s.%s=?", TableName.G_H_B,

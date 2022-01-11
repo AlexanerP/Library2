@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.LibraryStatus;
@@ -23,6 +24,7 @@ public class SearchBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.SEARCH_BOOKS);
             logger.info("Search book by parameters.");
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             GenreService genreService = ServiceFactory.getInstance().getGenreService();
@@ -33,15 +35,13 @@ public class SearchBookCommand implements Command {
             int countAuthors = authorService.getCountAuthors();
             long countGenres = genreService.getCountGenres();
 
-
-
             String isbn = req.getParameter("isbn");
             String title = req.getParameter("title");
             String genre = req.getParameter("genre");
             String author = req.getParameter("author");
             List<BookDto> booksDTO = new ArrayList<>();
             if (isbn == "" && title == "" && genre == "" && author == "") {
-                req.getRequestDispatcher("/Controller?command=GoToMainPage").forward(req, resp);
+                req.getRequestDispatcher("/Controller?command=" + CommandType.GO_TO_MAIN_PAGE).forward(req, resp);
             } else {
                 booksDTO = bookDtoService.showBookByParameter(title, isbn, genre, author);
                 LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
@@ -55,7 +55,6 @@ public class SearchBookCommand implements Command {
 
                 req.getRequestDispatcher(PathJsp.MAIN_PAGE).forward(req, resp);
             }
-//            req.getRequestDispatcher("WEB-INF/pages/mainPage.jsp").forward(req, resp);
         }catch (ServiceException e) {
             logger.error("An error occured while searching the book by parameters. ", e);
             resp.sendRedirect(PathJsp.ERROR_PAGE);

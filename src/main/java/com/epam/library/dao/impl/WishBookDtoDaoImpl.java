@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOHelper;
+import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.WishBookDtoDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WishBookDtoDaoImpl extends DAOHelper implements WishBookDtoDao {
+public class WishBookDtoDaoImpl extends DaoHelper implements WishBookDtoDao {
 
     private static final Logger logger = LoggerFactory.getLogger(WishBookDtoDaoImpl.class);
 

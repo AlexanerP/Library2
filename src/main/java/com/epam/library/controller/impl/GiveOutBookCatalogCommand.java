@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.LibraryStatus;
@@ -23,6 +24,7 @@ public class GiveOutBookCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GIVE_OUT_BOOK_USER);
             OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             List<OrderDto> orders = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.entity.Library;
@@ -29,17 +30,21 @@ public class GoToOrderBookCommand implements Command {
             logger.info("Preparing to order a book.");
             HttpSession session = req.getSession();
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
-            LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-            List<Library> libraries = libraryService.showAll();
             BookDto bookDTO;
             String bookId = req.getParameter("bookId");
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_ORDER + "&bookId=" + bookId);
             if (bookId != "" && bookId != null) {
                 Optional<BookDto> optional = bookDtoService.showBookById(bookId);
-                bookDTO = optional.get();
-                req.setAttribute("libraries", libraries);
-                req.setAttribute("book", bookDTO);
-                session.setAttribute("orderBookId", bookDTO.getBookDtoId());
-                req.getRequestDispatcher(PathJsp.ORDER_PAGE).forward(req, resp);
+                if (optional.isPresent()) {
+                    bookDTO = optional.get();
+                    req.setAttribute("book", bookDTO);
+                    session.setAttribute("orderBookId", bookDTO.getBookDtoId());
+                    req.getRequestDispatcher(PathJsp.ORDER_PAGE).forward(req, resp);
+                } else {
+                String negativeMessage = "Operation failed";
+                req.getSession().setAttribute("negativeMessage", negativeMessage);
+                resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+            }
             } else {
                 resp.sendRedirect(PathJsp.MESSAGE_PAGE);
             }

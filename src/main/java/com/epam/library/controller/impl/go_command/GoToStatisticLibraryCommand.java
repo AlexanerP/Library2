@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.LoanCardStatus;
 import com.epam.library.entity.OrderStatus;
@@ -22,6 +23,7 @@ public class GoToStatisticLibraryCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             logger.info("Getting statistics library");
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_STATISTICS);
             UserService userService = ServiceFactory.getInstance().getUserService();
             BookService bookService = ServiceFactory.getInstance().getBookService();
             LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();

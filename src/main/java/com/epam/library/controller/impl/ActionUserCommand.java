@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -21,6 +22,7 @@ public class ActionUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_USER);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
             String userId = req.getParameter("userId");
@@ -30,11 +32,11 @@ public class ActionUserCommand implements Command {
                 if (flag) {
                     String message = "Operation completed";
                     session.setAttribute("successfulMessage", message);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }else {
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             }else {
                 req.getRequestDispatcher(PathJsp.USER_CATALOG_PAGE).forward(req, resp);

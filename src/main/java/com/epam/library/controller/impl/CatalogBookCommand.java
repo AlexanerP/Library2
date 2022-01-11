@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.dto.BookDto;
@@ -22,6 +23,7 @@ public class CatalogBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.CATALOG_BOOK);
             BookDtoService bookService = ServiceFactory.getInstance().getBookDtoService();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             List<Library> libraries = libraryService.showAll();

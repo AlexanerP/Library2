@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.dto.OrderDto;
@@ -25,6 +26,7 @@ public class OrderCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ORDER_CATALOG);
             OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             String userId = req.getParameter("userId");
@@ -37,7 +39,7 @@ public class OrderCatalogCommand implements Command {
             if (userId != null) {
                 orders = orderDtoService.showOrdersUser(userId);
             }else if (orderId != null) {
-                orders.add(orderDtoService.showOrderById(orderId).get());
+                orders.add(orderDtoService.showOrderById(orderId).orElse(new OrderDto()));
             }else if (city != null && status == null) {
                 orders = orderDtoService.showOrdersByCity(city);
             }else if (status != null && city == null) {

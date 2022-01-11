@@ -3,7 +3,6 @@ package com.epam.library.service.impl;
 import com.epam.library.dao.BookDtoDao;
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
-import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.entity.Author;
 import com.epam.library.entity.Genre;
 import com.epam.library.entity.Library;
@@ -28,7 +27,7 @@ public class BookDtoServiceImpl implements BookDtoService {
         try {
             ServiceValidator validator = new ServiceValidator();
             BookDtoDao bookDtoDao = DAOFactory.getInstance().getBookDtoDao();
-            if (validator.isLength(title) && validator.isLength(isbn) && validator.isLength(publisher) &&
+            if (validator.isLengthTitle(title) && validator.isLength(isbn) && validator.isLength(publisher) &&
                 validator.isLength(year) && validator.isLength(city) && validator.isLength(shelf) &&
                 validator.isNumber(count)) {
                 BookDto book = new BookDto();
@@ -176,15 +175,15 @@ public class BookDtoServiceImpl implements BookDtoService {
         try {
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             BookDtoDao bookDtoDao = DAOFactory.getInstance().getBookDtoDao();
-            System.out.println("showBookById - " + validator.isNumber(bookId));
             if (validator.isNumber(bookId)) {
                 return bookDtoDao.getBookById(Long.parseLong(bookId));
+            } else {
+                throw new ServiceException("Invalid book ID");
             }
         } catch (DAOException e) {
             logger.error("Error in services when retrieving a book by ID. ID - {}", bookId);
             throw new ServiceException("Error in services when retrieving a book by ID.", e);
         }
-        return Optional.empty();
     }
 
     @Override

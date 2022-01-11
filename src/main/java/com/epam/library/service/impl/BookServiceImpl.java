@@ -4,14 +4,10 @@ import com.epam.library.dao.BookDao;
 import com.epam.library.dao.DAOException;
 import com.epam.library.dao.DAOFactory;
 import com.epam.library.entity.*;
-import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 public class BookServiceImpl implements BookService {

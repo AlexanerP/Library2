@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
@@ -25,6 +26,7 @@ public class RegistrationCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
             logger.info("Start registration.");
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.REGISTRATION);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
             String email = req.getParameter("email");
@@ -47,11 +49,11 @@ public class RegistrationCommand implements Command {
                 } else if (flagRegistration == 2){
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }else if (flagRegistration == 3) {
                     String negativeMessage = "Operation failed";
                     session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.REGISTRATION_PAGE).forward(req, resp);

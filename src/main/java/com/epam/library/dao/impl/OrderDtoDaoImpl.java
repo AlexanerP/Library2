@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OrderDtoDAOImpl extends DAOHelper implements OrderBookDtoDao {
+public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderDtoDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrderDtoDaoImpl.class);
 
     private final static String GET_ORDER_BY_ID_QUERY = String.format("SELECT * from %s left join %s " +
                     "on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) left join %s on(%s.%s=%s.%s) where %s.%s=?",

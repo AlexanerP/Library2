@@ -17,7 +17,7 @@ public class PathJsp {
     public static final String UPDATE_USER_PAGE = "WEB-INF/pages/user/updateUserPage.jsp";
     public static final String MANAGER_CATALOG_PAGE = "WEB-INF/pages/user/managerCatalogPage.jsp";
 
-    public static final String ERROR_PAGE = "error.jsp";
+    public static final String ERROR_PAGE = "WEB-INF/pages/error.jsp";
 
     public static final String MESSAGE_PAGE = "WEB-INF/pages/messagePage.jsp";
 

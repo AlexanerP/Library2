@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.OrderService;
@@ -21,6 +22,7 @@ public class OrderBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ORDER_BOOK);
             Long bookId = (Long) req.getSession().getAttribute("orderBookId");
             User user = (User) req.getSession().getAttribute("user");
             String library = req.getParameter("library");
@@ -31,15 +33,14 @@ public class OrderBookCommand implements Command {
                 if (orderService.create(bookId + "", user.getUserId() + "", library, comment)) {
                     String successfulMessage = "Operation successful";
                     req.getSession().setAttribute("successfulMessage", successfulMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 } else {
                     String negativeMessage = "Operation failed";
                     req.getSession().setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=GoToMessagePage");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
-                resp.sendRedirect("Controller?command=GoToMainPage");
-//                resp.sendRedirect("Controller?command=GoToMessagePage&message=" + "Order error.");
+                resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
             }
         }catch (ServiceException e) {
             logger.error("Error while ordering a book.", e);

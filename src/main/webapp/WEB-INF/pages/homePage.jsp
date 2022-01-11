@@ -8,14 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="private_room"></fmt:message></title>
     <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
 </head>
 <body>
 
 <div align="center"><h1><fmt:message key="title_welcome"></fmt:message> ${user.secondName} ${user.lastName}</h1></div>
+<br>
+<c:if test="${user.status eq 'BLOCKED'}">
+    <div align="center" color="red"><h1><fmt:message key="message_blocked_user"></fmt:message></h1></div>
+</c:if>
 <br><br>
 <div align="center">
     <table border="1" cellpadding="5">
@@ -29,7 +36,7 @@
         </c:if>
         <tr>
             <td><fmt:message key="user_menu_show_catalog_page"></fmt:message></td>
-            <td><a href="Controller?command=CatalogByPage"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=GoToCatalogByPage"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="user_menu_search_book"></fmt:message></td>

@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
@@ -24,6 +25,7 @@ public class SingInCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.SIGN_IN);
             UserService userService = new UserServiceImpl();
             HttpSession session = req.getSession();
             String email = req.getParameter("email");
@@ -40,12 +42,10 @@ public class SingInCommand implements Command {
                     user.setLastName(optionalUser.get().getLastName());
                     user.setStatus(optionalUser.get().getStatus());
                     session.setAttribute("user", user);
-//                    req.getRequestDispatcher("WEB-INF/pages/homePage.jsp").forward(req, resp);
-                    resp.sendRedirect("Controller?command=GoToHome");
+                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_HOME);
                 } else {
                     req.setAttribute("message", "User is not found.");
                     resp.sendRedirect(PathJsp.MESSAGE_PAGE);
-//                    req.getRequestDispatcher(PathFile.INDEX_PAGE).forward(req, resp);
                 }
             } else {
                 resp.sendRedirect(PathJsp.INDEX_PAGE);

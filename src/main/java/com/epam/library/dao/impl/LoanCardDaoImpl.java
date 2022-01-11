@@ -1,14 +1,12 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOHelper;
+import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.LoanCardDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
-import com.epam.library.dao.mapper.AuthorMapper;
 import com.epam.library.dao.mapper.LoanCardMapper;
-import com.epam.library.entity.Author;
 import com.epam.library.entity.LoanCard;
 import com.epam.library.entity.LoanCardStatus;
 import org.slf4j.Logger;
@@ -22,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class LoanCardDaoImpl extends DAOHelper implements LoanCardDao {
+public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
 
     private static final Logger logger = LoggerFactory.getLogger(LoanCardDaoImpl.class);
 

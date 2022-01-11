@@ -8,9 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="/WEB-INF/pages/error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <html>
 <head>
-    <title><fmt:message key="admin_menu_issuing_books"></title>
+    <title><fmt:message key="admin_menu_issuing_books"></fmt:message></title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>

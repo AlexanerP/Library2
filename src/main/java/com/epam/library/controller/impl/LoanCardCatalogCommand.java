@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.dto.LoanCardDto;
@@ -22,6 +23,7 @@ public class LoanCardCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.LOAN_CARD_CATALOG);
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             LoanCardDtoService loanCardService = ServiceFactory.getInstance().getLoanCardDtoService();
             List<LoanCardDto> loanCards = new ArrayList<>();

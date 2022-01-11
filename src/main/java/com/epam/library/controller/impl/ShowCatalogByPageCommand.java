@@ -1,6 +1,7 @@
 package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.BookDtoService;
@@ -24,6 +25,7 @@ public class ShowCatalogByPageCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             logger.info("Show catalog by page.");
+
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             String next = req.getParameter("next");
             String back = req.getParameter("back");
@@ -49,9 +51,8 @@ public class ShowCatalogByPageCommand implements Command {
             }
             books = bookDtoService.showByPage(page, limit);
             req.getSession().setAttribute("pageCatalog", page);
-//            req.setAttribute("pageCatalog", page);
             req.setAttribute("bookList", books);
-
+            req.getSession().setAttribute("url", "Controller?command=" + CommandType.SHOW_CATALOG_BY_PAGE + "&pageCatalog=" + page);
             req.getRequestDispatcher(PathJsp.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("An error occurred while browsing the book catalog.", e);

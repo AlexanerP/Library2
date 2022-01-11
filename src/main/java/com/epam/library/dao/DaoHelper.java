@@ -8,9 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class DAOHelper {
+public abstract class DaoHelper {
 
-    private final static Logger logger = LoggerFactory.getLogger(DAOHelper.class);
+    private final static Logger logger = LoggerFactory.getLogger(DaoHelper.class);
 
     public PreparedStatement createPreparedStatement(Connection connection, String query, Object... parameters) throws SQLException {
         logger.info("Create statement. Query - {}", query);

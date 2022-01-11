@@ -9,6 +9,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" errorPage="/WEB-INF/pages/error.jsp" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="interface"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,18 +28,19 @@
             <th>#</th>
             <th><fmt:message key="book_title"></fmt:message></th>
             <th><fmt:message key="book_author"></fmt:message></th>
-            <th><fmt:message key="book_genre"></fmt:message></th>
             <th><fmt:message key="book_isbn"></fmt:message></th>
+            <th><fmt:message key="book_genre"></fmt:message></th>
             <th><fmt:message key="book_publisher"></fmt:message></th>
             <th><fmt:message key="book_year"></fmt:message></th>
             <th><fmt:message key="book_shelf"></fmt:message></th>
-            <th>Order this Item</th>
-            <th>Add to Wishlist</th>
+            <th><fmt:message key="order_command"></fmt:message></th>
+            <th><fmt:message key="wish_command"></fmt:message></th>
         </tr>
         <c:forEach var="bookDTO" items="${bookList}">
             <tr>
                 <td><c:out value="${bookDTO.bookDtoId}"></c:out></td>
                 <td><c:out value="${bookDTO.title}"></c:out></td>
+                <td><c:out value="${bookDTO.isbn}"></c:out></td>
                 <td>
                     <c:forEach var="author" items="${bookDTO.authors}">
                         <c:out value="${author.name}"></c:out>
@@ -47,16 +51,15 @@
                         <c:out value="${genre.category}"></c:out>
                     </c:forEach>
                 </td>
-                <td><c:out value="${bookDTO.isbn}"></c:out></td>
                 <td><c:out value="${bookDTO.publisher}"></c:out></td>
                 <td><c:out value="${bookDTO.year}"></c:out></td>
                 <td><c:out value="${bookDTO.shelf}"></c:out></td>
 
-                <td><c:if test="${bookDTO.borrow < bookDTO.quantity}">
-                    <a href="?command=GoToRequestMaterials&bookId=${bookDTO.bookDtoId}"><fmt:message key="order_command"></fmt:message></a>
+                <td><c:if test="${bookDTO.borrow < bookDTO.quantity and user.status != 'BLOCKED'}">
+                    <a href="?command=GoToOrder&bookId=${bookDTO.bookDtoId}"><fmt:message key="order_command"></fmt:message></a>
                     </a>
                 </c:if></td>
-                <td><a href="?command=GoToWishList&bookId=${bookDTO.bookDtoId}"><fmt:message key="add_to_wish_list"></fmt:message></a></td>
+                <td><a href="?command=ActionWishBook&bookId=${bookDTO.bookDtoId}&add=add"><fmt:message key="add_to_wish_list"></fmt:message></a></td>
             </tr>
         </c:forEach>
         <tr>
