@@ -2,6 +2,7 @@ package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.OrderStatus;
 import com.epam.library.service.*;
@@ -25,13 +26,13 @@ public class GoToAdminPageCommand implements Command {
             HttpSession session = req.getSession();
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             long countOrders = orderService.showCountByStatus(OrderStatus.OPENED.name());
-            session.setAttribute("countOrders", countOrders);
+            session.setAttribute(Constant.ORDERS_SIZE, countOrders);
 
-            resp.sendRedirect("Controller?command=" + CommandType.ADMIN_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ADMIN_PAGE);
 
         }catch (ServiceException e) {
             logger.error("Error getting admin page.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

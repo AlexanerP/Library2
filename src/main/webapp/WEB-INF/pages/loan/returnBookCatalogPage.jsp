@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="admin_menu_return_books"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="admin_menu_return_books"></fmt:message></h1></div>
 <form>
     <input type="hidden" name="command" value="ReturnBookCatalog">
@@ -54,8 +56,8 @@
         <tr>
             <td><fmt:message key="loan_card_by_city"></fmt:message></td>
             <td>
-                <select name="library">
-                    <c:forEach var="library" items="${library}">
+                <select name="city">
+                    <c:forEach var="library" items="${libraries}">
                         <option value="${library.city}"><c:out value="${library.city}"></c:out></option>
                     </c:forEach>
                 </select>
@@ -98,8 +100,16 @@
                 <tr>
                     <td><c:out value="${status.index + 1}"></c:out></td>
                     <td><c:out value="${card.loanCardDtoId}"></c:out></td>
-                    <td><a href="?command=CatalogBook&bookId=${card.bookId}"><c:out value="${card.bookId}"></c:out></a></td>
-                    <td><a href="?command=UserCatalog&userId=${card.userId}"><c:out value="${card.userId}"></c:out></a></td>
+                    <td>
+                        <a href="?command=CatalogBook&bookId=${card.bookId}"><c:out value="${card.bookId}"></c:out></a>
+                        <p>
+                            <input type="button" value="<fmt:message key="details"></fmt:message>">
+                        </p>
+                    </td>
+                    <td>
+                        <a href="?command=UserCatalog&userId=${card.userId}"><c:out value="${card.userId}"></c:out></a>
+                        <input type="button" value="<fmt:message key="details"></fmt:message>">
+                    </td>
                     <td><c:out value="${card.title}"></c:out></td>
                     <td><c:out value="${card.isbn}"></c:out></td>
                     <td><c:out value="${card.takingBook}"></c:out></td>
@@ -110,7 +120,8 @@
                     <td><c:out value="${card.status}"></c:out></td>
                     <td>
                         <c:if test="${card.loanCardDtoId > 0}">
-                            <a href="?command=ActionReturnBook&loanCardId=${card.loanCardDtoId}"><fmt:message key="return_book_command"></fmt:message></a>
+                            <a href="?command=ActionReturnBook&loanCardId=${card.loanCardDtoId}"><input type="button" value="<fmt:message key="return_book_command"></fmt:message>"></a>
+                            <a href="?command=ActionReturnBook&loanCardId=${card.loanCardDtoId}&violation=yes"><input type="button" value="<fmt:message key="book_return_with_violation"></fmt:message>"></a>
                         </c:if>
                     </td>
                 </tr>

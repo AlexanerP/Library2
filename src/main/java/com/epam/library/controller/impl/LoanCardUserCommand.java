@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.dto.LoanCardDto;
@@ -25,21 +26,21 @@ public class LoanCardUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.LOAN_CARD_USER);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.LOAN_CARD_USER);
             LoanCardDtoService loanCardDtoService = ServiceFactory.getInstance().getLoanCardDtoService();
             HttpSession session = req.getSession();
-            User user = (User) session.getAttribute("user");
+            User user = (User) session.getAttribute(Constant.USER);
             List<LoanCardDto> cardsList;
             if (user != null) {
                 cardsList = loanCardDtoService.showCardsByUser(user.getUserId() + "");
-                req.setAttribute("loanCards", cardsList);
+                req.setAttribute(Constant.LOAN_CARDS, cardsList);
                 req.getRequestDispatcher(PathJsp.USER_LOAN_CARD).forward(req, resp);
             } else {
                 resp.sendRedirect(PathJsp.INDEX_PAGE);
             }
         } catch (ServiceException e) {
             logger.error("Error while retrieving the history of borrowed books by the user.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.WishBookDao;
 import com.epam.library.dao.connection.ConnectionPool;
@@ -39,7 +39,7 @@ public class WishBookDaoImpl extends DaoHelper implements WishBookDao {
             TableName.WISH_BOOK);
 
     @Override
-    public boolean create(WishBook wishBook) throws DAOException {
+    public boolean create(WishBook wishBook) throws DaoException {
         logger.info("Creating wish book");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -49,14 +49,14 @@ public class WishBookDaoImpl extends DaoHelper implements WishBookDao {
             return true;
         }catch (SQLException e) {
             logger.error("Error adding favorite book to list.");
-            throw new DAOException("Error adding favorite book to list.", e);
+            throw new DaoException("Error adding favorite book to list.", e);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public int delete(long wishBookId) throws DAOException {
+    public int delete(long wishBookId) throws DaoException {
         logger.info("Deleting wish book");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -64,14 +64,14 @@ public class WishBookDaoImpl extends DaoHelper implements WishBookDao {
             return prStatement.executeUpdate();
         }catch (SQLException e) {
             logger.error("Error deleting favorite book from list.");
-            throw new DAOException("Error deleting favorite book from list.", e);
+            throw new DaoException("Error deleting favorite book from list.", e);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public long getCountWishBooks() throws DAOException {
+    public long getCountWishBooks() throws DaoException {
         logger.info("Getting the number of favorite books.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -85,7 +85,7 @@ public class WishBookDaoImpl extends DaoHelper implements WishBookDao {
             return countBooks;
         }catch (SQLException e) {
             logger.error("Error when getting the number of favorite books.");
-            throw new DAOException("Error when getting the number of favorite books.", e);
+            throw new DaoException("Error when getting the number of favorite books.", e);
         }finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -111,11 +111,11 @@ public class WishBookDaoImpl extends DaoHelper implements WishBookDao {
                 return Optional.empty();
             } else {
                 logger.info("Found more than one book for the user.");
-                throw new DAOException("Found more than one book for the user.");
+                throw new DaoException("Found more than one book for the user.");
             }
         } catch (SQLException e) {
             logger.error("Error while getting wish book.");
-            throw new DAOException("Error while getting wish book.", e);
+            throw new DaoException("Error while getting wish book.", e);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -140,11 +140,11 @@ public class WishBookDaoImpl extends DaoHelper implements WishBookDao {
                 return Optional.empty();
             } else {
                 logger.info("Find more 1 wishBook.");
-                throw new DAOException("Find more 1 wishBook.");
+                throw new DaoException("Find more 1 wishBook.");
             }
         } catch (SQLException e) {
             logger.error("Error while getting wish book.");
-            throw new DAOException("Error while getting wish book.", e);
+            throw new DaoException("Error while getting wish book.", e);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

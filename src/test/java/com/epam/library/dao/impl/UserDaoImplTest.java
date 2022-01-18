@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.UserDao;
 import com.epam.library.entity.User;
 import com.epam.library.entity.UserRole;
@@ -18,9 +18,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class UserDAOImplTest {
+public class UserDaoImplTest {
 
-    private final static Logger logger = LoggerFactory.getLogger(UserDAOImplTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserDaoImplTest.class);
 
 
     private static UserDao userDao;
@@ -45,7 +45,7 @@ public class UserDAOImplTest {
             boolean condition = userDao.create(user);
             logger.info("Finish test. Result - {}, user - {}", condition, user.toString());
             assertFalse(condition);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }
@@ -68,7 +68,7 @@ public class UserDAOImplTest {
             int actual = 1;
             logger.info("Finish test. Result - {}, user - {}", expected, user.toString());
             assertEquals(expected, actual);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }
@@ -84,7 +84,7 @@ public class UserDAOImplTest {
             int actual = 1;
             logger.info("Finish test. Result - {}, user - {}", expected, user.toString());
             assertEquals(expected, actual);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }
@@ -107,7 +107,7 @@ public class UserDAOImplTest {
             Optional<User> optional = userDao.getUserByEmailAndPassword(email, password);
             System.out.println(optional.toString());
 //            assertFalse(optional.isEmpty());
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             e.printStackTrace();
         }
     }
@@ -126,7 +126,7 @@ public class UserDAOImplTest {
             int actual = 1;
             logger.info("Finish test. Result - {},", expected );
             assertEquals(expected, actual);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }
@@ -137,7 +137,7 @@ public class UserDAOImplTest {
         try {
             List<User> users = userDao.getUsers();
             assertFalse(users.isEmpty());
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             e.toString();
         }
     }
@@ -150,7 +150,7 @@ public class UserDAOImplTest {
             List<User> users = userDao.getUsersByStatus(status);
             System.out.println(users);
             assertFalse(users.isEmpty());
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             e.toString();
         }
     }
@@ -162,7 +162,7 @@ public class UserDAOImplTest {
             UserRole role = UserRole.USER;
             List<User> users = userDao.getUsersByRole(role);
             assertFalse(users.isEmpty());
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             e.toString();
         }
     }
@@ -175,7 +175,7 @@ public class UserDAOImplTest {
             long expected = 1;
             long actual = userDao.getCountByStatus(status);
             assertEquals(expected, actual);
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             e.toString();
         }
     }

@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.OrderService;
 import com.epam.library.service.ServiceException;
@@ -21,27 +22,25 @@ public class ActionUserOrderCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_USER_ORDER);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.ACTION_USER_ORDER);
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
-            String orderUserId = req.getParameter("orderUserId");
-            String action = req.getParameter("action");
+            String orderUserId = req.getParameter(Constant.ORDER_USER_ID);
+            String action = req.getParameter(Constant.ACTION);
             if (orderUserId != null && action != null) {
                 boolean resultOperation = orderService.delete(orderUserId);
                 if (resultOperation) {
-                    String successfulMessage = "Operation successful";
-                    req.getSession().setAttribute("successfulMessage", successfulMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.ORDER_USER);
+                    req.getSession().setAttribute(Constant.MESSAGE_CODE_1016, Constant.MESSAGE_CODE_1016);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ORDER_USER);
                 } else {
-                    String negativeMessage = "Operation failed";
-                    req.getSession().setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                    req.getSession().setAttribute(Constant.MESSAGE_ERROR_CODE_1020, Constant.MESSAGE_ERROR_CODE_1020);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
-                req.getRequestDispatcher("Controller?command=" + CommandType.ORDER_USER).forward(req, resp);
+                req.getRequestDispatcher(CommandType.CONTROLLER_COMMAND + CommandType.ORDER_USER).forward(req, resp);
             }
         } catch (ServiceException e) {
             logger.error("Error while deleting book order by user.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="admin_menu_statistic"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="admin_menu_statistic"></fmt:message></h1></div>
 <div align="center">
     <table>
@@ -44,18 +46,18 @@
                         <td><fmt:message key="statistic_user_count_count_delete"></fmt:message></td>
                         <td>${countUsersDelete}</td>
                     </tr>
-                    <tr>
-                        <td>Количество новых пользователей в этом месяце</td>
-                        <td>-</td>
-<%--                        <td>${countNewUsersMonth}</td>--%>
-                    </tr>
-                    </td>
-                    <td>
-                        <tr>
-                            <td>Количество новых пользователей в этом году</td>
-                            <td>-</td>
-<%--                            <td>${countNewUsersYear}</td>--%>
-                        </tr>
+<%--                    <tr>--%>
+<%--                        <td>Количество новых пользователей в этом месяце</td>--%>
+<%--                        <td>-</td>--%>
+<%--&lt;%&ndash;                        <td>${countNewUsersMonth}</td>&ndash;%&gt;--%>
+<%--                    </tr>--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <tr>--%>
+<%--                            <td>Количество новых пользователей в этом году</td>--%>
+<%--                            <td>-</td>--%>
+<%--&lt;%&ndash;                            <td>${countNewUsersYear}</td>&ndash;%&gt;--%>
+<%--                        </tr>--%>
                 </table>
             </td>
             <td>
@@ -69,16 +71,16 @@
                         <td><fmt:message key="statistic_book_count"></fmt:message></td>
                         <td>${countBooks}</td>
                     </tr>
-                    <tr>
-                        <td>Количество новых книг в этом месяце</td>
-                        <td>-</td>
-<%--                        <td>${countNewBookMonth}</td>--%>
-                    </tr>
-                    <tr>
-                        <td>Количество новых книг в этом году</td>
-                        <td>${countNewBookYear}</td>
-                    </tr>
-                    </td>
+<%--                    <tr>--%>
+<%--                        <td>Количество новых книг в этом месяце</td>--%>
+<%--                        <td>-</td>--%>
+<%--&lt;%&ndash;                        <td>${countNewBookMonth}</td>&ndash;%&gt;--%>
+<%--                    </tr>--%>
+<%--                    <tr>--%>
+<%--                        <td>Количество новых книг в этом году</td>--%>
+<%--                        <td>${countNewBookYear}</td>--%>
+<%--                    </tr>--%>
+<%--                    </td>--%>
                 </table>
             </td>
         </tr>

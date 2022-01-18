@@ -2,9 +2,8 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
-import com.epam.library.entity.Library;
-import com.epam.library.entity.LibraryStatus;
 import com.epam.library.entity.dto.OrderDto;
 import com.epam.library.service.*;
 import org.slf4j.Logger;
@@ -17,26 +16,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GiveOutBookCatalogCommand implements Command {
+public class CatalogGiveOutBookCommand implements Command {
 
-    private static final Logger logger = LoggerFactory.getLogger(GiveOutBookCatalogCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(CatalogGiveOutBookCommand.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GIVE_OUT_BOOK_USER);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.GIVE_OUT_BOOK_USER);
             OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
-            LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             List<OrderDto> orders = new ArrayList<>();
-            List<Library> libraries = libraryService.showByStatus(LibraryStatus.OPENED.name());
 
-            String orderId = req.getParameter("orderId");
-            String city = req.getParameter("library");
-            String status = req.getParameter("status");
-            String all = req.getParameter("getAll");
+            String orderId = req.getParameter(Constant.ORDER_ID);
+            String city = req.getParameter(Constant.LIBRARY_CITY);
+            String status = req.getParameter(Constant.STATUS);
+            String all = req.getParameter(Constant.ORDER_ALL);
 
-            if (orderId != null) {
-                orders.add(orderDtoService.showOrderById(orderId).get());
+            if (orderId != null && orderId != "") {
+                orders.add(orderDtoService.showOrderById(orderId).orElse(new OrderDto()));
             } else if (city != null && status == null) {
                 orders = orderDtoService.showOrdersByCity(city);
             } else if (city != null && status != null) {
@@ -45,14 +42,13 @@ public class GiveOutBookCatalogCommand implements Command {
                 orders = orderDtoService.showAllOrders();
             }
 
-            req.setAttribute("libraries", libraries);
-            req.setAttribute("orders", orders);
-            req.setAttribute("ordersSize", orders.size());
+            req.setAttribute(Constant.ORDERS, orders);
+            req.setAttribute(Constant.ORDERS_SIZE, orders.size());
             req.getRequestDispatcher(PathJsp.GIVE_OUT_BOOK_PAGE).forward(req, resp);
 
         } catch (ServiceException e) {
             logger.error("An error occurred when working with the catalog for issuing books.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

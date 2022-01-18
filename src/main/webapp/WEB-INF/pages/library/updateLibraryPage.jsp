@@ -15,9 +15,11 @@
 <html>
 <head>
     <title><fmt:message key="admin_menu_libraries"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="admin_menu_libraries"></fmt:message></h1></div>
 <div align="center">
     <form>
@@ -44,7 +46,7 @@
                 <td><input type="text" name="street" placeholder="${library.street}"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="submit" value="<fmt:message key="button_update"></fmt:message>"></td>
+                <td colspan="3"><input class="button" type="submit" value="<fmt:message key="button_update"></fmt:message>"></td>
             </tr>
         </table>
     </form>

@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.LibraryService;
 import com.epam.library.service.ServiceException;
@@ -21,27 +22,28 @@ public class CreateLibraryCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.CREATE_LIBRARY);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.CREATE_LIBRARY);
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-            String city = req.getParameter("city");
-            String street = req.getParameter("street");
-            if (city != null && street != null) {
-                boolean resultOperation = libraryService.create(city, street);
-                if (resultOperation) {
-                    String successfulMessage = "Operation successful";
-                    req.getSession().setAttribute("successfulMessage", successfulMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
-                } else {
-                    String negativeMessage = "Operation failed";
-                    req.getSession().setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+            String city = req.getParameter(Constant.LIBRARY_CITY);
+            String street = req.getParameter(Constant.LIBRARY_STREET);
+            if (city != null && street != null && city != "" && street != "") {
+                int resultOperation = libraryService.create(city, street);
+                if (resultOperation == 1) {
+                    req.getSession().setAttribute(Constant.MESSAGE_CODE_1005, Constant.MESSAGE_CODE_1005);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+                } else if (resultOperation == 2){
+                    req.getSession().setAttribute(Constant.MESSAGE_ERROR_CODE_1010, Constant.MESSAGE_ERROR_CODE_1010);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+                } else if (resultOperation == 3){
+                    req.getSession().setAttribute(Constant.MESSAGE_ERROR_CODE_1007, Constant.MESSAGE_ERROR_CODE_1007);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.LIBRARY_CATALOG_PAGE).forward(req, resp);
             }
         } catch (ServiceException e) {
             logger.error("Error while creating the library.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

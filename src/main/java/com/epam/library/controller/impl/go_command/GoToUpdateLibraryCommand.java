@@ -2,6 +2,7 @@ package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.service.LibraryService;
@@ -22,20 +23,21 @@ public class GoToUpdateLibraryCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-            String libraryId = req.getParameter("libraryId");
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_UPDATE_LIBRARY + "&libraryId=" + libraryId);
-            Library library = new Library();
+            String libraryId = req.getParameter(Constant.LIBRARY_ID);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND +
+                    CommandType.GO_TO_UPDATE_LIBRARY + "&" + Constant.LIBRARY_ID + "=" + libraryId);
             if (libraryId != null) {
-                library = libraryService.showById(libraryId).orElse(new Library("-", "-"));
+                Library library = libraryService.showById(libraryId).orElse(new Library("-", "-"));
+                req.getSession().setAttribute(Constant.UPDATE_LIBRARY_ID, library.getLibraryId());
+                req.getSession().setAttribute(Constant.LIBRARY, library);
+                req.getRequestDispatcher(PathJsp.UPDATE_LIBRARY_PAGE).forward(req, resp);
+            } else {
+                req.getRequestDispatcher(CommandType.LIBRARY_CATALOG).forward(req, resp);
             }
-            req.getSession().setAttribute("updateLibraryId", library.getLibraryId());
-            req.getSession().setAttribute("library", library);
-            req.getRequestDispatcher(PathJsp.UPDATE_LIBRARY_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("An error occurred while preparing the library for updating.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

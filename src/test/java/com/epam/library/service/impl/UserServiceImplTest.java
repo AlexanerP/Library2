@@ -127,9 +127,10 @@ class UserServiceImplTest {
             String secondName = "";
             String lastName = "1";
 
-            boolean condition = userService.update(email, secondName, lastName, userId);
+            int expected = 1;
+            int actual =  userService.update(email, secondName, lastName, userId);
 
-            assertTrue(condition);
+            assertEquals(expected, actual);
         }catch (ServiceException e) {
             e.printStackTrace();
         }
@@ -165,8 +166,9 @@ class UserServiceImplTest {
             String password = "Manager1";
             String email = "1";
             String oldPassword = "1";
-            boolean condition = userService.updatePassword(password, email, oldPassword);
-            assertTrue(condition);
+            int expected = 1;
+            int actual = userService.updatePassword(password, email, oldPassword);
+            assertEquals(expected, actual);
         }catch (ServiceException e) {
             e.printStackTrace();
         }

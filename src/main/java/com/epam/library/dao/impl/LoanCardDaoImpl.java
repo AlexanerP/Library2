@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.LoanCardDao;
 import com.epam.library.dao.connection.ConnectionPool;
@@ -53,7 +53,7 @@ public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
 
 
     @Override
-    public boolean create(LoanCard card) throws DAOException {
+    public boolean create(LoanCard card) throws DaoException {
         logger.info("Loan card creating.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -65,7 +65,7 @@ public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("An error occured while creating the loan card. Loan card - {}.", card.toString());
-            throw new DAOException("Failed to create Loan card.", sqlE);
+            throw new DaoException("Failed to create Loan card.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
             closeResultSet(resultSet);
@@ -73,7 +73,7 @@ public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
     }
 
     @Override
-    public Optional<LoanCard> getCardById(long cardId) throws DAOException {
+    public Optional<LoanCard> getCardById(long cardId) throws DaoException {
         logger.info("Receiving a loan card by ID.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -91,12 +91,12 @@ public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 loan card.");
+                throw new DaoException("Find more 1 loan card.");
             }
 
         } catch (SQLException sqlE) {
             logger.error("Error while retrieving loan card from database.");
-            throw new DAOException("Error while retrieving loan card from database.", sqlE);
+            throw new DaoException("Error while retrieving loan card from database.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -104,7 +104,7 @@ public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
     }
 
     @Override
-    public boolean update(LoanCard card) throws DAOException {
+    public boolean update(LoanCard card) throws DaoException {
         logger.info("Update loan card.");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -116,14 +116,14 @@ public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("Failed to update Loan card. Personal card {}", card.toString());
-            throw new DAOException("Failed to update Loan card.", sqlE);
+            throw new DaoException("Failed to update Loan card.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public long getCountCardsByStatus(LoanCardStatus status) throws DAOException {
+    public long getCountCardsByStatus(LoanCardStatus status) throws DaoException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         long count = 0;
@@ -135,7 +135,7 @@ public class LoanCardDaoImpl extends DaoHelper implements LoanCardDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Number of loan cards by status not received.");
-            throw new DAOException("Number of loan cards by status not received.", sqlE);
+            throw new DaoException("Number of loan cards by status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

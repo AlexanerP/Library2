@@ -14,8 +14,9 @@
 <html>
 <head>
     <title><fmt:message key="order_book"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
 <div align="center"><h1><fmt:message key="order_book"></fmt:message></h1></div>
 <form>
@@ -24,28 +25,28 @@
         <table>
             <tr>
                 <td><fmt:message key="book_id"></fmt:message></td>
-                <td><c:out value="${book.bookDtoId}"></c:out></td>
+                <td><c:out value="${books.bookDtoId}"></c:out></td>
             </tr>
             <tr>
                 <td><fmt:message key="book_title"></fmt:message></td>
-                <td><c:out value="${book.title}"></c:out></td>
+                <td><c:out value="${books.title}"></c:out></td>
             </tr>
             <tr>
                 <td><fmt:message key="book_isbn"></fmt:message></td>
-                <td><c:out value="${book.isbn}"></c:out></td>
+                <td><c:out value="${books.isbn}"></c:out></td>
             </tr>
             <tr>
                 <td><fmt:message key="book_publisher"></fmt:message></td>
-                <td><c:out value="${book.publisher}"></c:out></td>
+                <td><c:out value="${books.publisher}"></c:out></td>
             </tr>
             <tr>
                 <td><fmt:message key="book_year"></fmt:message></td>
-                <td><c:out value="${book.year}"></c:out></td>
+                <td><c:out value="${books.year}"></c:out></td>
             </tr>
             <tr>
                 <td><fmt:message key="book_author"></fmt:message></td>
                 <td>
-                    <c:forEach var="author" items="${book.authors}">
+                    <c:forEach var="author" items="${books.authors}">
                         <c:out value="${author.name}"></c:out>
                     </c:forEach>
                 </td>
@@ -53,23 +54,23 @@
             <tr>
                 <td><fmt:message key="book_genre"></fmt:message></td>
                 <td>
-                    <c:forEach var="genre" items="${book.genres}">
+                    <c:forEach var="genre" items="${books.genres}">
                         <c:out value="${genre.category}"></c:out>
                     </c:forEach>
                 </td>
             </tr>
             <tr>
                 <td><fmt:message key="book_shelf"></fmt:message>:</td>
-                <td><c:out value="${book.shelf}"></c:out></td>
+                <td><c:out value="${books.shelf}"></c:out></td>
             </tr>
             <tr>
                 <td><fmt:message key="book_description"></fmt:message></td>
-                <td><c:out value="${book.description}"></c:out></td>
+                <td><c:out value="${books.description}"></c:out></td>
             </tr>
             <tr>
                 <td><fmt:message key="library_city"></fmt:message></td>
                 <td>
-                    <select name="library">
+                    <select name="city">
                         <c:forEach var="libraries" items="${libraries}">
                             <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
                         </c:forEach>

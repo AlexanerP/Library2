@@ -15,9 +15,11 @@
 <html>
 <head>
     <title><fmt:message key="title_update_book"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="title_update_book"></fmt:message></h1></div>
 
 <div align="center">
@@ -48,7 +50,7 @@
                 <td><fmt:message key="library_city"></fmt:message></td>
                 <td><c:out value="${book.cityLibrary}"></c:out></td>
                 <td>
-                    <select name="cityLibrary">
+                    <select name="city">
                         <c:forEach var="libraries" items="${libraries}">
                             <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
                         </c:forEach>

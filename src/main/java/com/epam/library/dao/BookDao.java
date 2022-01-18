@@ -6,10 +6,10 @@ import java.util.Optional;
 
 public interface BookDao {
 
-    int update(Book book) throws DAOException;
+    int update(Book book) throws DaoException;
 
-    Optional<Book> getBookById(Long bookId) throws DAOException;
+    Optional<Book> getBookById(Long bookId) throws DaoException;
 
-    long getCountBooks() throws DAOException;
+    long getCountBooks() throws DaoException;
 
 }

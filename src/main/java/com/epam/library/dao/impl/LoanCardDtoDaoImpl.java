@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.LoanCardDtoDao;
 import com.epam.library.dao.connection.ConnectionPool;
@@ -94,7 +94,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
             TableName.LOAN_CARDS, ColumnName.LOAN_CARD_ID_CARD, TableName.LOAN_CARDS, ColumnName.LOAN_CARD_ID_CARD);
 
     @Override
-    public List<LoanCardDto> getCardsByIdUser(long id) throws DAOException {
+    public List<LoanCardDto> getCardsByIdUser(long id) throws DaoException {
         logger.info("Getting a list of user's cards by id user - {}", id);
         List<LoanCardDto> cards = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -110,7 +110,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Loan cards by id user not received.");
-            throw new DAOException("Loan cards by id user not received.", sqlE);
+            throw new DaoException("Loan cards by id user not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -120,7 +120,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
     }
 
     @Override
-    public List<LoanCardDto> getCardsByStatusCard(LoanCardStatus status) throws DAOException {
+    public List<LoanCardDto> getCardsByStatusCard(LoanCardStatus status) throws DaoException {
         logger.info("Getting a list of status cards by status - {}", status);
         List<LoanCardDto> cards = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -134,7 +134,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Loan cards by status card not received.");
-            throw new DAOException("Loan cards by status card not received.", sqlE);
+            throw new DaoException("Loan cards by status card not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -144,7 +144,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
     }
 
     @Override
-    public List<LoanCardDto> getCardsByIdBook(long id) throws DAOException {
+    public List<LoanCardDto> getCardsByIdBook(long id) throws DaoException {
         logger.info("Getting a list of user's cards by id book - {}", id);
         List<LoanCardDto> cards = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -160,7 +160,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Loan cards by id book not received.");
-            throw new DAOException("Loan cards by id book not received.", sqlE);
+            throw new DaoException("Loan cards by id book not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -170,7 +170,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
     }
 
     @Override
-    public List<LoanCardDto> getCardsByCity(String city) throws DAOException {
+    public List<LoanCardDto> getCardsByCity(String city) throws DaoException {
         logger.info("Getting a list of user's cards by city - {}", city);
         List<LoanCardDto> cards = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -186,7 +186,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Loan cards by city not received.");
-            throw new DAOException("Loan cards by city not received.", sqlE);
+            throw new DaoException("Loan cards by city not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -196,7 +196,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
     }
 
     @Override
-    public List<LoanCardDto> getCardsByCityAndStatus(String city, LoanCardStatus status) throws DAOException {
+    public List<LoanCardDto> getCardsByCityAndStatus(String city, LoanCardStatus status) throws DaoException {
         logger.info("Getting a list of user's cards by city and status .");
         List<LoanCardDto> cards = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -213,7 +213,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
             return cards;
         } catch (SQLException sqlE) {
             logger.error("Loan cards by city and status not received.");
-            throw new DAOException("Loan cards by city and status not received.", sqlE);
+            throw new DaoException("Loan cards by city and status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -221,7 +221,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
     }
 
     @Override
-    public Optional<LoanCardDto> getCardsById(long id) throws DAOException {
+    public Optional<LoanCardDto> getCardsById(long id) throws DaoException {
         logger.info("Getting loan card by id.");
         LoanCardDtoMapper mapper = new LoanCardDtoMapper();
         PreparedStatement prStatement = null;
@@ -241,11 +241,11 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
                 return Optional.empty();
             } else {
                 logger.info("Find more 1 loan card.");
-                throw new DAOException("Find more 1 loan card.");
+                throw new DaoException("Find more 1 loan card.");
             }
         } catch (SQLException sqlE) {
             logger.error("Loan card not received.");
-            throw new DAOException("Loan card not received.", sqlE);
+            throw new DaoException("Loan card not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -253,7 +253,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
     }
 
     @Override
-    public List<LoanCardDto> getAll() throws DAOException {
+    public List<LoanCardDto> getAll() throws DaoException {
         logger.info("Getting a list of cards");
         List<LoanCardDto> cards = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -269,7 +269,7 @@ public class LoanCardDtoDaoImpl extends DaoHelper implements LoanCardDtoDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Personal cards not received.");
-            throw new DAOException("Loan cards not received.", sqlE);
+            throw new DaoException("Loan cards not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

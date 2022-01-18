@@ -1,7 +1,7 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.DaoException;
+import com.epam.library.dao.DaoFactory;
 import com.epam.library.dao.OrderDao;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.Order;
@@ -19,7 +19,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean create(String bookId, String userId, String city, String comment) throws ServiceException {
         try {
-            OrderDao orderDao = DAOFactory.getInstance().getOrderDao();
+            OrderDao orderDao = DaoFactory.getInstance().getOrderDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             if (bookId != null && userId != null && city != null) {
@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
             } else {
                 throw new ServiceException("The book ID, user ID or city value are empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when creating an order.");
             throw new ServiceException("Error in services when creating an order.", e);
         }
@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean updateStatus(String orderId, String status, String adminId) throws ServiceException {
         try {
-            OrderDao orderDao = DAOFactory.getInstance().getOrderDao();
+            OrderDao orderDao = DaoFactory.getInstance().getOrderDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (orderId != null && status != null && adminId != null) {
                 if (validator.isNumber(orderId) && validator.isNumber(adminId)) {
@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
             } else {
                 throw new ServiceException("The order ID, status or the admin ID value are empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when updating order status.");
             throw new ServiceException("Error in services when updating order status.", e);
         }
@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean update(String orderId, String comment, String city) throws ServiceException {
         try {
-            OrderDao orderDao = DAOFactory.getInstance().getOrderDao();
+            OrderDao orderDao = DaoFactory.getInstance().getOrderDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             if (orderId != null && city != null) {
@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
             } else {
                 throw new ServiceException("The order ID or the city value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when updating an order. The order does not exist.");
             throw new ServiceException("Error in services when updating an order. The order does not exist.", e);
         }
@@ -125,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean delete(String orderId) throws ServiceException {
         try {
-            OrderDao orderDao = DAOFactory.getInstance().getOrderDao();
+            OrderDao orderDao = DaoFactory.getInstance().getOrderDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (orderId != null) {
                 if (validator.isNumber(orderId)) {
@@ -140,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
             } else {
                 throw new ServiceException("The order ID value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when deleting an order.");
             throw new ServiceException("Error in services when deleting an order.", e);
         }
@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public long showCountByStatus(String status) throws ServiceException {
         try {
-            OrderDao orderDao = DAOFactory.getInstance().getOrderDao();
+            OrderDao orderDao = DaoFactory.getInstance().getOrderDao();
             if (status != null) {
                 if (status.equalsIgnoreCase(OrderStatus.OPENED.name()) || status.equalsIgnoreCase(OrderStatus.APPROVED.name())
                         || status.equalsIgnoreCase(OrderStatus.ARRIVED.name())
@@ -163,7 +163,7 @@ public class OrderServiceImpl implements OrderService {
             } else {
                 throw new ServiceException("The status value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when receiving count orders by status.");
             throw new ServiceException("Error in services when receiving count orders by status.", e);
         }
@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> showById(String orderId) throws ServiceException {
         try {
-            OrderDao orderDao = DAOFactory.getInstance().getOrderDao();
+            OrderDao orderDao = DaoFactory.getInstance().getOrderDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (orderId != null) {
                 if (validator.isNumber(orderId)) {
@@ -183,7 +183,7 @@ public class OrderServiceImpl implements OrderService {
             } else {
                 throw new ServiceException("The order ID value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when receiving an order by ID.");
             throw new ServiceException("Error in services when receiving an order by ID.", e);
         }

@@ -14,16 +14,18 @@
 <html>
 <head>
     <title><fmt:message key="admin_menu_catalog_loan_card"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="admin_menu_catalog_loan_card"></fmt:message></h1></div>
 <form>
     <input type="hidden" name="command" value="LoanCardCatalog">
     <table>
         <tr>
             <td><fmt:message key="loan_card_enter_id"></fmt:message></td>
-            <td><input type="number" name="cardId" min="1" placeholder="<fmt:message key="placeholder_loan_card_id"></fmt:message>"></td>
+            <td><input type="number" name="loanCardId" min="1" placeholder="<fmt:message key="placeholder_loan_card_id"></fmt:message>"></td>
             <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
@@ -137,8 +139,8 @@
                     <tr>
                         <td><c:out value="${status.index + 1}"></c:out></td>
                         <td><c:out value="${loanCards.loanCardDtoId}"></c:out></td>
-                        <td> <a href="?command=UserCatalog&userId=${loanCards.userId}"><c:out value="${loanCards.userId}"></c:out> </a></td>
-                        <td> <a href="?command=CatalogBook&bookId=${loanCards.bookId}"><c:out value="${loanCards.bookId}"></c:out> </a></td>
+                        <td> <a href="?command=UserCatalog&userId=${loanCards.userId}"><c:out value="${loanCards.userId}"></c:out> <br><input type="button" value="<fmt:message key="details"></fmt:message>"></a></td>
+                        <td> <a href="?command=CatalogBook&bookId=${loanCards.bookId}"><c:out value="${loanCards.bookId}"></c:out> <br><input type="button" value="<fmt:message key="details"></fmt:message>"></a></td>
                         <td><c:out value="${loanCards.title}"></c:out></td>
                         <td><c:out value="${loanCards.isbn}"></c:out></td>
                         <td><c:out value="${loanCards.secondName} ${loanCards.lastName} "></c:out></td>

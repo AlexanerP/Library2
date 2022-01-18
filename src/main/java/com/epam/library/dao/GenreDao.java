@@ -7,22 +7,22 @@ import java.util.Optional;
 
 public interface GenreDao {
 
-    boolean create(Genre genre) throws DAOException;
+    boolean create(Genre genre) throws DaoException;
 
-    boolean update(Genre genre) throws DAOException;
+    boolean update(Genre genre) throws DaoException;
 
-    Optional<Genre> getGenreById(long genreId) throws DAOException;
+    Optional<Genre> getGenreById(long genreId) throws DaoException;
 
-    Optional<Genre> getGenreByGenre(String genre) throws DAOException;
+    Optional<Genre> getGenreByGenre(String genre) throws DaoException;
 
-    boolean deleteGenreByBookId(long bookId) throws DAOException;
+    boolean deleteGenreByBookId(long bookId) throws DaoException;
 
-    List<Genre> getGenresByIdBook(long bookId) throws DAOException;
+    List<Genre> getGenresByIdBook(long bookId) throws DaoException;
 
-    List<Genre> getGenres() throws DAOException;
+    List<Genre> getGenres() throws DaoException;
 
-    long getCount() throws DAOException;
+    long getCount() throws DaoException;
 
-    long getCountByGenre(String genre) throws DAOException;
+    long getCountByGenre(String genre) throws DaoException;
 
 }

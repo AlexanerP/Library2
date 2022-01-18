@@ -2,7 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
-import com.epam.library.controller.PathJsp;
+import com.epam.library.controller.Constant;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -23,38 +23,26 @@ public class ActionWishBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_WISH_BOOK);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.ACTION_WISH_BOOK);
             WishBookService wishBookService = ServiceFactory.getInstance().getWishBookService();
             HttpSession session = req.getSession();
-            User user = (User) session.getAttribute("user");
-            String bookId = req.getParameter("bookId");
-            String actionAdd = req.getParameter("add");
-            String wishBookId = req.getParameter("wish_book_id");
-            if(bookId != null && actionAdd != null) {
-                boolean result = wishBookService.add(user.getUserId() + "", bookId);
-                if (result) {
-                    String successfulMessage = "Successful operation";
-                    session.setAttribute("successfulMessage", successfulMessage);
-                } else {
-                    String negativeMessage = "Operation failed";
-                    session.setAttribute("negativeMessage", negativeMessage);
+            User user = (User) session.getAttribute(Constant.USER);
+            String bookId = req.getParameter(Constant.BOOK_ID);
+            String actionAdd = req.getParameter(Constant.WISH_BOOK_ADD);
+            String actionDelete = req.getParameter(Constant.WISH_BOOK_DELETE);
+            String wishBookId = req.getParameter(Constant.WISH_BOOK_ID);
+            if(bookId != null && actionAdd != null && actionDelete != null) {
+                if (actionAdd != null) {
+                    wishBookService.add(user.getUserId() + "", bookId);
+                } else if (actionDelete != null){
+                    wishBookService.delete(wishBookId);
                 }
-                resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
-            } else if (wishBookId != null) {
-                boolean result = wishBookService.delete(wishBookId);
-                if (result) {
-                    resp.sendRedirect("Controller?command=" + CommandType.ACTION_WISH_BOOK);
-                } else {
-                    String negativeMessage = "Operation failed";
-                    session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
-                }
-            } else {
-                resp.sendRedirect("Controller?command=" + CommandType.ACTION_WISH_BOOK);
+                resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
             }
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.WISH_BOOKS_USER_PAGE);
         }catch (ServiceException e) {
             logger.error("Error during action with selected books, when deleting or adding.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

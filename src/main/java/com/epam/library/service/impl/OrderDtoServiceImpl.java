@@ -1,7 +1,7 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.DaoException;
+import com.epam.library.dao.DaoFactory;
 import com.epam.library.dao.OrderBookDtoDao;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.OrderStatus;
@@ -20,7 +20,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersUser(String userId) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DAOFactory.getInstance().getOrderBookDtoDao();
+            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (userId != null) {
                 if (validator.isNumber(userId)) {
@@ -31,7 +31,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
             } else {
                 throw new ServiceException("The user ID value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when receiving user orders.");
             throw new ServiceException("Error in services when receiving user orders.", e);
         }
@@ -40,7 +40,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public Optional<OrderDto> showOrderById(String orderId) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DAOFactory.getInstance().getOrderBookDtoDao();
+            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (orderId != null) {
                 if (validator.isNumber(orderId)) {
@@ -51,7 +51,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
             } else {
                 throw new ServiceException("The order ID value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when receiving an order by ID.");
             throw new ServiceException("Error in services when receiving an order by ID.", e);
         }
@@ -60,10 +60,10 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showAllOrders() throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DAOFactory.getInstance().getOrderBookDtoDao();
+            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             return orderBookDtoDao.getOrders();
 
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when receiving all orders.");
             throw new ServiceException("Error in services when receiving all orders.", e);
         }
@@ -72,7 +72,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersByStatus(String status) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DAOFactory.getInstance().getOrderBookDtoDao();
+            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             if (status != null) {
                 if (status.equalsIgnoreCase(OrderStatus.OPENED.name()) || status.equalsIgnoreCase(OrderStatus.APPROVED.name())
                         || status.equalsIgnoreCase(OrderStatus.ARRIVED.name()) || status.equalsIgnoreCase(OrderStatus.REJECTED.name())) {
@@ -83,7 +83,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
             } else {
                 throw new ServiceException("The status value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when receiving all orders by status.");
             throw new ServiceException("Error in services when receiving all orders by status.", e);
         }
@@ -92,7 +92,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersByCityAndStatus(String city, String status) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DAOFactory.getInstance().getOrderBookDtoDao();
+            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             if (city != null && status != null) {
@@ -117,7 +117,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
             }else {
                 throw new ServiceException("The status or the city value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when receiving orders by city and status.");
             throw new ServiceException("Error in services when receiving orders by city and status.", e);
         }
@@ -126,7 +126,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersByCity(String city) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DAOFactory.getInstance().getOrderBookDtoDao();
+            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             if (city != null) {
@@ -139,7 +139,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
             }else {
                 throw new ServiceException("The city value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when receiving orders by city.");
             throw new ServiceException("Error in services when receiving orders by city.", e);
         }

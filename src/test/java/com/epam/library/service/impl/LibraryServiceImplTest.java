@@ -1,8 +1,6 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.DAOException;
 import com.epam.library.entity.Library;
-import com.epam.library.entity.LibraryStatus;
 import com.epam.library.service.LibraryService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -28,8 +26,9 @@ class LibraryServiceImplTest {
         try {
             String city = "Brest";
             String street = "Main street";
-            boolean condition = libraryService.create(city, street);
-            assertTrue(condition);
+            int expected = 1;
+            int actual = libraryService.create(city, street);
+            assertEquals(expected, actual);
         }catch (ServiceException e) {
             e.printStackTrace();
         }
@@ -64,8 +63,9 @@ class LibraryServiceImplTest {
             String city = "city";
             String street = "street";
             String libraryId = "1 ";
-            boolean condition = libraryService.update(libraryId, city, street);
-            assertTrue(condition);
+            int expected = 1;
+            int actual = libraryService.update(libraryId, city, street);
+            assertEquals(expected, actual);
         } catch (ServiceException e) {
             e.printStackTrace();
         }

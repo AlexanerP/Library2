@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Genre implements Serializable {
 
+    private static final long serialVersionUID = -9218508141768679758L;
+
     private long genreId;
     private String category;
 

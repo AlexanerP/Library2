@@ -9,7 +9,7 @@ public interface AuthorService {
 
     boolean create(String name) throws ServiceException;
 
-    boolean update(String authorId, String name) throws ServiceException;
+    int update(String authorId, String name) throws ServiceException;
 
     int getCountAuthors() throws ServiceException;
 

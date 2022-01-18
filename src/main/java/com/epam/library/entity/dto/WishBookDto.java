@@ -1,12 +1,11 @@
 package com.epam.library.entity.dto;
 
-import com.epam.library.entity.Author;
-import com.epam.library.entity.Genre;
-
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
-public class WishBookDto {
+public class WishBookDto implements Serializable {
+
+    private static final long serialVersionUID = 5207396389975261002L;
 
     private long wishBooksId;
     private long bookId;

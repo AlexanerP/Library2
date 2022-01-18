@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.BookDtoService;
@@ -27,12 +28,11 @@ public class ShowCatalogByPageCommand implements Command {
             logger.info("Show catalog by page.");
 
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
-            String next = req.getParameter("next");
-            String back = req.getParameter("back");
-            String pageLine = req.getParameter("jumpPage");
-            Integer page = (Integer) req.getSession().getAttribute("pageCatalog");
+            String next = req.getParameter(Constant.NEXT);
+            String back = req.getParameter(Constant.BACK);
+            String pageLine = req.getParameter(Constant.JUMP_PAGE);
+            Integer page = (Integer) req.getSession().getAttribute(Constant.PAGE_CATALOG);
             List<BookDto> books;
-            System.out.println("Page line" + pageLine);
             if (page == null) {
                 page = Integer.valueOf(1);
             }
@@ -50,13 +50,14 @@ public class ShowCatalogByPageCommand implements Command {
                 page = Integer.valueOf(1);
             }
             books = bookDtoService.showByPage(page, limit);
-            req.getSession().setAttribute("pageCatalog", page);
-            req.setAttribute("bookList", books);
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.SHOW_CATALOG_BY_PAGE + "&pageCatalog=" + page);
+            req.getSession().setAttribute(Constant.PAGE_CATALOG, page);
+            req.setAttribute(Constant.BOOKS, books);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND
+                    + CommandType.SHOW_CATALOG_BY_PAGE + "&" + Constant.PAGE_CATALOG + "=" + page);
             req.getRequestDispatcher(PathJsp.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("An error occurred while browsing the book catalog.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

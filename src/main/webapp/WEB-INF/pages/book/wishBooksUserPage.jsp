@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="user_menu_my_wish_list"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="user_menu_my_wish_list"></fmt:message></h1></div>
 <form action="Controller">
     <input type="hidden" name="command" value="GoToOrder">
@@ -43,10 +45,10 @@
                 <td><c:out value="${wishBook.year}"></c:out></td>
                 <td><c:out value="${wishBook.shelf}"></c:out></td>
 
-                <td><c:if test="${wishBook.borrow < wishBook.quantity}">
-                    <a href="?command=GoToOrder&bookId=${wishBook.bookId}"><fmt:message key="order_command"></fmt:message></a>
+                <td><c:if test="${wishBook.borrow < wishBook.quantity and user.status != 'BLOCKED'}">
+                    <a href="?command=GoToOrder&bookId=${wishBook.bookId}"><input type="button" value="<fmt:message key="order_command"></fmt:message>"></a>
                 </c:if></td>
-                <td><a href="?command=ActionWishBook&wish_book_id=${wishBook.wishBooksId}"><fmt:message key="delete_command"></fmt:message></a></td>
+                <td><a href="?command=ActionWishBook&wish_book_id=${wishBook.wishBooksId}&delete=delete"><input type="button" value="<fmt:message key="delete_command"></fmt:message>"></a></td>
             </tr>
         </c:forEach>
     </table>

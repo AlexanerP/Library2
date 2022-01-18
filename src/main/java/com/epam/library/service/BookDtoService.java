@@ -10,7 +10,7 @@ public interface BookDtoService {
     boolean create(String title, String isbn, String publisher, String year, String count, String city,
                    String shelf, String author, String category, String description) throws ServiceException;
 
-    boolean update(String bookId, BookDto bookDto, String author, String genre, String quantity) throws ServiceException;
+    int update(String bookId, BookDto bookDto, String author, String genre, String quantity) throws ServiceException;
 
     List<BookDto> showCatalog() throws ServiceException;
 

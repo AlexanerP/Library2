@@ -1,8 +1,11 @@
 package com.epam.library.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Order {
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = -6704147301500964288L;
 
     private long orderId;
     private long bookId;

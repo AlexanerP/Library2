@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.dto.WishBookDto;
@@ -26,20 +27,20 @@ public class WishBooksUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.WISH_BOOKS_USER_PAGE);
             logger.info("Getting favorite books.");
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.WISH_BOOKS_USER_PAGE);
             WishBookDtoService wishBookDtoService = ServiceFactory.getInstance().getWishBookDtoService();
             HttpSession session = req.getSession();
-            User user = (User) session.getAttribute("user");
+            User user = (User) session.getAttribute(Constant.USER);
             List<WishBookDto> books = new ArrayList<>();
             if (user != null) {
                 books = wishBookDtoService.showBooksUser(user.getUserId() + "");
             }
-            req.setAttribute("books", books);
+            req.setAttribute(Constant.BOOKS, books);
             req.getRequestDispatcher(PathJsp.WISH_BOOK_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("An error occured while retrieving favorite books." , e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

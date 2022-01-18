@@ -1,7 +1,7 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.DaoException;
+import com.epam.library.dao.DaoFactory;
 import com.epam.library.dao.WishBookDtoDao;
 import com.epam.library.entity.dto.WishBookDto;
 import com.epam.library.service.ServiceException;
@@ -20,7 +20,7 @@ public class WishBookDtoServiceImpl implements WishBookDtoService {
     @Override
     public List<WishBookDto> showBooksUser(String userId) throws ServiceException {
         try {
-            WishBookDtoDao wishBookDtoDao = DAOFactory.getInstance().getWishBookDtoDao();
+            WishBookDtoDao wishBookDtoDao = DaoFactory.getInstance().getWishBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (validator.isNumber(userId)) {
                 return wishBookDtoDao.getBooks(Long.parseLong(userId.trim()));
@@ -28,7 +28,7 @@ public class WishBookDtoServiceImpl implements WishBookDtoService {
                 throw new ServiceException("Invalid ID");
             }
 
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when retrieving selected user books.");
             throw new ServiceException("Error in services when retrieving selected user books.", e);
         }

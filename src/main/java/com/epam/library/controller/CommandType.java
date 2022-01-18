@@ -4,6 +4,8 @@ public final class CommandType {
 
     private CommandType(){}
 
+    public static final String COMMAND = "command";
+    public static final String CONTROLLER_COMMAND = "Controller?command=";
     public static final String SIGN_IN = "SignIn";
     public static final String REGISTRATION = "Registration";
     public static final String GO_TO_CATALOG = "GoToCatalog";
@@ -13,7 +15,7 @@ public final class CommandType {
     public static final String ORDER_CATALOG = "OrderCatalog";
     public static final String GO_TO_ORDER = "GoToOrder";
     public static final String CHANGE_LOCALE = "ChangeLocale";
-//    public static final String GO_TO_ORDER_CATALOG = "GoToOrderCatalog";
+    public static final String ERROR = "Error";
     public static final String ORDER_BOOK = "OrderBook";
     public static final String ACTION_USER_ORDER = "ActionUserOrder";
     public static final String CATALOG_BOOK = "CatalogBook";
@@ -49,13 +51,17 @@ public final class CommandType {
     public static final String ACTION_WISH_BOOK = "ActionWishBook";
     public static final String LIBRARY_CATALOG = "LibraryCatalog";
     public static final String LOAN_CARD_CATALOG = "LoanCardCatalog";
-//    public static final String GO_TO_LOAN_CARD_CATALOG = "GoToLoanCardCatalog";
-    public static final String ACTION_AUTHOR = "ActionAuthor";
-    public static final String ACTION_GENRE = "ActionGenre";
+    public static final String GO_TO_UPDATE_GENRE = "GoToUpdateGenre";
+    public static final String GO_TO_UPDATE_AUTHOR = "GoToUpdateAuthor";
+    public static final String UPDATE_GENRE = "UpdateGenre";
+    public static final String UPDATE_AUTHOR = "UpdateAuthor";
+    public static final String CATALOG_AUTHOR = "CatalogAuthor";
+    public static final String CATALOG_GENRE = "CatalogGenre";
     public static final String GO_TO_STATISTIC_AUTHOR = "GoToStatisticAuthor";
     public static final String GO_TO_STATISTIC_GENRE = "GoToStatisticGenre";
-//    public static final String GO_TO_CATALOG_BOOK = "GoToCatalogBook";
     public static final String GO_TO_CATALOG_BY_PAGE = "GoToCatalogByPage";
 //    public static final String CATALOG_BY_PAGE = "ShowCatalogByPage";
     public static final String CREATE_LIBRARY = "CreateLibrary";
+
+
 }

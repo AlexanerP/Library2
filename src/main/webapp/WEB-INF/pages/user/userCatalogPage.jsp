@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="admin_menu_catalog_user"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="admin_menu_catalog_user"></fmt:message></h1></div>
 <form action="Controller">
     <input type="hidden" name="command" value="UserCatalog">
@@ -44,7 +46,7 @@
         <tr>
             <td><fmt:message key="show_user_by_role"></fmt:message></td>
             <td>
-                <select name="user_role">
+                <select name="role">
                         <option value="user"><fmt:message key="user_role_user"></fmt:message></option>
                         <option value="admin"><fmt:message key="user_role_admin"></fmt:message></option>
                         <option value="manager"><fmt:message key="user_role_manager"></fmt:message></option>
@@ -60,13 +62,13 @@
         <tr>
             <td><fmt:message key="show_user_by_status"></fmt:message></td>
             <td>
-                <select name="user_status">
+                <select name="status">
                     <option value="active"><fmt:message key="user_status_active"></fmt:message></option>
                     <option value="blocked"><fmt:message key="user_status_blocked"></fmt:message></option>
                     <option value="delete"><fmt:message key="user_status_delete"></fmt:message></option>
                 </select>
             </td>
-            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="status"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
         </tr>
     </table>
 </form>
@@ -75,7 +77,7 @@
     <table>
         <tr>
             <td><fmt:message key="show_all_user"></fmt:message></td>
-            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="allUser"></td>
+            <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>" name="getAll"></td>
         </tr>
     </table>
 </form>
@@ -110,20 +112,19 @@
                     <td><c:out value="${user.role}"></c:out></td>
                     <td><c:out value="${user.status}"></c:out></td>
                     <td>
-                        <a href="?command=ActionUser&userId=${user.userId}&status=active"><fmt:message key="user_status_active"></fmt:message></a>
-                        <a href="?command=ActionUser&userId=${user.userId}&status=blocked"><fmt:message key="user_status_blocked"></fmt:message></a>
-                        <a href="?command=ActionUser&userId=${user.userId}&status=delete"><fmt:message key="user_status_delete"></fmt:message></a>
+                        <a href="?command=ActionUser&userId=${user.userId}&status=active"><input type="button" value="<fmt:message key="user_status_active"></fmt:message>"></a>
+                        <a href="?command=ActionUser&userId=${user.userId}&status=blocked"><input type="button" value="<fmt:message key="user_status_blocked"></fmt:message>"></a>
+                        <a href="?command=ActionUser&userId=${user.userId}&status=delete"><input type="button" value="<fmt:message key="user_status_delete"></fmt:message>"></a>
                     </td>
                     <td>
-                        <a href="?command=LoanCardCatalog&userId=${user.userId}"><fmt:message key="loan_card"></fmt:message></a>
+                        <a href="?command=LoanCardCatalog&userId=${user.userId}"><input type="button" value="<fmt:message key="history"></fmt:message>"></a>
                     </td>
                     <td>
-                        <a href="?command=OrderCatalog&userId=${user.userId}"><fmt:message key="orders"></fmt:message></a>
+                        <a href="?command=OrderCatalog&userId=${user.userId}"><input type="button" value="<fmt:message key="orders"></fmt:message>"></a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
     </c:if>
-
 </body>
 </html>

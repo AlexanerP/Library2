@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="title_book_catalog"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="title_book_catalog"></fmt:message></h1></div>
 <table>
         <td>
@@ -85,7 +87,7 @@
         </td>
         <td>
             <form>
-                <input type="hidden" name="command" value="ActionAuthor">
+                <input type="hidden" name="command" value="CatalogAuthor">
                 <table>
                     <tr>
                         <td><fmt:message key="enter_author_id"></fmt:message></td>
@@ -95,7 +97,7 @@
                 </table>
             </form>
             <form>
-                <input type="hidden" name="command" value="ActionAuthor">
+                <input type="hidden" name="command" value="CatalogAuthor">
                 <table>
                     <tr>
                         <td><fmt:message key="enter_authors"></fmt:message></td>
@@ -105,7 +107,7 @@
                 </table>
             </form>
             <form>
-                <input type="hidden" name="command" value="ActionAuthor">
+                <input type="hidden" name="command" value="CatalogAuthor">
                 <table>
                     <tr>
                         <td><fmt:message key="show_all_author"></fmt:message></td>
@@ -116,7 +118,7 @@
         </td>
     <td>
         <form>
-            <input type="hidden" name="command" value="ActionGenre">
+            <input type="hidden" name="command" value="CatalogGenre">
             <table>
                 <tr>
                     <td><fmt:message key="enter_genre_id"></fmt:message></td>
@@ -126,17 +128,17 @@
             </table>
         </form>
         <form>
-            <input type="hidden" name="command" value="ActionGenre">
+            <input type="hidden" name="command" value="CatalogGenre">
             <table>
                 <tr>
                     <td><fmt:message key="enter_genres"></fmt:message></td>
-                    <td><input type="text" name="genre" placeholder="<fmt:message key="enter_genres"></fmt:message>"></td>
+                    <td><input type="text" name="category" placeholder="<fmt:message key="enter_genres"></fmt:message>"></td>
                     <td><input type="submit" value="<fmt:message key="button_find"></fmt:message>"></td>
                 </tr>
             </table>
         </form>
         <form>
-            <input type="hidden" name="command" value="ActionGenre">
+            <input type="hidden" name="command" value="CatalogGenre">
             <table>
                 <tr>
                     <td><fmt:message key="show_all_genre"></fmt:message></td>
@@ -147,61 +149,114 @@
     </td>
 </table>
 
-<div align="center">
+<table >
+    <div align="center">
+        <c:if test="${not empty books}">
+            <b><fmt:message key="message_count_found_result"></fmt:message><c:out value="${booksSize}"/></b>
+        </c:if>
+    </div>
     <c:if test="${not empty books}">
-        <p><fmt:message key="message_count_found_result"></fmt:message> <c:out value="${booksSize}"/></p>
-    <table border="1" align="center">
+    <c:forEach var="booksDTO" items="${books}" varStatus="status">
+        <tr class="tr">
         <tr>
-            <th>#</th>
-            <th><fmt:message key="id"></fmt:message></th>
-            <th><fmt:message key="book_title"></fmt:message></th>
-            <th><fmt:message key="book_author"></fmt:message></th>
-            <th><fmt:message key="book_genre"></fmt:message></th>
-            <th><fmt:message key="book_isbn"></fmt:message></th>
-            <th><fmt:message key="book_publisher"></fmt:message></th>
-            <th><fmt:message key="book_year"></fmt:message></th>
-            <th><fmt:message key="book_shelf"></fmt:message></th>
-            <th><fmt:message key="book_added"></fmt:message></th>
-            <th><fmt:message key="library_city"></fmt:message></th>
-            <th><fmt:message key="book_quantity"></fmt:message></th>
-            <th><fmt:message key="book_borrow"></fmt:message></th>
-            <th><fmt:message key="book_description"></fmt:message></th>
-            <th><fmt:message key="update_command"></fmt:message></th>
-        </tr>
-        <c:forEach var="books" items="${books}" varStatus="status">
-        <tr>
-            <td><c:out value="${status.index + 1}"></c:out></td>
-            <td><c:out value="${books.bookDtoId}"></c:out></td>
-            <td><c:out value="${books.title}"></c:out></td>
             <td>
-                <c:forEach var="author" items="${books.authors}">
+                <h3><b><c:out value="${booksDTO.title}"></c:out>  (<c:out value="${booksDTO.year}"></c:out>)  <c:forEach var="author" items="${booksDTO.authors}">
+                    <c:out value="${author.name}"></c:out>
+                </c:forEach></b></h3>
+            </td>
+        </tr>
+        <tr>
+        <tr>
+            <td>
+                <b>#</b> <c:out value="${status.index + 1}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_id"></fmt:message></b>  <c:out value="${booksDTO.bookDtoId}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_isbn"></fmt:message></b>  <c:out value="${booksDTO.isbn}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_author"></fmt:message></b>
+
+                <c:forEach var="author" items="${booksDTO.authors}">
                     <c:out value="${author.name}"></c:out>
                 </c:forEach>
             </td>
+        </tr>
+        <tr>
             <td>
-                <c:forEach var="genre" items="${books.genres}">
+                <b><fmt:message key="book_genre"></fmt:message></b>
+
+                <c:forEach var="genre" items="${booksDTO.genres}">
                     <c:out value="${genre.category}"></c:out>
                 </c:forEach>
             </td>
-            <td><c:out value="${books.isbn}"></c:out></td>
-            <td><c:out value="${books.publisher}"></c:out></td>
-            <td><c:out value="${books.year}"></c:out></td>
-            <td><c:out value="${books.shelf}"></c:out></td>
-            <td><c:out value="${books.added}"></c:out></td>
-            <td><c:out value="${books.cityLibrary}"></c:out></td>
-            <td><c:out value="${books.quantity}"></c:out></td>
-            <td><c:out value="${books.borrow}"></c:out></td>
-            <td><c:out value="${books.description}"></c:out></td>
-            <td>
-                <c:if test="${books.bookDtoId != 0}">
-                        <p><a href="?command=GoToUpdateBook&bookId=${books.bookDtoId}"><fmt:message key="update_command"></fmt:message></a></p>
-                </c:if>
-            </td>
-            </c:forEach>
-            </c:if>
         </tr>
-    </table>
-</div>
+        <tr>
+            <td>
+                <b><fmt:message key="book_publisher"></fmt:message></b>
+                <c:out value="${booksDTO.publisher}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_year"></fmt:message></b>
+                <c:out value="${booksDTO.year}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_shelf"></fmt:message></b>
+                <c:out value="${booksDTO.shelf}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_added"></fmt:message></b>
+                <c:out value="${booksDTO.added}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_library"></fmt:message></b>
+                <c:out value="${booksDTO.cityLibrary}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_quantity"></fmt:message></b>
+                <c:out value="${booksDTO.quantity}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_borrow"></fmt:message></b>
+                <c:out value="${booksDTO.borrow}"></c:out>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><fmt:message key="book_description"></fmt:message></b>
+                <c:out value="${booksDTO.description}"></c:out>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="?command=GoToUpdateBook&bookId=${booksDTO.bookDtoId}"><input type="button" value="<fmt:message key="update_command"></fmt:message>"></a>
+            </td>
+        </tr>
+        </tr>
+    </c:forEach>
+</table>
+</c:if>
 <div align="center">
 
     <c:if test="${not empty authors}">
@@ -213,6 +268,7 @@
                 <th><fmt:message key="id"></fmt:message></th>
                 <th><fmt:message key="author_name"></fmt:message></th>
                 <th><fmt:message key="statistic"></fmt:message></th>
+                <th><fmt:message key="update_command"></fmt:message></th>
             </tr>
             <tr>
                 <c:forEach var="author" items="${authors}" varStatus="status">
@@ -222,7 +278,12 @@
                         <td>${author.name}</td>
                         <td>
                             <c:if test="${author.authorId != 0}">
-                                <p><a href="?command=GoToStatisticAuthor&authorId=${author.authorId}"><fmt:message key="statistic"></fmt:message></a></p>
+                                <a href="?command=GoToStatisticAuthor&authorId=${author.authorId}"><input type="button" value="<fmt:message key="statistic"></fmt:message>"></a>
+                            </c:if>
+                        </td>
+                        <td>
+                            <c:if test="${author.authorId != 0}">
+                                <a href="?command=GoToUpdateAuthor&updateAuthorId=${author.authorId}"><input type="button" value="<fmt:message key="update_command"></fmt:message>"></a>
                             </c:if>
                         </td>
             </tr>
@@ -262,6 +323,7 @@
             <th><fmt:message key="id"></fmt:message></th>
             <th><fmt:message key="genre_category"></fmt:message></th>
             <th><fmt:message key="statistic"></fmt:message></th>
+            <th><fmt:message key="update_command"></fmt:message></th>
         </tr>
         <tr>
             <c:forEach var="genre" items="${genre}" varStatus="status">
@@ -271,9 +333,14 @@
             <td>${genre.category}</td>
             <td>
                 <c:if test="${genre.genreId != 0}">
-                    <p><a href="?command=GoToStatisticGenre&genreId=${genre.genreId}"><fmt:message key="statistic"></fmt:message></a></p>
+                    <a href="?command=GoToStatisticGenre&genreId=${genre.genreId}"><input type="button" value="<fmt:message key="statistic"></fmt:message>"></a>
                 </c:if>
             </td>
+        <td>
+            <c:if test="${genre.genreId != 0}">
+                <a href="?command=GoToUpdateGenre&updateGenreId=${genre.genreId}"><input type="button" value="<fmt:message key="update_command"></fmt:message>"></a>
+            </c:if>
+        </td>
     </tr>
             </c:forEach>
         </tr>

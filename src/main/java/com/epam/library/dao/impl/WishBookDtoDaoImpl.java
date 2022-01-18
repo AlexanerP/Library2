@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.WishBookDtoDao;
 import com.epam.library.dao.connection.ConnectionPool;
@@ -31,7 +31,7 @@ public class WishBookDtoDaoImpl extends DaoHelper implements WishBookDtoDao {
             TableName.WISH_BOOK, ColumnName.WISH_BOOK_ID_USER, ColumnName.WISH_BOOK_ID_BOOK);
 
     @Override
-    public List<WishBookDto> getBooks(long userId) throws DAOException {
+    public List<WishBookDto> getBooks(long userId) throws DaoException {
         logger.info("Getting wish books.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -46,7 +46,7 @@ public class WishBookDtoDaoImpl extends DaoHelper implements WishBookDtoDao {
             return books;
         } catch (SQLException e) {
             logger.error("Error while getting books.");
-            throw new DAOException("Error while getting books.", e);
+            throw new DaoException("Error while getting books.", e);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

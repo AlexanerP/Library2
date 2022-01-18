@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Book;
 import com.epam.library.entity.dto.BookDto;
@@ -27,20 +28,21 @@ public class UpdateBookCommand implements Command {
 
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             BookService bookService = ServiceFactory.getInstance().getBookService();
-            Long bookId = (Long) req.getSession().getAttribute("updateBookId");
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.UPDATE_BOOK + "&updateBookId=" + bookId);
-            String title = req.getParameter("title");
-            String isbn = req.getParameter("isbn");
-            String cityLibrary = req.getParameter("cityLibrary");
-            String author = req.getParameter("author");
-            String genre = req.getParameter("genre");
-            String publisher = req.getParameter("publisher");
-            String year = req.getParameter("year");
-            String shelf = req.getParameter("shelf");
-            String quantity = req.getParameter("quantity");
-            String description = req.getParameter("description");
+            Long bookId = (Long) req.getSession().getAttribute(Constant.UPDATE_BOOK_ID);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND
+                    + CommandType.UPDATE_BOOK + "&" + Constant.UPDATE_BOOK_ID + "=" + bookId);
+            String title = req.getParameter(Constant.BOOK_TITLE);
+            String isbn = req.getParameter(Constant.BOOK_ISBN);
+            String cityLibrary = req.getParameter(Constant.LIBRARY_CITY);
+            String author = req.getParameter(Constant.BOOK_AUTHOR);
+            String genre = req.getParameter(Constant.BOOK_GENRE);
+            String publisher = req.getParameter(Constant.BOOK_PUBLISHER);
+            String year = req.getParameter(Constant.BOOK_YEAR);
+            String shelf = req.getParameter(Constant.BOOK_SHELF);
+            String quantity = req.getParameter(Constant.BOOK_QUANTITY);
+            String description = req.getParameter(Constant.BOOK_DESCRIPTION);
 
-            boolean resultOperation;
+            int resultOperation;
 
             if (bookId != null) {
                if (title != "" && title != null || isbn != "" && isbn != null
@@ -58,7 +60,7 @@ public class UpdateBookCommand implements Command {
                        book.setShelf(shelf);
                        book.setDescription(description);
 
-                       req.getSession().removeAttribute("updateBookId");
+                       req.getSession().removeAttribute(Constant.UPDATE_BOOK_ID);
                        resultOperation = bookService.update(bookId + "", book, quantity, cityLibrary);
                    } else {
                        BookDto bookDto = new BookDto();
@@ -71,29 +73,23 @@ public class UpdateBookCommand implements Command {
                        bookDto.setShelf(shelf);
                        bookDto.setDescription(description);
 
-                       req.getSession().removeAttribute("updateBookId");
+                       req.getSession().removeAttribute(Constant.UPDATE_BOOK_ID);
                        resultOperation = bookDtoService.update(bookId + "", bookDto, author, genre, quantity);
                    }
-                   if (resultOperation) {
-                       String successfulMessage = "Operation successful";
-                       req.getSession().setAttribute("successfulMessage", successfulMessage);
-                       resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                   if (resultOperation == 1) {
+                       req.getSession().setAttribute(Constant.MESSAGE_CODE_1017, Constant.MESSAGE_CODE_1017);
+                       resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                    } else {
-                       String negativeMessage = "Operation failed";
-                       req.getSession().setAttribute("negativeMessage", negativeMessage);
-                       resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                       req.getSession().setAttribute(Constant.MESSAGE_ERROR_CODE_1021, Constant.MESSAGE_ERROR_CODE_1021);
+                       resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                    }
-               } else {
-                   String negativeMessage = "Operation failed";
-                   req.getSession().setAttribute("negativeMessage", negativeMessage);
-                   resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
                }
            } else {
                req.getRequestDispatcher(PathJsp.BOOK_CATALOG_PAGE).forward(req, resp);
            }
         }catch (ServiceException e) {
             logger.error("When updating the book, the error.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

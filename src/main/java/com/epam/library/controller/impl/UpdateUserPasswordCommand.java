@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -22,30 +23,31 @@ public class UpdateUserPasswordCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.UPDATE_USER_PASSWORD);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.UPDATE_USER_PASSWORD);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
-            String email = req.getParameter("email");
-            String oldPassword = req.getParameter("old_password");
-            String newPassword = req.getParameter("new_password");
+            String email = req.getParameter(Constant.USER_EMAIL);
+            String oldPassword = req.getParameter(Constant.USER_OLD_PASSWORD);
+            String newPassword = req.getParameter(Constant.USER_NEW_PASSWORD);
             if (email != "" && email != null && oldPassword != "" && oldPassword !=null
                     && newPassword != "" && newPassword != null) {
-                boolean flag = userService.updatePassword(newPassword, email, oldPassword);
-                if (flag) {
-                    String message = "Operation completed";
-                    session.setAttribute("successfulMessage", message);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
-                } else {
-                    String negativeMessage = "Operation failed";
-                    session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                int flag = userService.updatePassword(newPassword, email, oldPassword);
+                if (flag == 1) {
+                    session.setAttribute(Constant.MESSAGE_CODE_1001, Constant.MESSAGE_CODE_1001);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+                } else if (flag == 2){
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1004, Constant.MESSAGE_ERROR_CODE_1004);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+                } else if (flag == 3){
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1005, Constant.MESSAGE_ERROR_CODE_1005);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.UPDATE_USER_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Error during password update.", e);
-            resp.sendRedirect("error.jsp");
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

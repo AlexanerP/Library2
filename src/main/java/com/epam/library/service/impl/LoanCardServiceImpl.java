@@ -1,7 +1,7 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.DaoException;
+import com.epam.library.dao.DaoFactory;
 import com.epam.library.dao.LoanCardDao;
 import com.epam.library.entity.*;
 import com.epam.library.service.*;
@@ -20,7 +20,7 @@ public class LoanCardServiceImpl implements LoanCardService {
     @Override
     public boolean create(String orderId, String typeUse) throws ServiceException {
         try {
-            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            LoanCardDao loanCardDao = DaoFactory.getInstance().getLoanCardDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             BookService bookService = ServiceFactory.getInstance().getBookService();
@@ -62,7 +62,7 @@ public class LoanCardServiceImpl implements LoanCardService {
             }else {
                 throw new ServiceException("The order ID or the type use value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when creating an issue card.");
             throw new ServiceException("Error in services when creating an issue card.", e);
         }
@@ -71,7 +71,7 @@ public class LoanCardServiceImpl implements LoanCardService {
     @Override
     public boolean update(String cardId, String typeUse, String status) throws ServiceException {
         try {
-            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            LoanCardDao loanCardDao = DaoFactory.getInstance().getLoanCardDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (cardId != null) {
             if (validator.isNumber(cardId)) {
@@ -103,7 +103,7 @@ public class LoanCardServiceImpl implements LoanCardService {
                 }
             }
 
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error while updating the loan card.");
             throw new ServiceException("Error while updating the loan card.", e);
         }
@@ -113,7 +113,7 @@ public class LoanCardServiceImpl implements LoanCardService {
     @Override
     public boolean closeLoanCard(String cardId) throws ServiceException {
         try {
-            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            LoanCardDao loanCardDao = DaoFactory.getInstance().getLoanCardDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             BookService bookService = ServiceFactory.getInstance().getBookService();
             if (cardId != null) {
@@ -136,7 +136,7 @@ public class LoanCardServiceImpl implements LoanCardService {
             } else {
                 throw new ServiceException("The loan card ID value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when closing the loan card.");
             throw new ServiceException("Error in services when closing the loan card.", e);
         }
@@ -144,9 +144,44 @@ public class LoanCardServiceImpl implements LoanCardService {
     }
 
     @Override
+    public boolean closeLoanCardWithViolation(String cardId) throws ServiceException {
+        try {
+            LoanCardDao loanCardDao = DaoFactory.getInstance().getLoanCardDao();
+            UserService userService = ServiceFactory.getInstance().getUserService();
+            ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
+            BookService bookService = ServiceFactory.getInstance().getBookService();
+            if (cardId != null) {
+                if (validator.isNumber(cardId)) {
+                    Optional<LoanCard> optionalLoanCard = loanCardDao.getCardById(Long.parseLong(cardId.trim()));
+                    if (optionalLoanCard.isPresent()) {
+                        if (optionalLoanCard.get().getStatus() == LoanCardStatus.OPEN) {
+                            bookService.deleteBorrow(optionalLoanCard.get().getBookId() + "");
+                            LoanCard loanCard = optionalLoanCard.get();
+                            loanCard.setStatus(LoanCardStatus.CLOSED);
+                            loanCard.setReturnBook(LocalDate.now().toString());
+                            userService.addViolation(optionalLoanCard.get().getUserId() + "");
+                            return loanCardDao.update(loanCard);
+                        } else {
+                            throw new ServiceException("Loan card closed.");
+                        }
+                    } else {
+                        throw new ServiceException("The card does not exist.");
+                    }
+                }
+            } else {
+                throw new ServiceException("The loan card ID value is empty.");
+            }
+        } catch (DaoException e) {
+            logger.error("Error when closing a card with a violation.");
+            throw new ServiceException("Error when closing a card with a violation.", e);
+        }
+        return false;
+    }
+
+    @Override
     public long showCountCards(String status) throws ServiceException {
         try {
-            LoanCardDao loanCardDao = DAOFactory.getInstance().getLoanCardDao();
+            LoanCardDao loanCardDao = DaoFactory.getInstance().getLoanCardDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (status != null) {
                 if (validator.isLength(status)) {
@@ -160,7 +195,7 @@ public class LoanCardServiceImpl implements LoanCardService {
             } else {
                 throw new ServiceException("The status value is empty.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when receiving the number of loan cards.");
             throw new ServiceException("Error in services when receiving the number of cards.", e);
         }

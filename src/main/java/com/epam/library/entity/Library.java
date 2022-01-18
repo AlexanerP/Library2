@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Library implements Serializable {
 
+    private static final long serialVersionUID = -5728043296240857736L;
 
     private int libraryId;
     private String city;

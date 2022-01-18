@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface LibraryService {
 
-    boolean create(String city, String street) throws ServiceException;
+    int create(String city, String street) throws ServiceException;
 
     List<Library> showAll() throws ServiceException;
 
@@ -20,5 +20,5 @@ public interface LibraryService {
 
     boolean updateStatus(String libraryId, String status) throws ServiceException;
 
-    boolean update(String libraryId, String city, String street) throws ServiceException;
+    int update(String libraryId, String city, String street) throws ServiceException;
 }

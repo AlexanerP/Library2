@@ -160,7 +160,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     private final static String GROUP_BY_ELEMENT = "group by ";
 
     @Override
-    public boolean create(BookDto bookDto) throws DAOException {
+    public boolean create(BookDto bookDto) throws DaoException {
         logger.info("Adding a bookDto.");
         AuthorDao authorDAO = new AuthorDaoImpl();
         GenreDao genreDAO = new GenreDaoImpl();
@@ -186,7 +186,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             int bookId = 0;
             int rowExecute = prStatement.executeUpdate();
             if (rowExecute == 0) {
-                throw new DAOException("Creating bookDto failed, no rows affected.");
+                throw new DaoException("Creating bookDto failed, no rows affected.");
             }
             resultSet = prStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -221,22 +221,22 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                throw new DAOException("Rollback is not closed", e);
+                throw new DaoException("Rollback is not closed", e);
             }
-            throw new DAOException("Error while adding bookDto to table.", sqlE);
+            throw new DaoException("Error while adding bookDto to table.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
             try {
                 connection.close();
             } catch (SQLException sqlException) {
-                throw new DAOException("The connection is not closed.", sqlException);
+                throw new DaoException("The connection is not closed.", sqlException);
             }
         }
     }
 
     @Override
-    public boolean update(BookDto bookDto) throws DAOException {
+    public boolean update(BookDto bookDto) throws DaoException {
         logger.info("Updating a book by ID.");
         AuthorDao authorDAO = new AuthorDaoImpl();
         GenreDao genreDAO = new GenreDaoImpl();
@@ -279,16 +279,16 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                throw new DAOException("Rollback is not closed", e);
+                throw new DaoException("Rollback is not closed", e);
             }
-            throw new DAOException("Error while bookDto's updating.", sqlE);
+            throw new DaoException("Error while bookDto's updating.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public List<BookDto> getBookByIsbn(String isbn) throws DAOException {
+    public List<BookDto> getBookByIsbn(String isbn) throws DaoException {
         logger.info("Receiving a book by ISBN.");
         BookDtoMapper mapper = new BookDtoMapper();
         PreparedStatement prStatement = null;
@@ -303,7 +303,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             return books;
         } catch (SQLException sqlE) {
             logger.error("Error while receiving a book by ISBN.");
-            throw new DAOException("Error while receiving a book by ISBN.", sqlE);
+            throw new DaoException("Error while receiving a book by ISBN.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -311,7 +311,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     }
 
     @Override
-    public Optional<BookDto> getBookById(long bookId) throws DAOException {
+    public Optional<BookDto> getBookById(long bookId) throws DaoException {
         logger.info("Receiving a book by ID.");
         BookDtoMapper mapper = new BookDtoMapper();
         PreparedStatement prStatement = null;
@@ -330,11 +330,11 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 BookDto.");
+                throw new DaoException("Find more 1 BookDto.");
             }
         } catch (SQLException sqlE) {
             logger.error("Error while receiving a book by ID.");
-            throw new DAOException("Error while receiving a book by ID.", sqlE);
+            throw new DaoException("Error while receiving a book by ID.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -342,7 +342,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     }
 
     @Override
-    public int delete(long id) throws DAOException {
+    public int delete(long id) throws DaoException {
         logger.info("Delete book. Id - {}", id);
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -350,14 +350,14 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             return  prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Error when deleting book.");
-            throw new DAOException("Error when deleting book.", sqlE);
+            throw new DaoException("Error when deleting book.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public List<BookDto> getBooks() throws DAOException {
+    public List<BookDto> getBooks() throws DaoException {
         logger.info("Getting a list of bookDtos.");
         List<BookDto> bookDtos = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -372,7 +372,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Error when receiving bookDtos.");
-            throw new DAOException("Error when receiving bookDtos.", sqlE);
+            throw new DaoException("Error when receiving bookDtos.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -382,7 +382,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     }
 
     @Override
-    public List<BookDto> getBooksByCity(String city) throws DAOException {
+    public List<BookDto> getBooksByCity(String city) throws DaoException {
         logger.info("Receiving a book by city.");
         BookDtoMapper mapper = new BookDtoMapper();
         PreparedStatement prStatement = null;
@@ -397,7 +397,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             return books;
         } catch (SQLException sqlE) {
             logger.error("Books by city not received.");
-            throw new DAOException("Books by city not received.", sqlE);
+            throw new DaoException("Books by city not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -405,7 +405,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     }
 
     @Override
-    public List<BookDto> getBooksByTitle(String title) throws DAOException {
+    public List<BookDto> getBooksByTitle(String title) throws DaoException {
         logger.info("Receiving a book by title.");
         StringBuilder builder = new StringBuilder();
         PreparedStatement prStatement = null;
@@ -424,7 +424,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             return books;
         } catch (SQLException sqlE) {
             logger.error("Books by title not received.");
-            throw new DAOException("Books by title not received.", sqlE);
+            throw new DaoException("Books by title not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -432,7 +432,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     }
 
     @Override
-    public List<BookDto> getBooksByPage(int limit, int page) throws DAOException {
+    public List<BookDto> getBooksByPage(int limit, int page) throws DaoException {
         logger.info("Receiving a book by page.");
         BookDtoMapper mapper = new BookDtoMapper();
         PreparedStatement prStatement = null;
@@ -447,7 +447,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             return books;
         } catch (SQLException sqlE) {
             logger.error("Books by page not received.");
-            throw new DAOException("Books by page not received.", sqlE);
+            throw new DaoException("Books by page not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -455,7 +455,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     }
 
     @Override
-    public List<BookDto> getBooksByAuthor(String author) throws DAOException {
+    public List<BookDto> getBooksByAuthor(String author) throws DaoException {
         logger.info("Receiving a book by author.");
         BookDtoMapper mapper = new BookDtoMapper();
         StringBuilder builderQuery = new StringBuilder();
@@ -474,7 +474,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             return books;
         } catch (SQLException sqlE) {
             logger.error("Books by author not received.");
-            throw new DAOException("Books by author not received.", sqlE);
+            throw new DaoException("Books by author not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -482,7 +482,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
     }
 
     @Override
-    public List<BookDto> getBooksByGenre(String genre) throws DAOException {
+    public List<BookDto> getBooksByGenre(String genre) throws DaoException {
         logger.info("Receiving a book by genre.");
         BookDtoMapper mapper = new BookDtoMapper();
         StringBuilder builderQuery = new StringBuilder();
@@ -501,7 +501,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             return books;
         } catch (SQLException sqlE) {
             logger.error("Books by genre not received.");
-            throw new DAOException("Books by genre not received.", sqlE);
+            throw new DaoException("Books by genre not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -524,7 +524,7 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Books by period not received.");
-            throw new DAOException("Books by period not received.", sqlE);
+            throw new DaoException("Books by period not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

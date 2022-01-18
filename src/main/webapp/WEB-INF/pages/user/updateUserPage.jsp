@@ -13,9 +13,11 @@
 <html>
 <head>
     <title><fmt:message key="update_user_data"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="update_user_data"></fmt:message></h1></div>
 <form action="Controller" method="post">
     <input type="hidden" name="command" value="UpdateUser">
@@ -27,11 +29,11 @@
             </tr>
             <tr>
                 <td><fmt:message key="user_second_name"></fmt:message></td>
-                <td><input type="text" name="second_name" placeholder="<fmt:message key="user_second_name"></fmt:message>"></td>
+                <td><input type="text" name="secondName" placeholder="<fmt:message key="user_second_name"></fmt:message>"></td>
             </tr>
             <tr>
                 <td><fmt:message key="user_last_name"></fmt:message></td>
-                <td><input type="text" name="last_name" placeholder="<fmt:message key="user_last_name"></fmt:message>"></td>
+                <td><input type="text" name="lastName" placeholder="<fmt:message key="user_last_name"></fmt:message>"></td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><input type="submit" value="<fmt:message key="button_update"></fmt:message>" name="updateUser"></td>
@@ -72,6 +74,20 @@
             </tr>
         </table>
     </div>
+</form>
+<br><br>
+<form action="Controller">
+    <input type="hidden" name="command" value="UpdateUser">
+    <table>
+        <tr>
+            <td>
+                <fmt:message key="delete_account"></fmt:message>
+            </td>
+            <td>
+                <a href="Controller?command=UpdateUser&delete=delete"><input type="button" value="<fmt:message key="delete_command"></fmt:message>"></a>
+            </td>
+        </tr>
+    </table>
 </form>
 </body>
 </html>

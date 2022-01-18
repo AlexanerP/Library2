@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="admin_menu_catalog_order"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="admin_menu_catalog_order"></fmt:message></h1></div>
 
 <form>
@@ -81,7 +83,7 @@
         <tr>
             <td><fmt:message key="order_show_by_city_and_status"></fmt:message></td>
             <td>
-                <select name="library">
+                <select name="city">
                     <c:forEach var="libraries" items="${libraries}">
                         <option value="${libraries.city}"><c:out value="${libraries.city}"></c:out></option>
                     </c:forEach>
@@ -103,59 +105,94 @@
     <table>
         <tr>
             <td><fmt:message key="order_show_all"></fmt:message></td>
-            <td><input type="submit" value="<fmt:message key="order_show_all"></fmt:message>" name="allOrders"></td>
+            <td><input type="submit" value="<fmt:message key="order_show_all"></fmt:message>" name="getAll"></td>
         </tr>
 </table>
 </form>
 
 <br>
 <div align="center">
-    <form>
-        <c:if test="${not empty orders}">
-            <p><fmt:message key="message_count_found_result"></fmt:message> <c:out value="${ordersSize}"/></p>
-        </c:if>
-
-        <c:if test="${not empty orders}">
-        <table border="1" cellpadding="5">
-            <tr>
-                <th>#</th>
-                <th><fmt:message key="id"></fmt:message></th>
-                <th><fmt:message key="user_id"></fmt:message></th>
-                <th><fmt:message key="order_id_admin"></fmt:message></th>
-                <th><fmt:message key="book_id"></fmt:message></th>
-                <th><fmt:message key="book_title"></fmt:message></th>
-                <th><fmt:message key="book_isbn"></fmt:message></th>
-                <th><fmt:message key="book_year"></fmt:message></th>
-                <th><fmt:message key="order_date"></fmt:message></th>
-                <th><fmt:message key="library_city"></fmt:message></th>
-                <th><fmt:message key="order_comment"></fmt:message></th>
-                <th><fmt:message key="status"></fmt:message></th>
-                <th><fmt:message key="change_status"></fmt:message></th>
-            </tr>
+    <c:if test="${not empty orders}">
+        <p><fmt:message key="message_count_found_result"></fmt:message> <c:out value="${ordersSize}"/></p>
+    </c:if>
+<table class="center_table">
+    <c:if test="${not empty orders}">
             <c:forEach var="orders" items="${orders}" varStatus="status">
+            <tr class="tr", >
                 <tr>
-                    <td><c:out value="${status.index + 1}"></c:out></td>
-                    <td><c:out value="${orders.orderDtoId}"></c:out></td>
-                    <td> <a href="?command=UserCatalog&userId=${orders.userId}"><c:out value="${orders.userId}"></c:out> </a></td>
-                    <td> <a href="?command=UserCatalog&userId=${orders.adminId}"><c:out value="${orders.adminId}"></c:out> </a></td>
-                    <td> <a href="?command=CatalogBook&bookId=${orders.bookId}"><c:out value="${orders.bookId}"></c:out> </a></td>
-                    <td><c:out value="${orders.title}"></c:out></td>
-                    <td><c:out value="${orders.isbn}"></c:out></td>
-                    <td><c:out value="${orders.year}"></c:out></td>
-                    <td><c:out value="${orders.date}"></c:out></td>
-                    <td><c:out value="${orders.cityLibrary}"></c:out></td>
-                    <td><c:out value="${orders.comment}"></c:out></td>
-                    <td><c:out value="${orders.status}"></c:out></td>
                     <td>
-                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=approved"><fmt:message key="order_status_approved"></fmt:message></a>
-                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=rejected"><fmt:message key="order_status_rejected"></fmt:message></a>
-                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=arrived"><fmt:message key="order_status_arrived"></fmt:message></a>
+                        <b>#</b>
+                        <c:out value="${status.index + 1}"></c:out>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="id"></fmt:message></b> <c:out value="${orders.orderDtoId}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="user_id"></fmt:message></b> <c:out value="${orders.userId}"></c:out> <a href="?command=UserCatalog&userId=${orders.userId}"><input type="button" value="<fmt:message key="details"></fmt:message>"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="order_id_admin"></fmt:message></b> <c:out value="${orders.adminId}"></c:out> <a href="?command=UserCatalog&userId=${orders.adminId}"><input type="button" value="<fmt:message key="details"></fmt:message>"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="book_id"></fmt:message></b> <c:out value="${orders.bookId}"></c:out> <a href="?command=CatalogBook&bookId=${orders.bookId}"><input type="button" value="<fmt:message key="details"></fmt:message>"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="book_title"></fmt:message></b> <c:out value="${orders.title}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="book_isbn"></fmt:message></b> <c:out value="${orders.isbn}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="book_year"></fmt:message></b> <c:out value="${orders.year}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="order_date"></fmt:message></b> <c:out value="${orders.date}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       <b><fmt:message key="library_city"></fmt:message></b> <c:out value="${orders.cityLibrary}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="order_comment"></fmt:message></b> <c:out value="${orders.comment}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       <b><fmt:message key="status"></fmt:message></b> <c:out value="${orders.status}"></c:out>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><fmt:message key="change_status"></fmt:message></b>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=approved"><input type="button" value="<fmt:message key="order_status_approved"></fmt:message>"></a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=rejected"><input type="button" value="<fmt:message key="order_status_rejected"></fmt:message>"></a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=arrived"><input type="button" value="<fmt:message key="order_status_arrived"></fmt:message>"></a>
+                        <a href="?command=ActionOrder&orderId=${orders.orderDtoId}&status=closed"><input type="button" value="<fmt:message key="order_status_closed"></fmt:message>"></a>
+                    </td>
+                </tr>
+            </tr>
             </c:forEach>
         </table>
         </c:if>
-    </form>
 </div>
 </body>
 </html>

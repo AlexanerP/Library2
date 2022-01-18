@@ -14,7 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class LibraryDAOImplTest {
+public class LibraryDaoImplTest {
 
     private LibraryDao libraryDAO;
     @BeforeEach

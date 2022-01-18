@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.OrderService;
@@ -22,28 +23,27 @@ public class ActionOrderCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_ORDER);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.ACTION_ORDER);
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
-            String orderId = req.getParameter("orderId");
-            String status = req.getParameter("status");
-            User user = (User) req.getSession().getAttribute("user");
+            String orderId = req.getParameter(Constant.ORDER_ID);
+            String status = req.getParameter(Constant.STATUS);
+            User user = (User) req.getSession().getAttribute(Constant.USER);
+
             if (orderId != null && status != null) {
                 boolean resultOperation = orderService.updateStatus(orderId, status, user.getUserId() + "");
                 if (resultOperation) {
-                    String successfulMessage = "Operation successful";
-                    req.getSession().setAttribute("successfulMessage", successfulMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                    req.getSession().setAttribute(Constant.MESSAGE_CODE_1010, Constant.MESSAGE_CODE_1010);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 } else {
-                    String negativeMessage = "Operation failed";
-                    req.getSession().setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                    req.getSession().setAttribute(Constant.MESSAGE_ERROR_CODE_1015, Constant.MESSAGE_ERROR_CODE_1015);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.ORDERS_CATALOG_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Error updating book order status.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

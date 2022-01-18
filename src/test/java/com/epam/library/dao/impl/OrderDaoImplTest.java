@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.OrderDao;
 import com.epam.library.entity.Order;
 import com.epam.library.entity.OrderStatus;
@@ -17,7 +17,7 @@ public class OrderDaoImplTest {
     private OrderDao orderDao;
 
     @BeforeEach
-    public void setUp() throws DAOException {
+    public void setUp() throws DaoException {
         orderDao = new OrderDaoImpl();
     }
 
@@ -32,7 +32,7 @@ public class OrderDaoImplTest {
             boolean condition = orderDao.create(order);
             System.out.println(condition);
             assertFalse(condition);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }
@@ -51,7 +51,7 @@ public class OrderDaoImplTest {
             int expected = orderDao.update(order);
             int actual = 1;
             assertEquals(expected, actual);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }
@@ -63,13 +63,13 @@ public class OrderDaoImplTest {
             int expected = orderDao.delete(ordertId);
             int actual = 1;
             assertEquals(expected, actual);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void getOrderById(Long id) throws DAOException {
+    public void getOrderById(Long id) throws DaoException {
         Long requestId = 2L;
         Optional<Order> optionalOrder = orderDao.getOrderById(requestId);
         System.out.println(optionalOrder);

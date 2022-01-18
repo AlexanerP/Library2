@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface WishBookDtoDao {
 
-    List<WishBookDto> getBooks(long userId) throws DAOException;
+    List<WishBookDto> getBooks(long userId) throws DaoException;
 
 }

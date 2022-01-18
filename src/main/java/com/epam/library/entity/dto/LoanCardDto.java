@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public class LoanCardDto implements Serializable {
 
+    private static final long serialVersionUID = -7940112002348591926L;
 
     private long loanCardDtoId;
     private long userId;

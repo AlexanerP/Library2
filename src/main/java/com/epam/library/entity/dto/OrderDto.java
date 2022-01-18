@@ -7,6 +7,8 @@ import java.time.LocalDate;
 
 public class OrderDto implements Serializable {
 
+    private static final long serialVersionUID = 9099702526178990582L;
+
     private long orderDtoId;
     private long bookId;
     private long adminId;

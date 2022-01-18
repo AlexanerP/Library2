@@ -2,10 +2,9 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
-import com.epam.library.entity.Library;
 import com.epam.library.entity.dto.OrderDto;
-import com.epam.library.service.LibraryService;
 import com.epam.library.service.OrderDtoService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -26,19 +25,18 @@ public class OrderCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ORDER_CATALOG);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.ORDER_CATALOG);
             OrderDtoService orderDtoService = ServiceFactory.getInstance().getOrderDtoService();
-            LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-            String userId = req.getParameter("userId");
-            String orderId = req.getParameter("orderId");
-            String city = req.getParameter("city");
-            String status = req.getParameter("status");
-            String allOrders = req.getParameter("allOrders");
+            String userId = req.getParameter(Constant.USER_ID);
+            String orderId = req.getParameter(Constant.ORDER_ID);
+            String city = req.getParameter(Constant.LIBRARY_CITY);
+            String status = req.getParameter(Constant.STATUS);
+            String allOrders = req.getParameter(Constant.ORDER_ALL);
             List<OrderDto> orders = new ArrayList<>();
-            List<Library> libraries = libraryService.showAll();
-            if (userId != null) {
+            System.out.println("userId - " + userId);
+            if (userId != null && userId !="") {
                 orders = orderDtoService.showOrdersUser(userId);
-            }else if (orderId != null) {
+            }else if (orderId != null && orderId != "") {
                 orders.add(orderDtoService.showOrderById(orderId).orElse(new OrderDto()));
             }else if (city != null && status == null) {
                 orders = orderDtoService.showOrdersByCity(city);
@@ -49,13 +47,13 @@ public class OrderCatalogCommand implements Command {
             } else if (allOrders != null) {
                 orders = orderDtoService.showAllOrders();
             }
-            req.setAttribute("libraries", libraries);
-            req.setAttribute("ordersSize", orders.size());
-            req.setAttribute("orders", orders);
+            req.setAttribute(Constant.ORDERS_SIZE, orders.size());
+            req.setAttribute(Constant.ORDERS, orders);
             req.getRequestDispatcher(PathJsp.ORDERS_CATALOG_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("Error while working with the order catalog.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            e.printStackTrace();
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

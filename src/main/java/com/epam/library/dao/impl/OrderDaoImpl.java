@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.OrderDao;
 import com.epam.library.dao.connection.ConnectionPool;
@@ -61,7 +61,7 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
 
 
     @Override
-    public boolean create(Order order) throws DAOException {
+    public boolean create(Order order) throws DaoException {
         logger.info("Create order.");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -72,14 +72,14 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("Failed to create order. OrderBookDto - {}.", order.toString());
-            throw new DAOException("Failed to create order.", sqlE);
+            throw new DaoException("Failed to create order.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public int update(Order order) throws DAOException {
+    public int update(Order order) throws DaoException {
         logger.info("Start update order.");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -88,7 +88,7 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Failed to update order.order - {}", order.toString());
-            throw new DAOException("Failed to update order", sqlE);
+            throw new DaoException("Failed to update order", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
@@ -96,7 +96,7 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
 
 
     @Override
-    public int delete(long id) throws DAOException {
+    public int delete(long id) throws DaoException {
         logger.info("Delete order. Id - {}", id);
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -104,14 +104,14 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Error when deleting order. id - {}", id);
-            throw new DAOException("Error when deleting order.", sqlE);
+            throw new DaoException("Error when deleting order.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public long countOrderByStatus(OrderStatus status) throws DAOException {
+    public long countOrderByStatus(OrderStatus status) throws DaoException {
         logger.info("Receiving count orders by status.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -126,7 +126,7 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
             return countOrder;
         } catch (SQLException sqlE) {
             logger.error("Count order by status not received. Status - {}", status);
-            throw new DAOException("Count order by status not received.", sqlE);
+            throw new DaoException("Count order by status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -134,7 +134,7 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
     }
 
     @Override
-    public Optional<Order> getOrderById(long id) throws DAOException {
+    public Optional<Order> getOrderById(long id) throws DaoException {
         logger.info("Receiving a order by ID.");
         OrderMapper mapper = new OrderMapper();
         PreparedStatement prStatement = null;
@@ -152,11 +152,11 @@ public class OrderDaoImpl extends DaoHelper implements OrderDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 order.");
+                throw new DaoException("Find more 1 order.");
             }
         } catch (SQLException sqlE) {
             logger.error("Find more 1 order. Find - {}", entity.toString());
-            throw new DAOException("Find more 1 order", sqlE);
+            throw new DaoException("Find more 1 order", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

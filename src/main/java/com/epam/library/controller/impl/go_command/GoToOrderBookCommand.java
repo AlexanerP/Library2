@@ -2,6 +2,7 @@ package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.entity.Library;
@@ -31,26 +32,26 @@ public class GoToOrderBookCommand implements Command {
             HttpSession session = req.getSession();
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             BookDto bookDTO;
-            String bookId = req.getParameter("bookId");
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_ORDER + "&bookId=" + bookId);
+            String bookId = req.getParameter(Constant.BOOK_ID);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_ORDER + "&bookId=" + bookId);
             if (bookId != "" && bookId != null) {
                 Optional<BookDto> optional = bookDtoService.showBookById(bookId);
                 if (optional.isPresent()) {
                     bookDTO = optional.get();
-                    req.setAttribute("book", bookDTO);
-                    session.setAttribute("orderBookId", bookDTO.getBookDtoId());
+                    req.setAttribute(Constant.BOOKS, bookDTO);
+                    session.setAttribute(Constant.ORDER_BOOK_ID, bookDTO.getBookDtoId());
                     req.getRequestDispatcher(PathJsp.ORDER_PAGE).forward(req, resp);
                 } else {
                 String negativeMessage = "Operation failed";
-                req.getSession().setAttribute("negativeMessage", negativeMessage);
-                resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                req.getSession().setAttribute(Constant.NEGATIVE_MESSAGE, negativeMessage);
+                resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
             }
             } else {
                 resp.sendRedirect(PathJsp.MESSAGE_PAGE);
             }
         } catch (ServiceException e) {
             logger.error("An error occurred while preparing to order the book.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

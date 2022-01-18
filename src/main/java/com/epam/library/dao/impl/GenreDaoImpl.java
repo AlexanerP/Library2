@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.GenreDao;
 import com.epam.library.dao.connection.ConnectionPool;
@@ -45,7 +45,7 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
             TableName.G_H_B, ColumnName.GHB_ID_BOOK);
 
     @Override
-    public boolean create(Genre genre) throws DAOException {
+    public boolean create(Genre genre) throws DaoException {
         logger.info("Start adding genres to the table.");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -54,14 +54,14 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("Genre of the book is not added to the table. Genre - {}", genre);
-            throw new DAOException("Genre of the book is not added to the table.", sqlE);
+            throw new DaoException("Genre of the book is not added to the table.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public boolean update(Genre genre) throws DAOException {
+    public boolean update(Genre genre) throws DaoException {
         logger.info("Start to update genre by id.");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -71,19 +71,19 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("No genre update by id. Genre - {}", genre.toString());
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public Optional<Genre> getGenreById(long genreId) throws DAOException {
+    public Optional<Genre> getGenreById(long genreId) throws DaoException {
         return Optional.empty();
     }
 
     @Override
-    public Optional<Genre> getGenreByGenre(String genre) throws DAOException {
+    public Optional<Genre> getGenreByGenre(String genre) throws DaoException {
         return Optional.empty();
     }
 
@@ -97,14 +97,14 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("Error while deleting genre data by book. BookDto id - {}", bookId);
-            throw new DAOException("Error while deleting genre data by book.", sqlE);
+            throw new DaoException("Error while deleting genre data by book.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public List<Genre> getGenresByIdBook(long bookId) throws DAOException {
+    public List<Genre> getGenresByIdBook(long bookId) throws DaoException {
         logger.info("Receiving a genre by bookId.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -119,7 +119,7 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
 
         } catch (SQLException sqlE) {
             logger.error("Find more 1 author by bookId. ");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -128,7 +128,7 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
     }
 
     @Override
-    public List<Genre> getGenres() throws DAOException {
+    public List<Genre> getGenres() throws DaoException {
         logger.info("Getting a list of genres.");
         List<Genre> genres = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -142,7 +142,7 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Genres not received.");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -152,7 +152,7 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
     }
 
     @Override
-    public long getCount() throws DAOException {
+    public long getCount() throws DaoException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         int countAuthors = 0;
@@ -164,7 +164,7 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Number of genres not received.");
-            throw new DAOException("Number of genres not received.", sqlE);
+            throw new DaoException("Number of genres not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -173,7 +173,7 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
     }
 
     @Override
-    public long getCountByGenre(String genre) throws DAOException {
+    public long getCountByGenre(String genre) throws DaoException {
         return 0;
     }
 }

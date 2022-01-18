@@ -12,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GenreDAOImplTest {
+public class GenreDaoImplTest {
 
     private GenreDao genreDAO;
 

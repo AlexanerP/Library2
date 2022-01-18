@@ -1,7 +1,7 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.DaoException;
+import com.epam.library.dao.DaoFactory;
 import com.epam.library.dao.WishBookDao;
 import com.epam.library.entity.WishBook;
 import com.epam.library.service.ServiceException;
@@ -21,7 +21,7 @@ public class WishBookServiceImpl implements WishBookService {
     @Override
     public boolean add(String userId, String bookId) throws ServiceException {
         try {
-            WishBookDao wishBookDao = DAOFactory.getInstance().getWishBookDao();
+            WishBookDao wishBookDao = DaoFactory.getInstance().getWishBookDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (userId != null && bookId != null) {
                 if (validator.isNumber(userId) && validator.isNumber(bookId)) {
@@ -40,7 +40,7 @@ public class WishBookServiceImpl implements WishBookService {
             } else {
                 throw new ServiceException("The user ID or the book ID value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error adding book to favorites.");
             throw new ServiceException("Error adding book to favorites.", e);
         }
@@ -50,7 +50,7 @@ public class WishBookServiceImpl implements WishBookService {
     @Override
     public boolean delete(String wishBookId) throws ServiceException {
         try {
-            WishBookDao wishBookDao = DAOFactory.getInstance().getWishBookDao();
+            WishBookDao wishBookDao = DaoFactory.getInstance().getWishBookDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (wishBookId != null) {
                 if (validator.isNumber(wishBookId)) {
@@ -67,7 +67,7 @@ public class WishBookServiceImpl implements WishBookService {
             } else {
                 throw new ServiceException("The wish book ID value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error deleting book from favorites.");
             throw new ServiceException("Error deleting book from favorites.", e);
         }
@@ -77,9 +77,9 @@ public class WishBookServiceImpl implements WishBookService {
     @Override
     public long showCountBooks() throws ServiceException {
         try {
-            WishBookDao wishBookDao = DAOFactory.getInstance().getWishBookDao();
+            WishBookDao wishBookDao = DaoFactory.getInstance().getWishBookDao();
             return wishBookDao.getCountWishBooks();
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error in services when getting the number of favorites.");
             throw new ServiceException("Error in services when getting the number of favorites.", e);
         }

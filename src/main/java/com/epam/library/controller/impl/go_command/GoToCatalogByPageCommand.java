@@ -1,6 +1,8 @@
 package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
+import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.BookDtoService;
@@ -29,12 +31,12 @@ public class GoToCatalogByPageCommand implements Command {
             int page = 1;
             int limit = 20;
             List<BookDto> bookList = bookDtoService.showByPage(page, limit);
-            req.setAttribute("bookList", bookList);
-            req.setAttribute("pageCatalog", page);
+            req.setAttribute(Constant.BOOKS, bookList);
+            req.setAttribute(Constant.PAGE_CATALOG, page);
             req.getRequestDispatcher(PathJsp.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("An error occurred while getting data for viewing on the first page. No data received", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

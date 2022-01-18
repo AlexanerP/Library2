@@ -6,6 +6,8 @@ public interface LoanCardService {
 
     boolean closeLoanCard(String cardId) throws ServiceException;
 
+    boolean closeLoanCardWithViolation(String cardId) throws ServiceException;
+
     boolean update(String cardId, String typeUse, String status) throws ServiceException;
 
     long showCountCards(String status) throws ServiceException;

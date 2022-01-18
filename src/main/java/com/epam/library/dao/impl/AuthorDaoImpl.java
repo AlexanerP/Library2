@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.AuthorDao;
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
@@ -59,7 +59,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
 
 
     @Override
-    public boolean create(Author author) throws DAOException {
+    public boolean create(Author author) throws DaoException {
         logger.info("Start to create Author.");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -68,14 +68,14 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("Author not added. Author - {}", author);
-            throw new DAOException("Author not added - " + author, sqlE);
+            throw new DaoException("Author not added - " + author, sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public boolean update(Author author) throws DAOException {
+    public boolean update(Author author) throws DaoException {
         logger.info("Start to update by id.");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -84,14 +84,14 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("No author update by id. Author - {}", author.toString());
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public boolean deleteAuthorByBookId(long bookId) throws DAOException {
+    public boolean deleteAuthorByBookId(long bookId) throws DaoException {
         logger.info("Deleting author data by book. BookId - {}", bookId);
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -100,14 +100,14 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             return true;
         } catch (SQLException sqlE) {
             logger.error("Error while deleting author data by book. BookDto id - {}", bookId);
-            throw new DAOException("Error while deleting author data by book.", sqlE);
+            throw new DaoException("Error while deleting author data by book.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public Optional<Author> getAuthorByName(String name) throws DAOException {
+    public Optional<Author> getAuthorByName(String name) throws DaoException {
         logger.info("Receiving an author by name.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -130,7 +130,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
 
         } catch (SQLException sqlE) {
             logger.error("Find more 1 author by name. Find - {}", entity);
-            throw new DAOException("Find more 1 author by name.", sqlE);
+            throw new DaoException("Find more 1 author by name.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -138,7 +138,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
     }
 
     @Override
-    public Optional<Author> getAuthorById(long authorId) throws DAOException {
+    public Optional<Author> getAuthorById(long authorId) throws DaoException {
         logger.info("Receiving an author by ID.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -161,7 +161,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
 
         } catch (SQLException sqlE) {
             logger.error("Find more 1 author by ID. Find - {}", entity);
-            throw new DAOException("Find more 1 author by ID.", sqlE);
+            throw new DaoException("Find more 1 author by ID.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -169,7 +169,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
     }
 
     @Override
-    public int getCountAuthors() throws DAOException {
+    public int getCountAuthors() throws DaoException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         int countAuthors = 0;
@@ -181,7 +181,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Number of authors not received.");
-            throw new DAOException("Number of authors not received.", sqlE);
+            throw new DaoException("Number of authors not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -190,7 +190,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
     }
 
     @Override
-    public int getCountBooksByAuthor(String author) throws DAOException {
+    public int getCountBooksByAuthor(String author) throws DaoException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         int countAuthors = 0;
@@ -202,7 +202,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Number of authors by name not received.");
-            throw new DAOException("Number of authors by name not received.", sqlE);
+            throw new DaoException("Number of authors by name not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -211,12 +211,12 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
     }
 
     @Override
-    public List<Author> getAuthors() throws DAOException {
+    public List<Author> getAuthors() throws DaoException {
         return null;
     }
 
     @Override
-    public List<Author> getAllAuthorByPartName(String partName) throws DAOException{
+    public List<Author> getAllAuthorByPartName(String partName) throws DaoException {
         logger.info("Getting a list of authors by part name.");
         StringBuilder builder = new StringBuilder();
         List<Author> authors = new ArrayList<>();
@@ -233,7 +233,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Authors by part name not received.");
-            throw new DAOException("Authors by part name not received.", sqlE);
+            throw new DaoException("Authors by part name not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

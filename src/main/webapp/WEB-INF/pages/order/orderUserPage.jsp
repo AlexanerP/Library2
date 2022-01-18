@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="user_menu_my_order"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="user_menu_my_order"></fmt:message></h1></div>
 <div align="center"><h3><c:out value="${secondName} ${lastName}"></c:out></h3></div>
 <div align="center">
@@ -26,8 +28,6 @@
             <tr>
                 <th>#</th>
                 <th><fmt:message key="id"></fmt:message></th>
-                <th><fmt:message key="user_id"></fmt:message></th>
-                <th><fmt:message key="user_email"></fmt:message></th>
                 <th><fmt:message key="book_id"></fmt:message></th>
                 <th><fmt:message key="book_title"></fmt:message></th>
                 <th><fmt:message key="book_isbn"></fmt:message></th>
@@ -42,8 +42,6 @@
                 <tr>
                     <td><c:out value="${status.index + 1}"></c:out></td>
                     <td><c:out value="${orders.orderDtoId}"></c:out></td>
-                    <td><c:out value="${orders.userId}"></c:out></td>
-                    <td><c:out value="${orders.email}"></c:out></td>
                     <td><c:out value="${orders.bookId}"></c:out></td></td>
                     <td><c:out value="${orders.title}"></c:out></td>
                     <td><c:out value="${orders.isbn}"></c:out></td>
@@ -54,7 +52,7 @@
                     <td><c:out value="${orders.status}"></c:out></td>
                     <td>
                         <c:if test="${orders.status eq 'OPENED' or 'CLOSED'}">
-                            <a href="?command=ActionUserOrder&orderUserId=${orders.orderDtoId}&action=remove"><fmt:message key="delete_command"></fmt:message></a> </td>
+                            <a href="?command=ActionUserOrder&orderUserId=${orders.orderDtoId}&action=remove"><input type="button" value="<fmt:message key="delete_command"></fmt:message>"></a> </td>
                         </c:if>
                 </tr>
             </c:forEach>

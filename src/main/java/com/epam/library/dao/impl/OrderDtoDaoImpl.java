@@ -77,7 +77,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
 
 
     @Override
-    public Optional<OrderDto> getOrderById(Long id) throws DAOException {
+    public Optional<OrderDto> getOrderById(Long id) throws DaoException {
         logger.info("Receiving a order by id.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -95,11 +95,11 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 order.");
+                throw new DaoException("Find more 1 order.");
             }
         } catch (SQLException sqlE) {
             logger.error("Find more 1 request. order - {}", entity.toString());
-            throw new DAOException("Find more 1 order", sqlE);
+            throw new DaoException("Find more 1 order", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -107,7 +107,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getOrderByCity(String city) throws DAOException {
+    public List<OrderDto> getOrderByCity(String city) throws DaoException {
         logger.info("Receiving a request by city.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -123,7 +123,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
             return orderDtos;
         } catch (SQLException sqlE) {
             logger.error("OrderBookDto list by city not received. Library - {}", city.toString());
-            throw new DAOException("OrderBookDto list by city not received", sqlE);
+            throw new DaoException("OrderBookDto list by city not received", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -131,7 +131,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getOrderByStatus(OrderStatus status) throws DAOException {
+    public List<OrderDto> getOrderByStatus(OrderStatus status) throws DaoException {
         logger.info("Receiving a orders by status.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -147,7 +147,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
             return orders;
         } catch (SQLException sqlE) {
             logger.error("OrderBookDto list by status not received. Status - {}", status);
-            throw new DAOException("OrderBookDto list by status not received.", sqlE);
+            throw new DaoException("OrderBookDto list by status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -155,7 +155,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getOrderByUser(long id) throws DAOException {
+    public List<OrderDto> getOrderByUser(long id) throws DaoException {
         logger.info("Receiving orders by user.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -171,7 +171,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
             return orderDtos;
         } catch (SQLException sqlE) {
             logger.error("OrderBookDto list by user not received. User id - {}", id);
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -179,7 +179,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getOrders() throws DAOException {
+    public List<OrderDto> getOrders() throws DaoException {
         logger.info("Getting a list of orderBookDtos");
         List<OrderDto> orderDtos = new ArrayList<>();
         OrderDtoMapper mapper = new OrderDtoMapper();
@@ -195,7 +195,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
             return orderDtos;
         } catch (SQLException sqlE) {
             logger.error("OrderBookDto list not received... Error.");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -203,7 +203,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
     }
 
     @Override
-    public List<OrderDto> getOrderByCityAndStatus(String city, OrderStatus status) throws DAOException {
+    public List<OrderDto> getOrderByCityAndStatus(String city, OrderStatus status) throws DaoException {
         logger.info("Receiving orders by city and by status.");
         OrderDtoMapper mapper = new OrderDtoMapper();
         PreparedStatement prStatement = null;
@@ -219,7 +219,7 @@ public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
             return orders;
         } catch (SQLException sqlE) {
             logger.error("OrderBookDto list by city and by status not received. Status - {}, city - {}", status, city);
-            throw new DAOException("OrderBookDto list by city and by status not received.", sqlE);
+            throw new DaoException("OrderBookDto list by city and by status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

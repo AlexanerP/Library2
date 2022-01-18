@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.service.ServiceException;
@@ -26,13 +27,13 @@ public class RegistrationCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
             logger.info("Start registration.");
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.REGISTRATION);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.REGISTRATION);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
-            String email = req.getParameter("email");
-            String password = req.getParameter("password");
-            String secondName = req.getParameter("second_name");
-            String lastName = req.getParameter("last_name");
+            String email = req.getParameter(Constant.USER_EMAIL);
+            String password = req.getParameter(Constant.USER_PASSWORD);
+            String secondName = req.getParameter(Constant.USER_SECOND_NAME);
+            String lastName = req.getParameter(Constant.USER_LAST_NAME);
             if (email != null && email != "" && password != null && password != ""
                     && secondName != null && secondName != "" && lastName != null && lastName != ""){
                 int flagRegistration = userService.create(email, password, secondName, lastName);
@@ -44,23 +45,24 @@ public class RegistrationCommand implements Command {
                     user.setSecondName(optionalUser.get().getSecondName());
                     user.setLastName(optionalUser.get().getLastName());
                     user.setStatus(optionalUser.get().getStatus());
-                    session.setAttribute("user", user);
+                    session.setAttribute(Constant.USER, user);
                     req.getRequestDispatcher(PathJsp.INDEX_PAGE).forward(req, resp);
                 } else if (flagRegistration == 2){
-                    String negativeMessage = "Operation failed";
-                    session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1001, Constant.MESSAGE_ERROR_CODE_1001);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 }else if (flagRegistration == 3) {
-                    String negativeMessage = "Operation failed";
-                    session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1002, Constant.MESSAGE_ERROR_CODE_1002);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+                }else if (flagRegistration == 4) {
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1003, Constant.MESSAGE_ERROR_CODE_1003);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.REGISTRATION_PAGE).forward(req, resp);
             }
         } catch (ServiceException e) {
             logger.error("An error occured during registration. ", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

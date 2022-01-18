@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="admin_menu_libraries"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="admin_menu_libraries"></fmt:message></h1></div>
 <table>
     <tr>
@@ -107,15 +109,15 @@
                     <td><c:out value="${library.libraryId}"></c:out></td>
                     <td><c:out value="${library.city}"></c:out></td>
                     <td><c:out value="${library.street}"></c:out></td>
-                    <td> <a href="?command=OrderCatalog&city=${library.city}"><fmt:message key="orders"></fmt:message></a> </td>
-                    <td> <a href="?command=LoanCardCatalog&city=${library.city}"><fmt:message key="loan_card"></fmt:message></a> </td>
-                    <td> <a href="?command=CatalogBook&city=${library.city}"> <fmt:message key="books"></fmt:message> </a> </td>
+                    <td> <a href="?command=OrderCatalog&city=${library.city}"><input type="button" value="<fmt:message key="orders"></fmt:message>"></a></td>
+                    <td> <a href="?command=LoanCardCatalog&city=${library.city}"><input type="button" value="<fmt:message key="loan_card"></fmt:message>"></a></td>
+                    <td> <a href="?command=CatalogBook&city=${library.city}"><input type="button" value="<fmt:message key="books"></fmt:message>"></a></td>
                     <td>
-                        <a href="?command=GoToUpdateLibrary&libraryId=${library.libraryId}&city=${library.city}&street=${library.street}"><fmt:message key="button_update"></fmt:message></a>
+                        <a href="?command=GoToUpdateLibrary&libraryId=${library.libraryId}&city=${library.city}&street=${library.street}"><input type="button" value="<fmt:message key="button_update"></fmt:message>"></a>
                     </td>
                     <td>
-                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=opened"><fmt:message key="library_status_opened"></fmt:message></a>
-                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=closed"><fmt:message key="library_status_closed"></fmt:message></a>
+                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=opened"><input type="button" value="<fmt:message key="library_status_opened"></fmt:message>"></a>
+                        <a href="?command=ActionLibrary&libraryId=${library.libraryId}&status=closed"><input type="button" value="<fmt:message key="library_status_closed"></fmt:message>"></a>
                     </td>
                 </tr>
             </c:forEach>

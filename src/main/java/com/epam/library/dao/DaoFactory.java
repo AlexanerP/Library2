@@ -3,9 +3,9 @@ package com.epam.library.dao;
 
 import com.epam.library.dao.test_impl.*;
 
-public class DAOFactory {
+public class DaoFactory {
 
-    private static DAOFactory instance = new DAOFactory();
+    private static DaoFactory instance = new DaoFactory();
 
     private BookDtoDao bookDtoDao = new BookDtoDaoImpl();
     public BookDao bookDao = new BookDaoImpl();
@@ -20,7 +20,7 @@ public class DAOFactory {
     private LoanCardDtoDao loanCardDtoDao = new LoanCardDtoDaoImpl();
     private LoanCardDao loanCardDao = new LoanCardDaoImpl();
 
-    public static DAOFactory getInstance() {
+    public static DaoFactory getInstance() {
         return instance;
     }
 

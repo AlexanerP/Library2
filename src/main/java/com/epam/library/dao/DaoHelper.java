@@ -12,17 +12,22 @@ public abstract class DaoHelper {
 
     private final static Logger logger = LoggerFactory.getLogger(DaoHelper.class);
 
-    public PreparedStatement createPreparedStatement(Connection connection, String query, Object... parameters) throws SQLException {
-        logger.info("Create statement. Query - {}", query);
-        PreparedStatement prStatement = connection.prepareStatement(query);
-        for (int i = 1; i <= parameters.length; i++) {
-            logger.info("Parameters i - {}, value - {}", i, parameters[i - 1]);
-            prStatement.setObject(i, parameters[i - 1]);
+    public PreparedStatement createPreparedStatement(Connection connection, String query, Object... parameters) throws DaoException {
+        try {
+            logger.info("Create statement. Query - {}", query);
+            PreparedStatement prStatement = connection.prepareStatement(query);
+            for (int i = 1; i <= parameters.length; i++) {
+                logger.info("Parameters i - {}, value - {}", i, parameters[i - 1]);
+                prStatement.setObject(i, parameters[i - 1]);
+            }
+            return prStatement;
+        }catch (SQLException sqlException) {
+            logger.error("Error creating PreparedStatement.");
+            throw new DaoException("Error creating PreparedStatement.", sqlException);
         }
-        return prStatement;
     }
 
-    public void closePreparedStatement(PreparedStatement statement) {
+    public void closePreparedStatement(PreparedStatement statement) throws DaoException {
         logger.info("Start to close statement.");
         try {
             if (!(statement == null)) {
@@ -30,14 +35,12 @@ public abstract class DaoHelper {
             }
         } catch (SQLException sqlE) {
             logger.error("An error occured while closing PreparedStatement.");
-            for (Throwable e : sqlE) {
-                logger.error(e.toString());
-            }
+            throw new DaoException("An error occured while closing PreparedStatement.", sqlE);
         }
         logger.info("Finish to close statement.");
     }
 
-    public void closeResultSet(ResultSet resultSet) {
+    public void closeResultSet(ResultSet resultSet) throws DaoException {
         logger.info("Start to close resultSet.");
         try {
             if (!(resultSet == null)) {
@@ -45,9 +48,7 @@ public abstract class DaoHelper {
             }
         } catch (SQLException sqlE) {
             logger.error("An error occured while closing ResultSet.");
-            for (Throwable e : sqlE) {
-                logger.error(e.toString());
-            }
+            throw new DaoException("An error occured while closing ResultSet.", sqlE);
         }
         logger.info("Finish to close resultSet.");
     }

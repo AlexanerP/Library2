@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.LibraryService;
 import com.epam.library.service.ServiceException;
@@ -21,29 +22,30 @@ public class UpdateLibraryCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.UPDATE_LIBRARY);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.UPDATE_LIBRARY);
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-            Integer libraryId = (Integer) req.getSession().getAttribute("updateLibraryId");
-            String city = req.getParameter("city");
-            String street = req.getParameter("street");
-            req.getSession().removeAttribute("updateLibraryId");
-            if (libraryId == null) {
-                boolean resultOperation = libraryService.update(libraryId + "", city, street);
-                if (resultOperation) {
-                    String successfulMessage = "Operation successful";
-                    req.getSession().setAttribute("successfulMessage", successfulMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
-                } else {
-                    String negativeMessage = "Operation failed";
-                    req.getSession().setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+            Integer libraryId = (Integer) req.getSession().getAttribute(Constant.UPDATE_LIBRARY_ID);
+            String city = req.getParameter(Constant.LIBRARY_CITY);
+            String street = req.getParameter(Constant.LIBRARY_STREET);
+            req.getSession().removeAttribute(Constant.UPDATE_LIBRARY_ID);
+            if (libraryId != null && city != null && street != null) {
+                int resultOperation = libraryService.update(libraryId + "", city, street);
+                if (resultOperation == 1) {
+                    req.getSession().setAttribute(Constant.MESSAGE_CODE_1018, Constant.MESSAGE_CODE_1018);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+                } else if (resultOperation == 2){
+                    req.getSession().setAttribute(Constant.MESSAGE_ERROR_CODE_1007, Constant.MESSAGE_ERROR_CODE_1007);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+                } else if (resultOperation == 0){
+                    req.getSession().setAttribute(Constant.MESSAGE_ERROR_CODE_1022, Constant.MESSAGE_ERROR_CODE_1022);
+                    resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
                 }
             } else {
                 req.getRequestDispatcher(PathJsp.LIBRARY_CATALOG_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Error while updating the library.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

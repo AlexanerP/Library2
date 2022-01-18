@@ -12,6 +12,8 @@ public interface UserService {
 
     Optional<User> verification(String email, String password) throws ServiceException;
 
+    boolean remove(String userId) throws ServiceException;
+
     int create(String email, String password, String secondName, String lastName) throws ServiceException;
 
     List<User> getUsers() throws ServiceException;
@@ -26,11 +28,15 @@ public interface UserService {
 
     Optional<User> showUserById(String userId) throws ServiceException;
 
-    boolean update(String email, String secondName, String lastName, String userId) throws ServiceException;
+    int update(String email, String secondName, String lastName, String userId) throws ServiceException;
 
-    boolean updatePassword(String newPassword, String email, String oldPassword) throws ServiceException;
+    int updatePassword(String newPassword, String email, String oldPassword) throws ServiceException;
 
     boolean updateStatus(String userId, String status) throws ServiceException;
 
     boolean updateRole(String userId, String role) throws ServiceException;
+
+    boolean addViolation(String userId) throws ServiceException;
+
+    boolean removeViolation(String userId) throws ServiceException;
 }

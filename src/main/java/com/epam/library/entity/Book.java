@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 public class Book implements Serializable {
 
+    private static final long serialVersionUID = 766391284248913856L;
+
     private long bookId;
     private int libraryId;
     private String isbn;

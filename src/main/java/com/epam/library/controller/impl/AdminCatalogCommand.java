@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.User;
 import com.epam.library.entity.UserRole;
@@ -25,11 +26,11 @@ public class AdminCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.MANAGER_CATALOG);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.MANAGER_CATALOG);
             UserService userService = ServiceFactory.getInstance().getUserService();
-            String userIdFind = req.getParameter("userIdFind");
-            String email = req.getParameter("email");
-            String admins = req.getParameter("allAdmins");
+            String userIdFind = req.getParameter(Constant.USER_ID);
+            String email = req.getParameter(Constant.USER_EMAIL);
+            String admins = req.getParameter(Constant.USER_ALL_ADMIN);
             List<User> users = new ArrayList<>();
             if (userIdFind != null && userIdFind != "") {
                users.add(userService.showUserById(userIdFind).get());
@@ -39,11 +40,11 @@ public class AdminCatalogCommand implements Command {
                 users.addAll(userService.showUserByRole(UserRole.ADMIN.name()));
                 users.addAll(userService.showUserByRole(UserRole.MANAGER.name()));
             }
-            req.setAttribute("users", users);
+            req.setAttribute(Constant.USERS, users);
             req.getRequestDispatcher(PathJsp.MANAGER_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while searching for administrators.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

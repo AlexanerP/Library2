@@ -2,9 +2,8 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
-import com.epam.library.entity.Library;
-import com.epam.library.entity.LibraryStatus;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.*;
 import org.slf4j.Logger;
@@ -24,7 +23,7 @@ public class SearchBookCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.SEARCH_BOOKS);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.SEARCH_BOOKS);
             logger.info("Search book by parameters.");
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
             GenreService genreService = ServiceFactory.getInstance().getGenreService();
@@ -35,29 +34,26 @@ public class SearchBookCommand implements Command {
             int countAuthors = authorService.getCountAuthors();
             long countGenres = genreService.getCountGenres();
 
-            String isbn = req.getParameter("isbn");
-            String title = req.getParameter("title");
-            String genre = req.getParameter("genre");
-            String author = req.getParameter("author");
+            String isbn = req.getParameter(Constant.BOOK_ISBN);
+            String title = req.getParameter(Constant.BOOK_TITLE);
+            String genre = req.getParameter(Constant.BOOK_GENRE);
+            String author = req.getParameter(Constant.BOOK_AUTHOR);
             List<BookDto> booksDTO = new ArrayList<>();
             if (isbn == "" && title == "" && genre == "" && author == "") {
-                req.getRequestDispatcher("/Controller?command=" + CommandType.GO_TO_MAIN_PAGE).forward(req, resp);
+                req.getRequestDispatcher(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MAIN_PAGE).forward(req, resp);
             } else {
                 booksDTO = bookDtoService.showBookByParameter(title, isbn, genre, author);
-                LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-                List<Library> libraries = libraryService.showByStatus(LibraryStatus.OPENED.name());
-                req.setAttribute("libraries", libraries);
-                req.setAttribute("booksDTOSize", booksDTO.size());
-                req.setAttribute("booksDTO", booksDTO);
-                req.setAttribute("countBooks", countBooks);
-                req.setAttribute("countAuthors", countAuthors);
-                req.setAttribute("countGenres", countGenres);
+                req.setAttribute(Constant.BOOK_SIZE, booksDTO.size());
+                req.setAttribute(Constant.BOOKS, booksDTO);
+                req.setAttribute(Constant.STATISTIC_COUNT_BOOKS, countBooks);
+                req.setAttribute(Constant.STATISTIC_COUNT_AUTHORS, countAuthors);
+                req.setAttribute(Constant.STATISTIC_COUNT_GENRES, countGenres);
 
                 req.getRequestDispatcher(PathJsp.MAIN_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("An error occured while searching the book by parameters. ", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.LibraryDao;
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
@@ -53,7 +53,7 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
             TableName.LIBRARY_STATUS, ColumnName.LIBRARY_STATUS_ID_STATUS);
 
     @Override
-    public boolean create(Library library) throws DAOException {
+    public boolean create(Library library) throws DaoException {
         logger.info("Create library {}", library.getCity());
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -65,14 +65,14 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
 
         } catch (SQLException sqlE) {
             logger.error("Failed to create library. Library - {}.", library.toString());
-            throw new DAOException("Failed to create library.", sqlE);
+            throw new DaoException("Failed to create library.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public int update(Library library) throws DAOException {
+    public int update(Library library) throws DaoException {
         logger.info("Start of updating library data.");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -81,14 +81,14 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Failed to update library. Library - {}", library.toString());
-            throw new DAOException("Failed to update library.", sqlE);
+            throw new DaoException("Failed to update library.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public Optional<Library> getLibraryById(Long id) throws DAOException {
+    public Optional<Library> getLibraryById(Long id) throws DaoException {
         logger.info("Receiving a library by id.");
         LibraryMapper mapper = new LibraryMapper();
         PreparedStatement prStatement = null;
@@ -106,11 +106,11 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 library.");
+                throw new DaoException("Find more 1 library.");
             }
         } catch (SQLException sqlE) {
             logger.error("Find more 1 library. Find - {}", entity.toString());
-            throw new DAOException("Find more 1 library.", sqlE);
+            throw new DaoException("Find more 1 library.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -118,7 +118,7 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
     }
 
     @Override
-    public Optional<Library> getLibraryByCity(String city) throws DAOException {
+    public Optional<Library> getLibraryByCity(String city) throws DaoException {
         logger.info("Receiving a library by city.");
         LibraryMapper mapper = new LibraryMapper();
         PreparedStatement prStatement = null;
@@ -136,11 +136,11 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 library.");
+                throw new DaoException("Find more 1 library.");
             }
         } catch (SQLException sqlE) {
             logger.error("Library in the city is not received.");
-            throw new DAOException("Library in the city is not received.", sqlE);
+            throw new DaoException("Library in the city is not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -148,7 +148,7 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
     }
 
     @Override
-    public List<Library> getLibraries() throws DAOException {
+    public List<Library> getLibraries() throws DaoException {
         logger.info("Getting all Libraries.");
         List<Library> libraries = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -162,7 +162,7 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Libraries not received.");
-            throw new DAOException("Libraries not received.", sqlE);
+            throw new DaoException("Libraries not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -172,7 +172,7 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
     }
 
     @Override
-    public List<Library> getLibrariesByStatus(LibraryStatus status) throws DAOException {
+    public List<Library> getLibrariesByStatus(LibraryStatus status) throws DaoException {
         logger.info("Getting all Libraries by status.");
         List<Library> libraries = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -186,7 +186,7 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Libraries by status not received.");
-            throw new DAOException("Libraries by status not received.", sqlE);
+            throw new DaoException("Libraries by status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

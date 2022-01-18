@@ -8,27 +8,27 @@ import java.util.Optional;
 
 public interface BookDtoDao {
 
-    boolean create(BookDto bookDto) throws DAOException;
+    boolean create(BookDto bookDto) throws DaoException;
 
-    boolean update(BookDto bookDto) throws DAOException;
+    boolean update(BookDto bookDto) throws DaoException;
 
-    List<BookDto> getBookByIsbn(String isbn) throws DAOException;
+    List<BookDto> getBookByIsbn(String isbn) throws DaoException;
 
-    Optional<BookDto> getBookById(long bookId) throws DAOException;
+    Optional<BookDto> getBookById(long bookId) throws DaoException;
 
-    int delete(long id) throws DAOException;
+    int delete(long id) throws DaoException;
 
-    List<BookDto> getBooks() throws DAOException;
+    List<BookDto> getBooks() throws DaoException;
 
-    List<BookDto> getBooksByCity(String city) throws DAOException;
+    List<BookDto> getBooksByCity(String city) throws DaoException;
 
-    List<BookDto> getBooksByPage(int limit, int page) throws DAOException;
+    List<BookDto> getBooksByPage(int limit, int page) throws DaoException;
 
-    List<BookDto> getBooksByTitle(String title) throws DAOException;
+    List<BookDto> getBooksByTitle(String title) throws DaoException;
 
-    List<BookDto> getBooksByAuthor(String author) throws DAOException;
+    List<BookDto> getBooksByAuthor(String author) throws DaoException;
 
-    List<BookDto> getBooksByGenre(String genre) throws DAOException;
+    List<BookDto> getBooksByGenre(String genre) throws DaoException;
 
     List<BookDto> getCountBooksByPeriod(LocalDate start, LocalDate finish);
 }

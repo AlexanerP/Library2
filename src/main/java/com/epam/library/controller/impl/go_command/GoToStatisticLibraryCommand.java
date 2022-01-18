@@ -2,6 +2,7 @@ package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.LoanCardStatus;
 import com.epam.library.entity.OrderStatus;
@@ -23,7 +24,7 @@ public class GoToStatisticLibraryCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             logger.info("Getting statistics library");
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_STATISTICS);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_STATISTICS);
             UserService userService = ServiceFactory.getInstance().getUserService();
             BookService bookService = ServiceFactory.getInstance().getBookService();
             LoanCardService loanCardService = ServiceFactory.getInstance().getLoanCardService();
@@ -49,29 +50,29 @@ public class GoToStatisticLibraryCommand implements Command {
             long usersDelete = userService.showCountByStatus(UserStatus.DELETE.name());
             long countUsers = usersActive + usersBlocked + usersDelete;
 
-            req.setAttribute("countUsers", countUsers);
-            req.setAttribute("countBooks", countBooks);
+            req.setAttribute(Constant.STATISTIC_COUNT_USERS, countUsers);
+            req.setAttribute(Constant.STATISTIC_COUNT_BOOKS, countBooks);
 
-            req.setAttribute("countUsersBlocked", usersBlocked);
-            req.setAttribute("countUsersDelete", usersDelete);
-            req.setAttribute("countUsersActive", usersActive);
+            req.setAttribute(Constant.STATISTIC_COUNT_USERS_BLOCKED, usersBlocked);
+            req.setAttribute(Constant.STATISTIC_COUNT_USERS_DELETE, usersDelete);
+            req.setAttribute(Constant.STATISTIC_COUNT_USERS_ACTIVE, usersActive);
 
-            req.setAttribute("countLoanCardOpen", countLoanCardOpen);
-            req.setAttribute("countLoanCard", countLoanCardClosed + countLoanCardOpen);
+            req.setAttribute(Constant.STATISTIC_COUNT_LOAN_CARD_OPEN, countLoanCardOpen);
+            req.setAttribute(Constant.STATISTIC_COUNT_LOAN_CARD, countLoanCardClosed + countLoanCardOpen);
 
-            req.setAttribute("countAuthor", countAuthor);
-            req.setAttribute("countGenre", countGenre);
+            req.setAttribute(Constant.STATISTIC_COUNT_AUTHORS, countAuthor);
+            req.setAttribute(Constant.STATISTIC_COUNT_GENRES, countGenre);
 
-            req.setAttribute("ordersOpen", ordersOpen);
-            req.setAttribute("ordersApproved", ordersApproved);
-            req.setAttribute("ordersRejected", ordersRejected);
-            req.setAttribute("ordersArrived", ordersArrived);
-            req.setAttribute("ordersClosed", ordersClosed);
+            req.setAttribute(Constant.STATISTIC_COUNT_ORDERS_OPEN, ordersOpen);
+            req.setAttribute(Constant.STATISTIC_COUNT_ORDERS_APPROVED, ordersApproved);
+            req.setAttribute(Constant.STATISTIC_COUNT_ORDERS_REJECTED, ordersRejected);
+            req.setAttribute(Constant.STATISTIC_COUNT_ORDERS_ARRIVED, ordersArrived);
+            req.setAttribute(Constant.STATISTIC_COUNT_ORDERS_CLOSED, ordersClosed);
 
             req.getRequestDispatcher(PathJsp.STATISTICS_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while getting library statistics", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

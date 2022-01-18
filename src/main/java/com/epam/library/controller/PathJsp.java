@@ -11,6 +11,8 @@ public class PathJsp {
     public static final String BOOK_CATALOG_BY_PAGE = "WEB-INF/pages/book/catalogBookByPagePage.jsp";
     public static final String BOOK_CATALOG_PAGE = "WEB-INF/pages/book/catalogBookPage.jsp";
     public static final String UPDATE_BOOK_PAGE = "WEB-INF/pages/book/updateBookPage.jsp";
+    public static final String UPDATE_GENRE_PAGE = "WEB-INF/pages/book/updateGenrePage.jsp";
+    public static final String UPDATE_AUTHOR_PAGE = "WEB-INF/pages/book/updateAuthorPage.jsp";
     public static final String ADD_BOOK_PAGE = "WEB-INF/pages/book/addBookPage.jsp";
 
     public static final String USER_CATALOG_PAGE = "WEB-INF/pages/user/userCatalogPage.jsp";

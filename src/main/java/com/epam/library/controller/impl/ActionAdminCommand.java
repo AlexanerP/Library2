@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -22,29 +23,26 @@ public class ActionAdminCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_ADMIN_COMMAND);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.ACTION_ADMIN_COMMAND);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
-            String userId = req.getParameter("userId");
-            String role = req.getParameter("role");
+            String userId = req.getParameter(Constant.USER_ID);
+            String role = req.getParameter(Constant.USER_ROLE);
 
             if (userId != null && userId != "" && role != null && role != "") {
-                boolean result = userService.updateRole(userId, role);
-                if (result) {
-                    String successfulMessage = "Successful operation";
-                    session.setAttribute("successfulMessage", successfulMessage);
-
+                boolean resultOperation = userService.updateRole(userId, role);
+                if (resultOperation) {
+                    session.setAttribute(Constant.MESSAGE_CODE_1007, Constant.MESSAGE_CODE_1007);
                 } else {
-                    String negativeMessage = "Operation failed";
-                    session.setAttribute("negativeMessage", negativeMessage);
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1012, Constant.MESSAGE_ERROR_CODE_1012);
                 }
-                resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
             } else {
                 req.getRequestDispatcher(PathJsp.MANAGER_CATALOG_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Error while changing user role.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

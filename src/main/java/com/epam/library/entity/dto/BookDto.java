@@ -9,6 +9,8 @@ import java.util.List;
 
 public class BookDto implements Serializable {
 
+    private static final long serialVersionUID = -1306289623887816054L;
+
     private long bookDtoId;
     private String cityLibrary;
     private List<Author> authors;

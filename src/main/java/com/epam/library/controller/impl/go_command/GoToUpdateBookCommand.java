@@ -2,6 +2,7 @@ package com.epam.library.controller.impl.go_command;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.LibraryStatus;
@@ -25,19 +26,19 @@ public class GoToUpdateBookCommand implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             BookDtoService bookDtoService = ServiceFactory.getInstance().getBookDtoService();
-            String bookId = req.getParameter("bookId");
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.GO_TO_UPDATE_BOOK + "&bookId=" + bookId);
+            String bookId = req.getParameter(Constant.BOOK_ID);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_UPDATE_BOOK + "&bookId=" + bookId);
             Optional<BookDto> optionalBook = bookDtoService.showBookById(bookId);
             if (optionalBook.isPresent()) {
-                req.getSession().setAttribute("updateBookId", optionalBook.get().getBookDtoId());
-                req.setAttribute("book", optionalBook.get());
+                req.getSession().setAttribute(Constant.UPDATE_BOOK_ID, optionalBook.get().getBookDtoId());
+                req.setAttribute(Constant.BOOKS, optionalBook.get());
                 req.getRequestDispatcher(PathJsp.UPDATE_BOOK_PAGE).forward(req, resp);
             } else {
                 req.getRequestDispatcher(PathJsp.BOOK_CATALOG_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Book for update not received.", e);
-            resp.sendRedirect(PathJsp.MESSAGE_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

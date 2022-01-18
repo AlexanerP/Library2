@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -22,28 +23,43 @@ public class ActionUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.ACTION_USER);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.ACTION_USER);
             UserService userService = ServiceFactory.getInstance().getUserService();
             HttpSession session = req.getSession();
-            String userId = req.getParameter("userId");
-            String status = req.getParameter("status");
+            String userId = req.getParameter(Constant.USER_ID);
+            String addViolation = req.getParameter(Constant.USER_ADD_VIOLATION);
+            String removeViolation = req.getParameter(Constant.USER_REMOVE_VIOLATION);
+            String status = req.getParameter(Constant.STATUS);
             if (userId != null && status != null) {
-                boolean flag = userService.updateStatus(userId, status);
-                if (flag) {
-                    String message = "Operation completed";
-                    session.setAttribute("successfulMessage", message);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                boolean resultOperation = userService.updateStatus(userId, status);
+                if (resultOperation) {
+                    session.setAttribute(Constant.MESSAGE_CODE_1013, Constant.MESSAGE_CODE_1013);
                 }else {
-                    String negativeMessage = "Operation failed";
-                    session.setAttribute("negativeMessage", negativeMessage);
-                    resp.sendRedirect("Controller?command=" + CommandType.GO_TO_MESSAGE_PAGE);
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1017, Constant.MESSAGE_ERROR_CODE_1017);
                 }
-            }else {
+                resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+            } else if (addViolation != null) {
+                boolean resultOperation = userService.addViolation(userId);
+                if (resultOperation) {
+                    session.setAttribute(Constant.MESSAGE_CODE_1014, Constant.MESSAGE_CODE_1014);
+                }else {
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1018, Constant.MESSAGE_ERROR_CODE_1018);
+                }
+                resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+            } else if (removeViolation != null) {
+                boolean resultOperation = userService.removeViolation(userId);
+                if (resultOperation) {
+                    session.setAttribute(Constant.MESSAGE_CODE_1015, Constant.MESSAGE_CODE_1015);
+                }else {
+                    session.setAttribute(Constant.MESSAGE_ERROR_CODE_1019, Constant.MESSAGE_ERROR_CODE_1019);
+                }
+                resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.GO_TO_MESSAGE_PAGE);
+            } else{
                 req.getRequestDispatcher(PathJsp.USER_CATALOG_PAGE).forward(req, resp);
             }
         }catch (ServiceException e) {
             logger.error("Error when changing user status.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

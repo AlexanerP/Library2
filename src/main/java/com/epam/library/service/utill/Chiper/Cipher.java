@@ -1,4 +1,4 @@
-package com.epam.library.utill.Chiper;
+package com.epam.library.service.utill.Chiper;
 
 public interface Cipher {
 

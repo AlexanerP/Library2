@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.BookDao;
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoHelper;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
@@ -36,7 +36,7 @@ public class BookDaoImpl extends DaoHelper implements BookDao {
 
 
     @Override
-    public int update(Book book) throws DAOException {
+    public int update(Book book) throws DaoException {
         logger.info("Updating a book by ID.");
         PreparedStatement prStatement = null;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
@@ -45,14 +45,14 @@ public class BookDaoImpl extends DaoHelper implements BookDao {
             return prStatement.executeUpdate();
         }catch (SQLException sqlE) {
             logger.error("Error while updating the book.");
-            throw new DAOException("Error while updating the book.", sqlE);
+            throw new DaoException("Error while updating the book.", sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public Optional<Book> getBookById(Long bookId) throws DAOException {
+    public Optional<Book> getBookById(Long bookId) throws DaoException {
         logger.info("Receiving a book by ID.");
         BookMapper mapper = new BookMapper();
         PreparedStatement prStatement = null;
@@ -71,11 +71,11 @@ public class BookDaoImpl extends DaoHelper implements BookDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new DAOException("Find more 1 Book.");
+                throw new DaoException("Find more 1 Book.");
             }
         } catch (SQLException sqlE) {
             logger.error("Error while receiving a book by ID.");
-            throw new DAOException("Find more 1 book by ID.", sqlE);
+            throw new DaoException("Find more 1 book by ID.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -83,7 +83,7 @@ public class BookDaoImpl extends DaoHelper implements BookDao {
     }
 
     @Override
-    public long getCountBooks() throws DAOException {
+    public long getCountBooks() throws DaoException {
         logger.info("Getting count books.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
@@ -96,7 +96,7 @@ public class BookDaoImpl extends DaoHelper implements BookDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Number of books not received");
-            throw new DAOException("Number of books not received", sqlE);
+            throw new DaoException("Number of books not received", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

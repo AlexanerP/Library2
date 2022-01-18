@@ -6,11 +6,11 @@ import java.util.Optional;
 
 public interface WishBookDao {
 
-    boolean create(WishBook wishBook) throws DAOException;
+    boolean create(WishBook wishBook) throws DaoException;
 
-    int delete(long wishBookId) throws DAOException;
+    int delete(long wishBookId) throws DaoException;
 
-    long getCountWishBooks() throws DAOException;
+    long getCountWishBooks() throws DaoException;
 
     Optional<WishBook> getWishBookByBookAndByUser(long bookId, long userId);
 

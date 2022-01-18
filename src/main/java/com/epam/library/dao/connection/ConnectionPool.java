@@ -15,19 +15,19 @@ import java.util.concurrent.LinkedBlockingDeque;
 public enum ConnectionPool {
     INSTANCE;
 
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
+    private final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 
     private BlockingQueue<ProxyConnection> freeConnections;
     private Queue<ProxyConnection> usedConnections;
 
     private static final String pathDateBaseProperties = "database.properties";
-    private static final String URL;
-    private static final String USER;
-    private static final String PASSWORD;
-    private static int DEFAULT_POOL_SIZE = 5;
-    private static int poolSize;
+    private final String URL;
+    private final String USER;
+    private final String PASSWORD;
+    private int DEFAULT_POOL_SIZE = 5;
+    private int poolSize;
 
-    static  {
+    ConnectionPool() {
         logger.info("Load properties for connection.");
         String driverName = null;
         try  {
@@ -46,33 +46,27 @@ public enum ConnectionPool {
             throw new ConnectionException("Class not found: " + pathDateBaseProperties, e);
         }
         logger.info("Connection settings upload complete");
-    }
-
-    ConnectionPool() {
-
         freeConnections = new LinkedBlockingDeque<>(poolSize);
-        usedConnections = new ArrayDeque<>(poolSize);
+        usedConnections = new ArrayDeque<>();
+        createPool();
     }
 
     private void createPool() {
         logger.info("Create connection pool.");
-        if (freeConnections.isEmpty() && usedConnections.isEmpty()) {
-            for(int i = 0; i < poolSize; i++) {
-                try {
-                    Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                    ProxyConnection proxy = new ProxyConnection(connection);
-                    freeConnections.offer(proxy);
-                } catch (SQLException e) {
-                    logger.error("Error while creating Connection Pool.");
-                    throw new ConnectionException(e);
-                }
+        for(int i = 0; i < poolSize; i++) {
+            try {
+                Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                ProxyConnection proxy = new ProxyConnection(connection);
+                freeConnections.offer(proxy);
+            } catch (SQLException e) {
+                logger.error("Error while creating Connection Pool.");
+                throw new ConnectionException(e);
             }
         }
     }
 
     public Connection getConnection() throws ConnectionException {
         logger.info("Create connection.");
-        createPool();
         ProxyConnection connection = null;
         try {
             connection = freeConnections.take();
@@ -101,23 +95,22 @@ public enum ConnectionPool {
 
     public void destroyPool() {
         logger.info("Start destruction of the pool.");
-        if (!freeConnections.isEmpty() && !usedConnections.isEmpty()) {
-            for (int i = 0; i < poolSize; i++) {
-                try {
-                    freeConnections.take().reallyCloseConnection();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    logger.error("Something wrong with current thread", e);
-                } catch (SQLException sqlE) {
-                    logger.error("Exception in connection close method", sqlE);
-                    for (Throwable e : sqlE) {
-                        logger.error(e.toString());
-                    }
+        for (int i = 0; i < poolSize; i++) {
+            try {
+                freeConnections.take().reallyCloseConnection();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.error("Something wrong with current thread", e);
+            } catch (SQLException sqlE) {
+                logger.error("Exception in connection close method", sqlE);
+                for (Throwable e : sqlE) {
+                    logger.error(e.toString());
                 }
-                deregisterDrivers();
-                logger.info("End of pool destruction.");
             }
+            deregisterDrivers();
+            logger.info("End of pool destruction.");
         }
+
     }
 
     private void deregisterDrivers() {

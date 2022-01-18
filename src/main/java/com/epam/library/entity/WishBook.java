@@ -1,8 +1,11 @@
 package com.epam.library.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class WishBook {
+public class WishBook implements Serializable {
+
+    private static final long serialVersionUID = 4876598467912932060L;
 
     private long wishBookId;
     private long bookId;

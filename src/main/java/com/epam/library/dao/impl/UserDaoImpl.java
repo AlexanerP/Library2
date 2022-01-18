@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.DaoHelper;
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.dao.UserDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
@@ -43,11 +43,12 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             TableName.USER, ColumnName.USER_PASSWORD, ColumnName.USER_ID_USERS);
 
     private final static String GET_USER_BY_ID_QUERY = String.format("SELECT * FROM %s NATURAL JOIN %s " +
-            "NATURAL JOIN %s WHERE %s=?;", TableName.USER, TableName.ROLE,
-            TableName.USER_STATUS, ColumnName.USER_ID_USERS);
+            "NATURAL JOIN %s WHERE %s=?;", TableName.USER, TableName.ROLE, TableName.USER_STATUS,
+            ColumnName.USER_ID_USERS);
 
-    private final static String EXIST_EMAIL_QUERY = String.format("SELECT %s FROM %s WHERE %s=?",
-            ColumnName.USER_EMAIL, TableName.USER, ColumnName.USER_EMAIL);
+    private final static String GET_USER_BY_EMAIL_QUERY = String.format("SELECT %s FROM %s NATURAL JOIN %s NATURAL" +
+            " JOIN %s WHERE %s=?", TableName.USER, TableName.ROLE, TableName.USER_STATUS,
+            ColumnName.USER_EMAIL);
 
     private final static String GET_USER_BY_EMAIL_PASSWORD_STATUS_QUERY = String.format("SELECT * FROM %s" +
             " NATURAL JOIN %s NATURAL JOIN %s WHERE %s=? and %s=? and (%s.%s=? or %s.%s=?);",
@@ -77,7 +78,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
 
 
     @Override
-    public boolean create(User user) throws DAOException {
+    public boolean create(User user) throws DaoException {
         logger.info("Create user");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -87,14 +88,14 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
           return prStatement.execute();
         } catch (SQLException sqlE) {
             logger.error("Failed to create user. User - {}.", user.toString());
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public int update(User user) throws DAOException {
+    public int update(User user) throws DaoException {
         logger.info("User update.");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -104,14 +105,14 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Failed to update user. User - {}", user.toString());
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public int updatePassword(User user) throws DAOException {
+    public int updatePassword(User user) throws DaoException {
         logger.info("User password update");
         PreparedStatement prStatement = null;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
@@ -120,14 +121,14 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             return prStatement.executeUpdate();
         } catch (SQLException sqlE) {
             logger.error("Error updating user password. User - {}", user.toString());
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closePreparedStatement(prStatement);
         }
     }
 
     @Override
-    public Optional<User> getUserById(long id) throws DAOException {
+    public Optional<User> getUserById(long id) throws DaoException {
         logger.info("Receiving a user by id.");
         UserMapper mapper = new UserMapper();
         PreparedStatement prStatement = null;
@@ -151,7 +152,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Find more 1 user. Find - {}", entity.toString());
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -159,14 +160,14 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
     }
 
     @Override
-    public List<User> getUserByEmail(String email) throws DAOException {
+    public List<User> getUserByEmail(String email) throws DaoException {
         logger.info("There is an email in the system.");
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         UserMapper mapper = new UserMapper();
         List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, EXIST_EMAIL_QUERY, email);
+            prStatement = createPreparedStatement(connection, GET_USER_BY_EMAIL_QUERY, email);
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
                 users.add(mapper.map(resultSet));
@@ -174,7 +175,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             return users;
         } catch (SQLException sqlE) {
             logger.error("An error occurred while receiving email from the database.");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -182,7 +183,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
     }
 
     @Override
-    public Optional<User> getUserByEmailAndPassword(String email, String password) throws DAOException {
+    public Optional<User> getUserByEmailAndPassword(String email, String password) throws DaoException {
         logger.info("Verification user. Getting user by login, password and status.");
         UserMapper mapper = new UserMapper();
         PreparedStatement prStatement = null;
@@ -202,12 +203,12 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
                 return Optional.empty();
             } else {
                 logger.info("Find more 1 user.");
-                throw new DAOException("Find more 1 user.");
+                throw new DaoException("Find more 1 user.");
             }
         } catch (SQLException sqlE) {
             logger.error("User not received for verification.");
             logger.error("Find more 1 user. Find - {}", entity.toString());
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -215,13 +216,13 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
     }
 
     @Override
-    public int delete(User user) throws DAOException {
+    public int delete(User user) throws DaoException {
         logger.info("Start the removal process.");
         return update(user);
     }
 
     @Override
-    public List<User> getUsers() throws DAOException {
+    public List<User> getUsers() throws DaoException {
         logger.info("Getting a list of users.");
         List<User> users = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -236,7 +237,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Users not received.");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -246,7 +247,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
     }
 
     @Override
-    public List<User> getUsersByStatus(UserStatus status) throws DAOException {
+    public List<User> getUsersByStatus(UserStatus status) throws DaoException {
         logger.info("Getting a list of users by status.");
         List<User> users = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -261,7 +262,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Users by status not received.");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -271,7 +272,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
     }
 
     @Override
-    public List<User> getUsersByRole(UserRole role) throws DAOException {
+    public List<User> getUsersByRole(UserRole role) throws DaoException {
         logger.info("Getting a list of users by role.");
         List<User> users = new ArrayList<>();
         PreparedStatement prStatement = null;
@@ -286,7 +287,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Users by role not received.");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -296,7 +297,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
     }
 
     @Override
-    public long getCountByStatus(UserStatus status) throws DAOException {
+    public long getCountByStatus(UserStatus status) throws DaoException {
         PreparedStatement prStatement = null;
         ResultSet resultSet = null;
         int countUsers = 0;
@@ -308,7 +309,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             }
         }catch (SQLException sqlE) {
             logger.error("Number of users by status not received.");
-            throw new DAOException("Number of users by status not received.", sqlE);
+            throw new DaoException("Number of users by status not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -331,7 +332,7 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
             }
         } catch (SQLException sqlE) {
             logger.error("Users by period not received.");
-            throw new DAOException(sqlE);
+            throw new DaoException(sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

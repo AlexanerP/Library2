@@ -8,7 +8,7 @@ public interface BookService {
 
     long getCountBooks() throws ServiceException;
 
-    boolean update(String bookId, Book book, String quantity, String cityLibrary) throws ServiceException;
+    int update(String bookId, Book book, String quantity, String cityLibrary) throws ServiceException;
 
     boolean addBorrow(String bookId) throws ServiceException ;
 

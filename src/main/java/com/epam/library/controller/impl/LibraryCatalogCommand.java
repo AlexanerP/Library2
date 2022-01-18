@@ -2,6 +2,7 @@ package com.epam.library.controller.impl;
 
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
+import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.Library;
 import com.epam.library.service.LibraryService;
@@ -24,12 +25,12 @@ public class LibraryCatalogCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("url", "Controller?command=" + CommandType.LIBRARY_CATALOG);
+            req.getSession().setAttribute(Constant.URL, CommandType.CONTROLLER_COMMAND + CommandType.LIBRARY_CATALOG);
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
-            String libraryId = req.getParameter("libraryId");
-            String city = req.getParameter("city");
-            String status = req.getParameter("status");
-            String getAll = req.getParameter("getAll");
+            String libraryId = req.getParameter(Constant.LIBRARY_ID);
+            String city = req.getParameter(Constant.LIBRARY_CITY);
+            String status = req.getParameter(Constant.STATUS);
+            String getAll = req.getParameter(Constant.LIBRARY_ALL);
             List<Library> libraries = new ArrayList<>();
             if (libraryId != null) {
                 libraries.add(libraryService.showById(libraryId).get());
@@ -40,11 +41,11 @@ public class LibraryCatalogCommand implements Command {
             } else if (getAll != null) {
                 libraries = libraryService.showAll();
             }
-            req.setAttribute("libraries", libraries);
+            req.setAttribute(Constant.LIBRARIES, libraries);
             req.getRequestDispatcher(PathJsp.LIBRARY_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while working with the library catalog.", e);
-            resp.sendRedirect(PathJsp.ERROR_PAGE);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
         }
     }
 }

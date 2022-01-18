@@ -13,10 +13,12 @@
 <fmt:setBundle basename="interface"/>
 <html>
 <head>
-    <title>Добавить новую книгу</title>
+    <title><fmt:message key="title_add_new_book"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="title_add_new_book"></fmt:message></h1></div>
 
 <div align="center">
@@ -49,7 +51,7 @@
                     </tr>
                     <tr>
                         <td><fmt:message key="enter_quantity"></fmt:message></td>
-                        <td><input type="number" placeholder="<fmt:message key="enter_quantity"></fmt:message>" name="count" min="1"></td>
+                        <td><input type="number" placeholder="<fmt:message key="enter_quantity"></fmt:message>" name="quantity" min="1"></td>
                     </tr>
                     <tr>
                         <td><fmt:message key="enter_library"></fmt:message></td>

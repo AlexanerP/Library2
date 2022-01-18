@@ -1,12 +1,13 @@
 package com.epam.library.entity;
 
-import com.epam.library.utill.UtilFactory;
+import com.epam.library.service.utill.UtilFactory;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class User implements Serializable {
 
+    private static final long serialVersionUID = -1590356788525112801L;
 
     private long userId;
     private UserRole role;

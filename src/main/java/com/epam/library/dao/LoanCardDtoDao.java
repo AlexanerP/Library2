@@ -8,17 +8,17 @@ import java.util.Optional;
 
 public interface LoanCardDtoDao {
 
-    List<LoanCardDto> getCardsByIdUser(long id) throws DAOException;
+    List<LoanCardDto> getCardsByIdUser(long id) throws DaoException;
 
-    List<LoanCardDto> getCardsByStatusCard(LoanCardStatus status) throws DAOException;
+    List<LoanCardDto> getCardsByStatusCard(LoanCardStatus status) throws DaoException;
 
-    List<LoanCardDto> getCardsByIdBook(long id) throws DAOException;
+    List<LoanCardDto> getCardsByIdBook(long id) throws DaoException;
 
-    Optional<LoanCardDto> getCardsById(long id) throws DAOException;
+    Optional<LoanCardDto> getCardsById(long id) throws DaoException;
 
-    List<LoanCardDto> getCardsByCity(String city) throws DAOException;
+    List<LoanCardDto> getCardsByCity(String city) throws DaoException;
 
-    List<LoanCardDto> getCardsByCityAndStatus(String city, LoanCardStatus status) throws DAOException;
+    List<LoanCardDto> getCardsByCityAndStatus(String city, LoanCardStatus status) throws DaoException;
 
-    List<LoanCardDto> getAll() throws DAOException;
+    List<LoanCardDto> getAll() throws DaoException;
 }

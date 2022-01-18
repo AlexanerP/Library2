@@ -11,7 +11,7 @@ public interface GenreService {
 
     boolean create(String category) throws ServiceException;
 
-    boolean update(String genreId, String category) throws ServiceException;
+    int update(String genreId, String category) throws ServiceException;
 
     long getCountGenres() throws ServiceException;
 

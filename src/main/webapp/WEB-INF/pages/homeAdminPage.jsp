@@ -13,15 +13,20 @@
 <fmt:setBundle basename="interface"/>
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="user_menu_admin_page"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
-<br><br><br>
+<br>
+<div align="center">
+    <h1><fmt:message key="user_menu_admin_page"></fmt:message></h1>
+</div>
+<br>
 <table>
     <tr>
-        <td><fmt:message key="message_count_new_order"></fmt:message></td>
-        <td>${countOrders}</td>
+        <th><fmt:message key="message_count_new_order"></fmt:message></th>
+        <td>${ordersSize}</td>
     </tr>
 </table>
 <div align="center">
@@ -30,45 +35,45 @@
             <p>
                 <tr>
                     <td><fmt:message key="admin_menu_action_with-admin"></fmt:message></td>
-                    <td><a href="Controller?command=ManagerCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+                    <td><a href="Controller?command=ManagerCatalog"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
                 </tr>
                 <tr>
                     <td><fmt:message key="admin_menu_libraries"></fmt:message></td>
-                    <td><a href="Controller?command=LibraryCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+                    <td><a href="Controller?command=LibraryCatalog"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
                 </tr>
             </p>
         </c:if>
         <tr>
             <td><fmt:message key="admin_menu_issuing_books"></fmt:message></td>
-            <td><a href="Controller?command=GiveOutBookUser"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=GiveOutBookUser"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="admin_menu_return_books"></fmt:message></td>
-            <td><a href="Controller?command=ReturnBookCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=ReturnBookCatalog"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="admin_menu_catalog_books"></fmt:message></td>
-            <td><a href="Controller?command=CatalogBook"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=CatalogBook"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="admin_menu_catalog_loan_card"></fmt:message></td>
-            <td><a href="Controller?command=LoanCardCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=LoanCardCatalog"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="admin_menu_catalog_user"></fmt:message></td>
-            <td><a href="Controller?command=UserCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=UserCatalog"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="admin_menu_add_book"></fmt:message></td>
-            <td><a href="Controller?command=CreateBook"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=CreateBook"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="admin_menu_catalog_order"></fmt:message></td>
-            <td><a href="Controller?command=OrderCatalog"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=OrderCatalog"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
         <tr>
             <td><fmt:message key="admin_menu_statistic"></fmt:message></td>
-            <td><a href="Controller?command=GoToStatistics"><input type="submit" value="<fmt:message key="button_go"></fmt:message>"></a></td>
+            <td><a href="Controller?command=GoToStatistics"><input type="button" value="<fmt:message key="button_go"></fmt:message>"></a></td>
         </tr>
     </table>
 </div>

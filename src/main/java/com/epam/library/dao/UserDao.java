@@ -10,27 +10,27 @@ import java.util.Optional;
 
 public interface UserDao {
 
-    boolean create(User user) throws DAOException;
+    boolean create(User user) throws DaoException;
 
-    int update(User user) throws DAOException;
+    int update(User user) throws DaoException;
 
-    int updatePassword(User user) throws DAOException;
+    int updatePassword(User user) throws DaoException;
 
-    Optional<User> getUserById(long id) throws DAOException;
+    Optional<User> getUserById(long id) throws DaoException;
 
-    List<User> getUserByEmail(String email) throws DAOException;
+    List<User> getUserByEmail(String email) throws DaoException;
 
-    Optional<User> getUserByEmailAndPassword(String email, String password) throws DAOException;
+    Optional<User> getUserByEmailAndPassword(String email, String password) throws DaoException;
 
-    int delete(User user) throws DAOException;
+    int delete(User user) throws DaoException;
 
-    List<User> getUsers() throws DAOException;
+    List<User> getUsers() throws DaoException;
 
-    List<User> getUsersByStatus(UserStatus status) throws DAOException;
+    List<User> getUsersByStatus(UserStatus status) throws DaoException;
 
-    List<User> getUsersByRole(UserRole role) throws DAOException;
+    List<User> getUsersByRole(UserRole role) throws DaoException;
 
-    long getCountByStatus(UserStatus status) throws DAOException;
+    long getCountByStatus(UserStatus status) throws DaoException;
 
-    List<User> getUsersByPeriod(LocalDate start, LocalDate finish) throws DAOException;
+    List<User> getUsersByPeriod(LocalDate start, LocalDate finish) throws DaoException;
 }

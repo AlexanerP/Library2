@@ -1,7 +1,7 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.DaoException;
+import com.epam.library.dao.DaoFactory;
 import com.epam.library.dao.LoanCardDtoDao;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.LoanCardStatus;
@@ -20,7 +20,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
     @Override
     public List<LoanCardDto> showCardsByStatus(String status) throws ServiceException {
         try {
-            LoanCardDtoDao loanCardDtoDao = DAOFactory.getInstance().getLoanCardDtoDao();
+            LoanCardDtoDao loanCardDtoDao = DaoFactory.getInstance().getLoanCardDtoDao();
             if (status != null) {
                 if (status.equalsIgnoreCase(LoanCardStatus.OPEN.name())
                         || status.equalsIgnoreCase(LoanCardStatus.CLOSED.name())) {
@@ -31,7 +31,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
             }else {
                 throw new ServiceException("The status value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when receiving loan cards by status.");
             throw new ServiceException("Error in services when receiving loan cards by status.", e);
         }
@@ -40,7 +40,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
     @Override
     public List<LoanCardDto> showCardsByUser(String userId) throws ServiceException {
         try {
-            LoanCardDtoDao loanCardDtoDao = DAOFactory.getInstance().getLoanCardDtoDao();
+            LoanCardDtoDao loanCardDtoDao = DaoFactory.getInstance().getLoanCardDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (userId != null) {
                 if (validator.isNumber(userId)) {
@@ -51,7 +51,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
             }else {
                 throw new ServiceException("The user ID value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when receiving loan cards by user ID.");
             throw new ServiceException("Error in services when receiving loan cards by user ID.", e);
         }
@@ -60,7 +60,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
     @Override
     public List<LoanCardDto> showCardsByBook(String bookId) throws ServiceException {
         try {
-            LoanCardDtoDao loanCardDtoDao = DAOFactory.getInstance().getLoanCardDtoDao();
+            LoanCardDtoDao loanCardDtoDao = DaoFactory.getInstance().getLoanCardDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (bookId != null) {
                 if (validator.isNumber(bookId)) {
@@ -71,7 +71,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
             }else {
                 throw new ServiceException("The book ID value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when receiving loan cards by book ID.");
             throw new ServiceException("Error in services when receiving loan cards by book ID.", e);
         }
@@ -80,7 +80,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
     @Override
     public List<LoanCardDto> showCardsByCityAndStatus(String city, String status) throws ServiceException {
         try {
-            LoanCardDtoDao loanCardDtoDao = DAOFactory.getInstance().getLoanCardDtoDao();
+            LoanCardDtoDao loanCardDtoDao = DaoFactory.getInstance().getLoanCardDtoDao();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             Optional<Library> optionalLibrary = libraryService.showByCity(city);
             if (optionalLibrary.isPresent()) {
@@ -98,7 +98,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
             } else {
                 throw new ServiceException("The city does not exist.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when receiving loan cards by city and status.");
             throw new ServiceException("Error in services when receiving loan cards by city and status.", e);
         }
@@ -107,7 +107,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
     @Override
     public List<LoanCardDto> showCardsByCity(String city) throws ServiceException {
         try {
-            LoanCardDtoDao loanCardDtoDao = DAOFactory.getInstance().getLoanCardDtoDao();
+            LoanCardDtoDao loanCardDtoDao = DaoFactory.getInstance().getLoanCardDtoDao();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             Optional<Library> optionalLibrary = libraryService.showByCity(city);
             if (optionalLibrary.isPresent()) {
@@ -115,7 +115,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
             } else {
                 throw new ServiceException("The city does not exist.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error in services when receiving loan cards by city.");
             throw new ServiceException("Error in services when receiving loan cards by city.", e);
         }
@@ -124,9 +124,9 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
     @Override
     public List<LoanCardDto> showAll() throws ServiceException {
         try {
-            LoanCardDtoDao loanCardDtoDao = DAOFactory.getInstance().getLoanCardDtoDao();
+            LoanCardDtoDao loanCardDtoDao = DaoFactory.getInstance().getLoanCardDtoDao();
             return loanCardDtoDao.getAll();
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Services error while getting all loan cards.");
             throw new ServiceException("Services error while getting all loan cards.", e);
         }
@@ -135,7 +135,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
     @Override
     public Optional<LoanCardDto> showCardsById(String loanCardId) throws ServiceException {
         try {
-            LoanCardDtoDao loanCardDtoDao = DAOFactory.getInstance().getLoanCardDtoDao();
+            LoanCardDtoDao loanCardDtoDao = DaoFactory.getInstance().getLoanCardDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (loanCardId != null) {
                 if (validator.isNumber(loanCardId)) {
@@ -146,7 +146,7 @@ public class LoanCardDtoServiceImpl implements LoanCardDtoService {
             } else {
                 throw new ServiceException("The loan card ID value is empty.");
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Services error while getting all loan cards.");
             throw new ServiceException("Services error while getting all loan cards.", e);
         }

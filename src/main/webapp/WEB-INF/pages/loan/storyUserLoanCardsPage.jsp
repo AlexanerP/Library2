@@ -14,9 +14,11 @@
 <html>
 <head>
     <title><fmt:message key="user_menu_story_book_user"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="user_menu_story_book_user"></fmt:message></h1></div>
 <div align="center"><h3><c:out value="${secondName} ${lastName}"></c:out></h3></div>
 <br><br><br>

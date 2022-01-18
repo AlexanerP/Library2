@@ -16,9 +16,11 @@
 <html>
 <head>
     <title><fmt:message key="title_book_by_page_catalog"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br>
 <div align="center"><h1><fmt:message key="title_book_by_page_catalog"></fmt:message></h1></div>
 <form action="Controller">
     <input type="hidden" name="command" value="CatalogBookByPage">
@@ -36,7 +38,7 @@
             <th><fmt:message key="order_command"></fmt:message></th>
             <th><fmt:message key="wish_command"></fmt:message></th>
         </tr>
-        <c:forEach var="bookDTO" items="${bookList}">
+        <c:forEach var="bookDTO" items="${books}">
             <tr>
                 <td><c:out value="${bookDTO.bookDtoId}"></c:out></td>
                 <td><c:out value="${bookDTO.title}"></c:out></td>
@@ -56,10 +58,10 @@
                 <td><c:out value="${bookDTO.shelf}"></c:out></td>
 
                 <td><c:if test="${bookDTO.borrow < bookDTO.quantity and user.status != 'BLOCKED'}">
-                    <a href="?command=GoToOrder&bookId=${bookDTO.bookDtoId}"><fmt:message key="order_command"></fmt:message></a>
+                    <a href="?command=GoToOrder&bookId=${bookDTO.bookDtoId}"><input type="button" value="<fmt:message key="order_command"></fmt:message>"></a>
                     </a>
                 </c:if></td>
-                <td><a href="?command=ActionWishBook&bookId=${bookDTO.bookDtoId}&add=add"><fmt:message key="add_to_wish_list"></fmt:message></a></td>
+                <td><a href="?command=ActionWishBook&bookId=${bookDTO.bookDtoId}&add=add"><input type="button" value="<fmt:message key="add_to_wish_list"></fmt:message>"></a></td>
             </tr>
         </c:forEach>
         <tr>
@@ -71,13 +73,13 @@
         <tfoot>
         <tr>
             <th align="center">
-                <a href="?command=CatalogBookByPage&pageCatalog=${pageCatalog}&back=back"><fmt:message key="back"></fmt:message></a>
+                <a href="?command=CatalogBookByPage&pageCatalog=${pageCatalog}&back=back"><input type="button" value="<fmt:message key="back"></fmt:message>"></a>
             </th>
             <th colspan="8" align="center">
                 <input type="number" name="jumpPage" value="jump" placeholder="<fmt:message key="page"></fmt:message>" min="1"><input type="submit" value="<fmt:message key="button_go"></fmt:message>">
             </th>
             <th align="center">
-                <a href="?command=CatalogBookByPage&pageCatalog=${pageCatalog}&next=next"><fmt:message key="next"></fmt:message></a>
+                <a href="?command=CatalogBookByPage&pageCatalog=${pageCatalog}&next=next"><input type="button" value="<fmt:message key="next"></fmt:message>"></a>
             </th>
         </tr>
         </tfoot>

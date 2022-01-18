@@ -1,8 +1,8 @@
 package com.epam.library.service.impl;
 
 import com.epam.library.dao.AuthorDao;
-import com.epam.library.dao.DAOException;
-import com.epam.library.dao.DAOFactory;
+import com.epam.library.dao.DaoException;
+import com.epam.library.dao.DaoFactory;
 import com.epam.library.entity.Author;
 import com.epam.library.service.AuthorService;
 import com.epam.library.service.ServiceException;
@@ -21,48 +21,45 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public boolean create(String name) throws ServiceException {
         try {
-            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDao = DaoFactory.getInstance().getAuthorDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (name != null) {
-                if (validator.isLength(name)) {
-                    Author author = new Author();
-                    author.setName(name);
-                    return authorDAO.create(author);
-                } else {
-                    throw new ServiceException("Author name value is longer than specified.");
-                }
+            if (validator.isLength(name)) {
+                Author author = new Author();
+                author.setName(name);
+                return authorDao.create(author);
             } else {
-                throw new ServiceException("The author value is empty.");
+                throw new ServiceException("Author name value is longer than specified.");
             }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Error creating author.");
         }
         return false;
     }
 
     @Override
-    public boolean update(String authorId, String name) throws ServiceException {
+    public int update(String authorId, String name) throws ServiceException {
         try {
-            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDao = DaoFactory.getInstance().getAuthorDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (authorId != null && name != null) {
                 if (validator.isNumber(authorId.trim())) {
                     if (validator.isLength(name)) {
-                        Author author = new Author();
-                        author.setAuthorId(Long.parseLong(authorId.trim()));
-                        author.setName(name);
-                        return authorDAO.update(author);
+                        Optional<Author> optionalAuthor = authorDao.getAuthorByName(name);
+                        if (optionalAuthor.isEmpty()) {
+                            Author author = new Author();
+                            author.setAuthorId(Long.parseLong(authorId.trim()));
+                            author.setName(name);
+                            authorDao.update(author);
+                            return 1;
+                        } else {
+                            return 2;
+                        }
                     } else {
-                        throw new ServiceException("Error in services the name value is too much higher " +
-                                "than the specified one");
+                        return 3;
                     }
                 } else {
                     throw new ServiceException("Author ID value is not a number.");
                 }
-            } else {
-                throw new ServiceException("The values are empty.");
-            }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("Error while updating author details.");
             throw new ServiceException("Error while updating author details.", e);
         }
@@ -71,9 +68,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public int getCountAuthors() throws ServiceException {
         try{
-            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
-            return authorDAO.getCountAuthors();
-        }catch (DAOException e) {
+            AuthorDao authorDao = DaoFactory.getInstance().getAuthorDAO();
+            return authorDao.getCountAuthors();
+        }catch (DaoException e) {
             logger.error("Error while getting all authors.");
             throw new ServiceException("Error while getting all authors.", e);
         }
@@ -82,16 +79,12 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public int getCountBooksByAuthors(String name) throws ServiceException {
         try {
-            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
-            if (name != null) {
-                Optional<Author> optionalAuthor = authorDAO.getAuthorByName(name);
-                if (optionalAuthor.isPresent()) {
-                    return authorDAO.getCountBooksByAuthor(optionalAuthor.get().getName());
-                }
-            } else {
-                throw new ServiceException("Author value is empty.");
+            AuthorDao authorDao = DaoFactory.getInstance().getAuthorDAO();
+            Optional<Author> optionalAuthor = authorDao.getAuthorByName(name);
+            if (optionalAuthor.isPresent()) {
+                return authorDao.getCountBooksByAuthor(optionalAuthor.get().getName());
             }
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error("An error occurred while getting the number of author's books.");
             throw new ServiceException("An error occurred while getting the number of author's books.", e);
         }
@@ -101,18 +94,14 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<Author> showAuthorById(String authorId) throws ServiceException {
         try{
-            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
+            AuthorDao authorDao = DaoFactory.getInstance().getAuthorDAO();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
-            if (authorId != null) {
                 if (validator.isNumber(authorId)) {
-                    return authorDAO.getAuthorById(Long.parseLong(authorId.trim()));
+                    return authorDao.getAuthorById(Long.parseLong(authorId.trim()));
                 } else {
                     throw new ServiceException("Author ID value is not a number.");
                 }
-            } else {
-                throw new ServiceException("Author ID is empty.");
-            }
-        }catch (DAOException e) {
+        }catch (DaoException e) {
             logger.error("Getting an author by name.");
             throw new ServiceException("Getting an author.", e);
         }
@@ -121,9 +110,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<Author> showAuthorByName(String name) throws ServiceException {
         try{
-            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
-            return authorDAO.getAuthorByName(name);
-        }catch (DAOException e) {
+            AuthorDao authorDao = DaoFactory.getInstance().getAuthorDAO();
+            return authorDao.getAuthorByName(name);
+        }catch (DaoException e) {
             logger.error("Getting an author by name.");
             throw new ServiceException("Getting an author.", e);
         }
@@ -132,9 +121,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> showAllAuthors() throws ServiceException {
         try {
-            AuthorDao authorDAO = DAOFactory.getInstance().getAuthorDAO();
-            return authorDAO.getAuthors();
-        }catch (DAOException e) {
+            AuthorDao authorDao = DaoFactory.getInstance().getAuthorDAO();
+            return authorDao.getAuthors();
+        }catch (DaoException e) {
             logger.error("Error getting all authors.");
             throw new ServiceException("Error getting all authors.", e);
         }

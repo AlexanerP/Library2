@@ -1,7 +1,7 @@
 package com.epam.library.dao.impl;
 
 import com.epam.library.dao.BookDtoDao;
-import com.epam.library.dao.DAOException;
+import com.epam.library.dao.DaoException;
 import com.epam.library.entity.Author;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.entity.Genre;
@@ -140,7 +140,7 @@ public class BookDtoDaoImplTest {
             List<BookDto> books = bookDtoDao.getBooksByPage(limit, page);
             output(books);
             assertTrue(!books.isEmpty());
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
     }

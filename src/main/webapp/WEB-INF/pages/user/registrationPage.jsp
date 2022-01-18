@@ -13,9 +13,11 @@
 <html>
 <head>
     <title><fmt:message key="registration"></fmt:message></title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/pages/common/header.jsp"></jsp:include>
+<br><br>
 <div align="center"><h1><fmt:message key="registration"></fmt:message></h1></div>
 <form action="Controller" method="post">
     <input type="hidden" name="command" value="Registration">
@@ -37,14 +39,14 @@
             </tr>
             <tr>
                 <td><fmt:message key="user_second_name"></fmt:message></td>
-                <td><input type="text" name="second_name" placeholder="<fmt:message key="user_second_name"></fmt:message>"></td>
+                <td><input type="text" name="secondName" placeholder="<fmt:message key="user_second_name"></fmt:message>"></td>
             </tr>
             <tr>
                 <td><fmt:message key="user_last_name"></fmt:message></td>
-                <td><input type="text" name="last_name" placeholder="<fmt:message key="user_last_name"></fmt:message>"></td>
+                <td><input type="text" name="lastName" placeholder="<fmt:message key="user_last_name"></fmt:message>"></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="<fmt:message key="registration"></fmt:message>"></td>
+                <td colspan="2" align="center"><input class="button" type="submit" value="<fmt:message key="registration"></fmt:message>"></td>
             </tr>
         </table>
     </div>
