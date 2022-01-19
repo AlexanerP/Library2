@@ -15,7 +15,8 @@ public final class CommandType {
     public static final String ORDER_CATALOG = "OrderCatalog";
     public static final String GO_TO_ORDER = "GoToOrder";
     public static final String CHANGE_LOCALE = "ChangeLocale";
-    public static final String ERROR = "Error";
+    public static final String ERROR_500 = "Error_500";
+    public static final String ERROR_404 = "Error_404";
     public static final String ORDER_BOOK = "OrderBook";
     public static final String ACTION_USER_ORDER = "ActionUserOrder";
     public static final String CATALOG_BOOK = "CatalogBook";

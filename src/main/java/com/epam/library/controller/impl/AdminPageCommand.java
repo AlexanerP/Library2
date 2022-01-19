@@ -33,7 +33,7 @@ public class AdminPageCommand implements Command {
             req.getRequestDispatcher(PathJsp.HOME_ADMIN_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("Error receiving open orders for the admin page.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

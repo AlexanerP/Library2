@@ -62,7 +62,7 @@ public class RegistrationCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("An error occured during registration. ", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

@@ -89,7 +89,7 @@ public class UpdateBookCommand implements Command {
            }
         }catch (ServiceException e) {
             logger.error("When updating the book, the error.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

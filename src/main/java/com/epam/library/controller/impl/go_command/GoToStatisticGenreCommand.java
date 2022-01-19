@@ -33,7 +33,7 @@ public class GoToStatisticGenreCommand implements Command {
             req.getRequestDispatcher(PathJsp.BOOK_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while viewing author statistics.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

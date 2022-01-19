@@ -4,7 +4,6 @@ import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
 import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
-import com.epam.library.service.AuthorService;
 import com.epam.library.service.GenreService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -46,7 +45,7 @@ public class UpdateGenreCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("Error while updating the genre.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

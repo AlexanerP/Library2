@@ -42,7 +42,7 @@ public class ActionWishBookCommand implements Command {
             resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.WISH_BOOKS_USER_PAGE);
         }catch (ServiceException e) {
             logger.error("Error during action with selected books, when deleting or adding.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

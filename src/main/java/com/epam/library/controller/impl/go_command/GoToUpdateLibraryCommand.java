@@ -37,7 +37,7 @@ public class GoToUpdateLibraryCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("An error occurred while preparing the library for updating.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

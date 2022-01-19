@@ -52,7 +52,7 @@ public class CatalogLoanCardCommand implements Command {
             req.getRequestDispatcher(PathJsp.LOAN_CARD_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error working with the loan cards directory.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

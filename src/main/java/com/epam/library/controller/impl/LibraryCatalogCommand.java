@@ -45,7 +45,7 @@ public class LibraryCatalogCommand implements Command {
             req.getRequestDispatcher(PathJsp.LIBRARY_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while working with the library catalog.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

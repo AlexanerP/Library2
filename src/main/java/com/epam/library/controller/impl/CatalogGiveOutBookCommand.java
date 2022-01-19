@@ -48,7 +48,7 @@ public class CatalogGiveOutBookCommand implements Command {
 
         } catch (ServiceException e) {
             logger.error("An error occurred when working with the catalog for issuing books.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

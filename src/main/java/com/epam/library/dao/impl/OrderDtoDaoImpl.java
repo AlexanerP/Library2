@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OrderDtoDaoImpl extends DaoHelper implements OrderBookDtoDao {
+public class OrderDtoDaoImpl extends DaoHelper implements OrderDtoDao {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderDtoDaoImpl.class);
 

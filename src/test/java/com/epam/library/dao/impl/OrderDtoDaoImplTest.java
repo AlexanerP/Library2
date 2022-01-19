@@ -1,6 +1,6 @@
 package com.epam.library.dao.impl;
 
-import com.epam.library.dao.OrderBookDtoDao;
+import com.epam.library.dao.OrderDtoDao;
 import com.epam.library.entity.dto.OrderDto;
 import com.epam.library.entity.OrderStatus;
 
@@ -15,17 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OrderDtoDaoImplTest {
 
-    private OrderBookDtoDao orderBookDtoDao;
+    private OrderDtoDao orderDtoDao;
 
     @BeforeEach
     public void setUp() throws Exception {
-        orderBookDtoDao = new OrderDtoDaoImpl();
+        orderDtoDao = new OrderDtoDaoImpl();
     }
 
     @Test
     public void getOrderById() {
         Long requestId = 2L;
-        Optional<OrderDto> optionalRequestMaterial = orderBookDtoDao.getOrderById(requestId);
+        Optional<OrderDto> optionalRequestMaterial = orderDtoDao.getOrderById(requestId);
         System.out.println(optionalRequestMaterial);
         assertTrue(optionalRequestMaterial.isPresent());
     }
@@ -33,7 +33,7 @@ public class OrderDtoDaoImplTest {
     @Test
     public void getOrderByCity() {
         String city = "Minsk";
-        List<OrderDto> requests = orderBookDtoDao.getOrderByCity(city);
+        List<OrderDto> requests = orderDtoDao.getOrderByCity(city);
         for (OrderDto orderBookDto :requests) {
             System.out.println(orderBookDto);
         }
@@ -42,7 +42,7 @@ public class OrderDtoDaoImplTest {
 
     @Test
     public void getOrderByStatus() {
-        List<OrderDto> requests = orderBookDtoDao.getOrderByStatus(OrderStatus.OPENED);
+        List<OrderDto> requests = orderDtoDao.getOrderByStatus(OrderStatus.OPENED);
         System.out.println(requests.size());
         for (OrderDto orderBookDto :requests) {
             System.out.println(orderBookDto);
@@ -53,7 +53,7 @@ public class OrderDtoDaoImplTest {
     @Test
     public void getOrderByUser() {
         Long userId = 1L;
-        List<OrderDto> requests = orderBookDtoDao.getOrderByUser(userId);
+        List<OrderDto> requests = orderDtoDao.getOrderByUser(userId);
         for (OrderDto orderBookDto :requests) {
             System.out.println(orderBookDto);
         }
@@ -62,7 +62,7 @@ public class OrderDtoDaoImplTest {
 
     @Test
     public void getOrders() {
-        List<OrderDto> orders = orderBookDtoDao.getOrders();
+        List<OrderDto> orders = orderDtoDao.getOrders();
         for (OrderDto orderBookDto :orders) {
             System.out.println(orderBookDto);
         }

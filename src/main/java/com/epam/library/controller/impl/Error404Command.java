@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ErrorCommand implements Command {
+public class Error404Command implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(PathJsp.ERROR_PAGE).forward(req, resp);
+        req.getRequestDispatcher(PathJsp.ERROR_404_PAGE).forward(req, resp);
     }
 }

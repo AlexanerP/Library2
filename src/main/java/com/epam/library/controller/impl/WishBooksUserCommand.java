@@ -40,7 +40,7 @@ public class WishBooksUserCommand implements Command {
             req.getRequestDispatcher(PathJsp.WISH_BOOK_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("An error occured while retrieving favorite books." , e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

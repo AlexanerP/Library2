@@ -32,5 +32,4 @@ public interface UserDao {
 
     long getCountByStatus(UserStatus status) throws DaoException;
 
-    List<User> getUsersByPeriod(LocalDate start, LocalDate finish) throws DaoException;
 }

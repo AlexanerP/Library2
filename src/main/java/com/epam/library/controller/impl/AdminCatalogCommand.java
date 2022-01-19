@@ -44,7 +44,7 @@ public class AdminCatalogCommand implements Command {
             req.getRequestDispatcher(PathJsp.MANAGER_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while searching for administrators.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

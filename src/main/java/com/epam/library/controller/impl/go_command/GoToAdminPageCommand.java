@@ -3,7 +3,6 @@ package com.epam.library.controller.impl.go_command;
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
 import com.epam.library.controller.Constant;
-import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.OrderStatus;
 import com.epam.library.service.*;
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ public class GoToAdminPageCommand implements Command {
 
         }catch (ServiceException e) {
             logger.error("Error getting admin page.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

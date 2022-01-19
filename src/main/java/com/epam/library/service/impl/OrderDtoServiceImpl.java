@@ -2,7 +2,7 @@ package com.epam.library.service.impl;
 
 import com.epam.library.dao.DaoException;
 import com.epam.library.dao.DaoFactory;
-import com.epam.library.dao.OrderBookDtoDao;
+import com.epam.library.dao.OrderDtoDao;
 import com.epam.library.entity.Library;
 import com.epam.library.entity.OrderStatus;
 import com.epam.library.entity.dto.OrderDto;
@@ -20,11 +20,11 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersUser(String userId) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
+            OrderDtoDao orderDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (userId != null) {
                 if (validator.isNumber(userId)) {
-                    return orderBookDtoDao.getOrderByUser(Long.parseLong(userId.trim()));
+                    return orderDtoDao.getOrderByUser(Long.parseLong(userId.trim()));
                 } else {
                     throw new ServiceException("Invalid user ID");
                 }
@@ -40,11 +40,11 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public Optional<OrderDto> showOrderById(String orderId) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
+            OrderDtoDao orderDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             if (orderId != null) {
                 if (validator.isNumber(orderId)) {
-                    return orderBookDtoDao.getOrderById(Long.parseLong(orderId.trim()));
+                    return orderDtoDao.getOrderById(Long.parseLong(orderId.trim()));
                 } else {
                     throw new ServiceException("Invalid order ID");
                 }
@@ -60,8 +60,8 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showAllOrders() throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
-            return orderBookDtoDao.getOrders();
+            OrderDtoDao orderDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
+            return orderDtoDao.getOrders();
 
         }catch (DaoException e) {
             logger.error("Error in services when receiving all orders.");
@@ -72,11 +72,11 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersByStatus(String status) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
+            OrderDtoDao orderDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             if (status != null) {
                 if (status.equalsIgnoreCase(OrderStatus.OPENED.name()) || status.equalsIgnoreCase(OrderStatus.APPROVED.name())
                         || status.equalsIgnoreCase(OrderStatus.ARRIVED.name()) || status.equalsIgnoreCase(OrderStatus.REJECTED.name())) {
-                    return orderBookDtoDao.getOrderByStatus(OrderStatus.valueOf(status.toUpperCase()));
+                    return orderDtoDao.getOrderByStatus(OrderStatus.valueOf(status.toUpperCase()));
                 } else {
                     throw new ServiceException("Invalid order status.");
                 }
@@ -92,7 +92,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersByCityAndStatus(String city, String status) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
+            OrderDtoDao orderDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             if (city != null && status != null) {
@@ -103,7 +103,7 @@ public class OrderDtoServiceImpl implements OrderDtoService {
                                 || status.equalsIgnoreCase(OrderStatus.APPROVED.name())
                                 || status.equalsIgnoreCase(OrderStatus.ARRIVED.name())
                                 || status.equalsIgnoreCase(OrderStatus.REJECTED.name())) {
-                            return orderBookDtoDao.getOrderByCityAndStatus(city,
+                            return orderDtoDao.getOrderByCityAndStatus(city,
                                     OrderStatus.valueOf(status.toUpperCase()));
                         } else {
                             throw new ServiceException("Invalid order status.");
@@ -126,13 +126,13 @@ public class OrderDtoServiceImpl implements OrderDtoService {
     @Override
     public List<OrderDto> showOrdersByCity(String city) throws ServiceException {
         try {
-            OrderBookDtoDao orderBookDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
+            OrderDtoDao orderDtoDao = DaoFactory.getInstance().getOrderBookDtoDao();
             ServiceValidator validator = ServiceFactory.getInstance().getServiceValidator();
             LibraryService libraryService = ServiceFactory.getInstance().getLibraryService();
             if (city != null) {
                 Optional<Library> optionalLibrary = libraryService.showByCity(city);
                 if (optionalLibrary.isPresent()) {
-                    return orderBookDtoDao.getOrderByCity(city);
+                    return orderDtoDao.getOrderByCity(city);
                 } else {
                     throw new ServiceException("Invalid city value. City is missing from the database.");
                 }

@@ -40,7 +40,7 @@ public class LoanCardUserCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("Error while retrieving the history of borrowed books by the user.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

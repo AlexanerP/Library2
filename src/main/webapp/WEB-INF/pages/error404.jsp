@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Александр
-  Date: 16.12.2021
-  Time: 18:54
+  Date: 19.01.2022
+  Time: 18:28
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,6 +11,7 @@
     <title>Error</title>
 </head>
 <body>
-<h1>Error page</h1>
+<br><br>
+<div align="center"><img src="/images/error404.png"> </div>
 </body>
 </html>

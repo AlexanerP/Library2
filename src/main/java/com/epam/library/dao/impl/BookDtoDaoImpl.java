@@ -507,29 +507,4 @@ public class BookDtoDaoImpl extends DaoHelper implements BookDtoDao {
             closePreparedStatement(prStatement);
         }
     }
-
-
-    @Override
-    public List<BookDto> getCountBooksByPeriod(LocalDate start, LocalDate finish) {
-        logger.info("Getting count bookDtos by period.");
-        List<BookDto> bookDtos = new ArrayList<>();
-        PreparedStatement prStatement = null;
-        ResultSet resultSet = null;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, GET_BOOKS_ADDED_BY_PERIOD_QUERY, start, finish);
-            resultSet = prStatement.executeQuery();
-            BookDtoMapper mapper = new BookDtoMapper();
-            while (resultSet.next()) {
-                bookDtos.add(mapper.map(resultSet));
-            }
-        } catch (SQLException sqlE) {
-            logger.error("Books by period not received.");
-            throw new DaoException("Books by period not received.", sqlE);
-        } finally {
-            closeResultSet(resultSet);
-            closePreparedStatement(prStatement);
-        }
-        logger.info("Books list  by period received.");
-        return bookDtos;
-    }
 }

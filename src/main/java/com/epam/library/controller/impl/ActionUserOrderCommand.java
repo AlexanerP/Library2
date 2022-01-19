@@ -3,7 +3,6 @@ package com.epam.library.controller.impl;
 import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
 import com.epam.library.controller.Constant;
-import com.epam.library.controller.PathJsp;
 import com.epam.library.service.OrderService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
@@ -40,7 +39,7 @@ public class ActionUserOrderCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("Error while deleting book order by user.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

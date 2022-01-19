@@ -41,7 +41,7 @@ public class OrderUserCommand implements Command {
             req.getRequestDispatcher(PathJsp.ORDER_USER_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.warn("Error while viewing user's orders.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

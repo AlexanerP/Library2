@@ -36,7 +36,7 @@ public class GoToCatalogByPageCommand implements Command {
             req.getRequestDispatcher(PathJsp.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         } catch (ServiceException e) {
             logger.error("An error occurred while getting data for viewing on the first page. No data received", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

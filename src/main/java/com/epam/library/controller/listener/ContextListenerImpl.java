@@ -10,11 +10,11 @@ public class ContextListenerImpl implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-//        ConnectionPool connectionPool = ConnectionPool.INSTANCE;
+        ConnectionPool connectionPool = ConnectionPool.INSTANCE;
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-//        ConnectionPool.INSTANCE.destroyPool();
+        ConnectionPool.INSTANCE.destroyPool();
     }
 }
