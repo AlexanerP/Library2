@@ -213,9 +213,8 @@ public class UserServiceImpl implements UserService {
                 User user = optionalUser.get();
                 user.setSecondName(secondName != "" ? secondName : optionalUser.get().getSecondName());
                 user.setLastName(lastName != "" ? lastName : optionalUser.get().getLastName());
-                userDao.update(user);
                 user.setEmail(email != "" ? email : optionalUser.get().getEmail());
-
+                userDao.update(user);
                 return 1;
             } else {
                 return 3;

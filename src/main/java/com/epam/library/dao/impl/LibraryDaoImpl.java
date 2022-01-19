@@ -88,7 +88,7 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
     }
 
     @Override
-    public Optional<Library> getLibraryById(Long id) throws DaoException {
+    public Optional<Library> getLibraryById(long id) throws DaoException {
         logger.info("Receiving a library by id.");
         LibraryMapper mapper = new LibraryMapper();
         PreparedStatement prStatement = null;
@@ -109,8 +109,8 @@ public class LibraryDaoImpl extends DaoHelper implements LibraryDao {
                 throw new DaoException("Find more 1 library.");
             }
         } catch (SQLException sqlE) {
-            logger.error("Find more 1 library. Find - {}", entity.toString());
-            throw new DaoException("Find more 1 library.", sqlE);
+            logger.error("Error getting library by ID.");
+            throw new DaoException("Error getting library by ID.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);

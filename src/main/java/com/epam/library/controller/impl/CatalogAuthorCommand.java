@@ -47,7 +47,7 @@ public class CatalogAuthorCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("Error when working in the authors directory.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

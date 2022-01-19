@@ -72,7 +72,7 @@ public class GoToStatisticLibraryCommand implements Command {
             req.getRequestDispatcher(PathJsp.STATISTICS_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while getting library statistics", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

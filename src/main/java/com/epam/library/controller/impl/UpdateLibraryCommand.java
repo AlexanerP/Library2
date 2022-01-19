@@ -45,7 +45,7 @@ public class UpdateLibraryCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("Error while updating the library.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

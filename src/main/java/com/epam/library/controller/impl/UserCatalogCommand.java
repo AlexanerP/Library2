@@ -53,7 +53,7 @@ public class UserCatalogCommand implements Command {
             req.getRequestDispatcher(PathJsp.USER_CATALOG_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while working in the user directory.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

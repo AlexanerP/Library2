@@ -56,7 +56,7 @@ public class CatalogReturnBookCommand implements Command {
 
         } catch (ServiceException e) {
             logger.error("Book return directory error.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

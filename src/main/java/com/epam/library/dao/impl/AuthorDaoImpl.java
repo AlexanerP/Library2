@@ -38,18 +38,12 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
     private final static String GET_BY_PART_NAME_QUERY = String.format("SELECT * FROM %s WHERE %s LIKE ",
             TableName.AUTHORS, ColumnName.AUTHOR_NAME);
 
-    private final static String GET_AUTHOR_BY_ID_BOOK_QUERY = String.format("select %s.%s, %s.%s, %s.%s from %s inner join " +
-                    "%s using(%s) inner join %s using(%s) where %s.%s=?", TableName.A_H_B, ColumnName.AHB_ID_AUTHORS,
-            TableName.A_H_B, ColumnName.AHB_ID_BOOK, TableName.AUTHORS, ColumnName.AUTHOR_NAME, TableName.BOOK,
-            TableName.A_H_B, ColumnName.AHB_ID_BOOK, TableName.AUTHORS, ColumnName.AHB_ID_AUTHORS, TableName.BOOK,
-            ColumnName.BOOK_ID_BOOK);
+    private final static String GET_COUNT_BOOKS_BY_AUTHOR_QUERY = String.format("select count(%s) where %s=(SELECT" +
+                    " * FROM %s WHERE %s=?)", TableName.A_H_B, ColumnName.AHB_ID_BOOK, ColumnName.AHB_ID_AUTHORS,
+            ColumnName.AUTHOR_ID_AUTHOR, TableName.AUTHORS, ColumnName.AUTHOR_NAME);
 
     private final static String GET_COUNT_QUERY = String.format("select count(%s) from %s", ColumnName.AUTHOR_NAME,
             TableName.AUTHORS);
-
-    private final static String GET_COUNT_BOOKS_BY_AUTHOR_QUERY = String.format("select count(%s) from %s where " +
-                    "%s=(Select %s from %s where %s=?)", ColumnName.AHB_ID_BOOK, TableName.A_H_B,
-            ColumnName.AHB_ID_AUTHORS, ColumnName.AUTHOR_ID_AUTHOR, TableName.AUTHORS, ColumnName.AUTHOR_NAME);
 
     private final static String UPDATE_AUTHOR_BY_ID_QUERY = String.format("UPDATE %s SET %s=? WHERE %s=?;",
             TableName.AUTHORS, ColumnName.AUTHOR_NAME, ColumnName.AUTHOR_ID_AUTHOR);
@@ -125,12 +119,11 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new UnsupportedOperationException("Find more 1 author.");
+                throw new DaoException("Find more 1 author.");
             }
-
         } catch (SQLException sqlE) {
-            logger.error("Find more 1 author by name. Find - {}", entity);
-            throw new DaoException("Find more 1 author by name.", sqlE);
+            logger.error("Error getting author by name.");
+            throw new DaoException("Error getting author by name.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -156,7 +149,7 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
             } else if (entity.size() == 0) {
                 return Optional.empty();
             } else {
-                throw new UnsupportedOperationException("Find more 1 author.");
+                throw new DaoException("Find more 1 author.");
             }
 
         } catch (SQLException sqlE) {
@@ -195,14 +188,14 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
         ResultSet resultSet = null;
         int countAuthors = 0;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
-            prStatement = createPreparedStatement(connection, GET_AUTHOR_BY_NAME_QUERY, author);
+            prStatement = createPreparedStatement(connection, GET_COUNT_BOOKS_BY_AUTHOR_QUERY, author);
             resultSet = prStatement.executeQuery();
             while (resultSet.next()) {
                 countAuthors = resultSet.getInt(1);
             }
         }catch (SQLException sqlE) {
-            logger.error("Number of authors by name not received.");
-            throw new DaoException("Number of authors by name not received.", sqlE);
+            logger.error("Number of books by authors not received.");
+            throw new DaoException("Number of books by authors not received.", sqlE);
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(prStatement);
@@ -212,7 +205,26 @@ public class AuthorDaoImpl extends DaoHelper implements AuthorDao {
 
     @Override
     public List<Author> getAuthors() throws DaoException {
-        return null;
+        logger.info("Getting a list of authors.");
+        List<Author> authors = new ArrayList<>();
+        PreparedStatement prStatement = null;
+        ResultSet resultSet = null;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
+            prStatement = connection.prepareStatement(GET_ALL_AUTHOR_QUERY);
+            resultSet = prStatement.executeQuery();
+            AuthorMapper mapper = new AuthorMapper();
+            while (resultSet.next()) {
+                authors.add(mapper.map(resultSet));
+            }
+        }catch (SQLException sqlE) {
+            logger.error("Authors not received.");
+            throw new DaoException("Authors received.", sqlE);
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(prStatement);
+        }
+        logger.info("Authors list received.");
+        return authors;
     }
 
     @Override

@@ -1,11 +1,13 @@
 package com.epam.library.dao;
 
 
-import com.epam.library.dao.test_impl.*;
+import com.epam.library.dao.impl.*;
 
 public class DaoFactory {
 
     private static DaoFactory instance = new DaoFactory();
+
+    private DaoFactory(){}
 
     private BookDtoDao bookDtoDao = new BookDtoDaoImpl();
     public BookDao bookDao = new BookDaoImpl();
@@ -13,7 +15,7 @@ public class DaoFactory {
     private UserDao userDAO = new UserDaoImpl();
     private WishBookDao wishBookDao = new WishBookDaoImpl();
     private WishBookDtoDao wishBookDtoDao = new WishBookDtoDaoImpl();
-    private OrderBookDtoDao orderBookDtoDao = new OrderBookDtoDaoImpl();
+    private OrderDtoDao orderDtoDao = new OrderDtoDaoImpl();
     private OrderDao orderDao = new OrderDaoImpl();
     private AuthorDao authorDAO = new AuthorDaoImpl();
     private GenreDao genreDAO = new GenreDaoImpl();
@@ -23,7 +25,6 @@ public class DaoFactory {
     public static DaoFactory getInstance() {
         return instance;
     }
-
 
     public BookDtoDao getBookDtoDao() {
         return bookDtoDao;
@@ -49,8 +50,8 @@ public class DaoFactory {
         return wishBookDtoDao;
     }
 
-    public OrderBookDtoDao getOrderBookDtoDao() {
-        return orderBookDtoDao;
+    public OrderDtoDao getOrderBookDtoDao() {
+        return orderDtoDao;
     }
 
     public OrderDao getOrderDao() {

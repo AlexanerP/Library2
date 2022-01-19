@@ -30,5 +30,4 @@ public interface BookDtoDao {
 
     List<BookDto> getBooksByGenre(String genre) throws DaoException;
 
-    List<BookDto> getCountBooksByPeriod(LocalDate start, LocalDate finish);
 }

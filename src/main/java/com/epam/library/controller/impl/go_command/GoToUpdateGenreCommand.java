@@ -40,7 +40,7 @@ public class GoToUpdateGenreCommand implements Command {
         } catch (ServiceException e) {
             logger.error("Error preparing genre data for update.", e);
             e.printStackTrace();
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

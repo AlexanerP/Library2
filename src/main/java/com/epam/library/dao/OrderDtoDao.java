@@ -7,7 +7,7 @@ import com.epam.library.entity.OrderStatus;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderBookDtoDao {
+public interface OrderDtoDao {
 
     Optional<OrderDto> getOrderById(Long id) throws DaoException;
 

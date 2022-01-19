@@ -40,7 +40,7 @@ public class ActionLibraryCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("Error while changing the library status.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

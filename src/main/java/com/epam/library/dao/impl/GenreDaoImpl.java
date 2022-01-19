@@ -6,7 +6,9 @@ import com.epam.library.dao.GenreDao;
 import com.epam.library.dao.connection.ConnectionPool;
 import com.epam.library.dao.constant.ColumnName;
 import com.epam.library.dao.constant.TableName;
+import com.epam.library.dao.mapper.AuthorMapper;
 import com.epam.library.dao.mapper.GenreMapper;
+import com.epam.library.entity.Author;
 import com.epam.library.entity.Genre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +40,18 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
     private final static String GET_ALL_GENRES_QUERY = String.format("SELECT * FROM %s order by %s;", TableName.GENRES,
             ColumnName.GENRES_ID_GENRE);
 
+    private final static String GET_GENRE_BY_ID_QUERY = String.format("SELECT * FROM %s WHERE %s=?;",
+            TableName.GENRES, ColumnName.GENRES_ID_GENRE);
+
+    private final static String GET_GENRE_BY_CATEGORY_QUERY = String.format("SELECT * FROM %s WHERE %s=?;",
+            TableName.GENRES, ColumnName.GENRES_GENRE);
+
     private final static String GET_COUNT_QUERY = String.format("select count(%s) from %s", ColumnName.GENRES_GENRE,
             TableName.GENRES);
+
+    private final static String GET_COUNT_BOOKS_BY_GENRE_QUERY = String.format("select count(%s) where %s=(SELECT" +
+                    " * FROM %s WHERE %s=?)", TableName.G_H_B, ColumnName.GHB_ID_BOOK, ColumnName.GHB_ID_GENRES,
+            ColumnName.GENRES_ID_GENRE, TableName.GENRES, ColumnName.GENRES_GENRE);
 
     private static final String DELETE_GENRES_QUERY = String.format("delete from %s where %s=?",
             TableName.G_H_B, ColumnName.GHB_ID_BOOK);
@@ -79,12 +91,62 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
 
     @Override
     public Optional<Genre> getGenreById(long genreId) throws DaoException {
-        return Optional.empty();
+        logger.info("Receiving an author by ID.");
+        PreparedStatement prStatement = null;
+        ResultSet resultSet = null;
+        List<Genre> entity = new ArrayList<>();
+        GenreMapper mapper = new GenreMapper();
+        try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
+            prStatement = createPreparedStatement(connection, GET_GENRE_BY_ID_QUERY, genreId);
+            resultSet = prStatement.executeQuery();
+            while (resultSet.next()) {
+                entity.add(mapper.map(resultSet));
+            }
+            if(entity.size() == 1) {
+                logger.info("Genre by ID received.");
+                return Optional.of(entity.get(0));
+            } else if (entity.size() == 0) {
+                return Optional.empty();
+            } else {
+                throw new DaoException("Find more 1 genre.");
+            }
+        } catch (SQLException sqlE) {
+            logger.error("Error getting genre by ID.");
+            throw new DaoException("Error getting genre by ID.", sqlE);
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(prStatement);
+        }
     }
 
     @Override
-    public Optional<Genre> getGenreByGenre(String genre) throws DaoException {
-        return Optional.empty();
+    public Optional<Genre> getGenreByGenre(String category) throws DaoException {
+        logger.info("Receiving an genre by category.");
+        PreparedStatement prStatement = null;
+        ResultSet resultSet = null;
+        List<Genre> entity = new ArrayList<>();
+        GenreMapper mapper = new GenreMapper();
+        try(Connection connection = ConnectionPool.INSTANCE.getConnection()) {
+            prStatement = createPreparedStatement(connection, GET_GENRE_BY_CATEGORY_QUERY, category);
+            resultSet = prStatement.executeQuery();
+            while (resultSet.next()) {
+                entity.add(mapper.map(resultSet));
+            }
+            if(entity.size() == 1) {
+                logger.info("Genre by category received.");
+                return Optional.of(entity.get(0));
+            } else if (entity.size() == 0) {
+                return Optional.empty();
+            } else {
+                throw new DaoException("Find more 1 genre.");
+            }
+        } catch (SQLException sqlE) {
+            logger.error("Error getting genre by category.");
+            throw new DaoException("Error getting genre by category.", sqlE);
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(prStatement);
+        }
     }
 
     @Override
@@ -174,6 +236,22 @@ public class GenreDaoImpl extends DaoHelper implements GenreDao {
 
     @Override
     public long getCountByGenre(String genre) throws DaoException {
-        return 0;
+        PreparedStatement prStatement = null;
+        ResultSet resultSet = null;
+        int countGenres = 0;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection()){
+            prStatement = createPreparedStatement(connection, GET_COUNT_BOOKS_BY_GENRE_QUERY, genre);
+            resultSet = prStatement.executeQuery();
+            while (resultSet.next()) {
+                countGenres = resultSet.getInt(1);
+            }
+        }catch (SQLException sqlE) {
+            logger.error("Number of books by genre not received.");
+            throw new DaoException("Number of books by genre not received.", sqlE);
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(prStatement);
+        }
+        return countGenres;
     }
 }

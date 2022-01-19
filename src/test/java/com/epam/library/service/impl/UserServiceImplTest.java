@@ -35,7 +35,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void create() {
+    void createRightTest() {
         try {
             String email = "email@gamil.com";
             String password = "Password1";
@@ -50,10 +50,71 @@ class UserServiceImplTest {
     }
 
     @Test
+    void createBusyEmailTest() {
+        try {
+            String email = "email@gamil.com";
+            String password = "Password1";
+            String secondName = "secondName";
+            String lastName = "lastName";
+            int expected = 2;
+            int actual = userService.create(email, password, secondName, lastName);
+            assertEquals(expected, actual);
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void createWrongLongDataTest() {
+        try {
+            String email = "email@gamil.com";
+            String password = "Password1";
+            String secondName = "Beginning in the eighth century B.C., Ancient Rome grew from a small town on central";
+            String lastName = "lastName";
+            int expected = 3;
+            int actual = userService.create(email, password, secondName, lastName);
+            assertEquals(expected, actual);
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void createWrongEmailTest() {
+        try {
+            String email = "email@gamil";
+            String password = "Password1";
+            String secondName = "secondName";
+            String lastName = "lastName";
+            int expected = 4;
+            int actual = userService.create(email, password, secondName, lastName);
+            assertEquals(expected, actual);
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void createWrongPasswordTest() {
+        try {
+            String email = "email@gamil.com";
+            String password = "password";
+            String secondName = "secondName";
+            String lastName = "lastName";
+            int expected = 4;
+            int actual = userService.create(email, password, secondName, lastName);
+            assertEquals(expected, actual);
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
     void getUsers() {
         try {
             List<User> users = userService.getUsers();
-            outPut(users);
+            output(users);
             assertFalse(users.isEmpty());
         }catch (ServiceException e) {
             e.printStackTrace();
@@ -76,7 +137,7 @@ class UserServiceImplTest {
         try {
             String status = "active";
             List<User> users = userService.showUserByStatus(status);
-            outPut(users);
+            output(users);
             assertFalse(users.isEmpty());
         }catch (ServiceException e) {
             e.printStackTrace();
@@ -88,7 +149,7 @@ class UserServiceImplTest {
         try {
             String role = "admin";
             List<User> users = userService.showUserByRole(role);
-            outPut(users);
+            output(users);
             assertFalse(users.isEmpty());
         }catch (ServiceException e) {
             e.printStackTrace();
@@ -100,7 +161,7 @@ class UserServiceImplTest {
         try {
             String email = "admin@gmail.com";
             List<User> users = userService.showUserByEmail(email);
-            outPut(users);
+            output(users);
             assertFalse(users.isEmpty());
         }catch (ServiceException e) {
             e.printStackTrace();
@@ -120,21 +181,53 @@ class UserServiceImplTest {
     }
 
     @Test
-    void update() {
+    void updateRightTest() {
         try {
             String userId = "1";
-            String email = "email@gamil.com";
+            String email = "update@gmail.com";
             String secondName = "";
-            String lastName = "1";
+            String lastName = "update";
 
             int expected = 1;
             int actual =  userService.update(email, secondName, lastName, userId);
-
             assertEquals(expected, actual);
         }catch (ServiceException e) {
             e.printStackTrace();
         }
     }
+
+    @Test
+    void updateWrongTest() {
+        try {
+            String userId = "1";
+            String email = "update@gmail";
+            String secondName = "";
+            String lastName = "update";
+
+            int expected = 2;
+            int actual =  userService.update(email, secondName, lastName, userId);
+            assertEquals(expected, actual);
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void updateLongDataTest() {
+        try {
+            String userId = "1";
+            String email = "update@gmail.com";
+            String secondName = "";
+            String lastName = "Beginning in the eighth century B.C., Ancient Rome grew from a small town on central";
+
+            int expected = 3;
+            int actual =  userService.update(email, secondName, lastName, userId);
+            assertEquals(expected, actual);
+        }catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Test
     void updateStatus() {
@@ -161,9 +254,9 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updatePassword() {
+    void updatePasswordRightTest() {
         try {
-            String password = "Manager1";
+            String password = "test@gmail.com";
             String email = "1";
             String oldPassword = "1";
             int expected = 1;
@@ -174,7 +267,7 @@ class UserServiceImplTest {
         }
     }
 
-    private void outPut(List<User> list) {
+    private void output(List<User> list) {
         for (User user : list) {
             System.out.println(user);
         }

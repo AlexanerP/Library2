@@ -47,7 +47,7 @@ public class UpdateUserPasswordCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("Error during password update.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

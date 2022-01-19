@@ -1,7 +1,5 @@
 package com.epam.library.controller;
 
-
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +21,11 @@ public class Controller extends HttpServlet {
     }
 
     private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Command command = provider.getCommand(req.getParameter("command"));
+        Command command = provider.getCommand(req.getParameter(CommandType.COMMAND));
 
-        System.out.println("Controller " + command);
+        if (command == null) {
+            command = provider.getCommand(CommandType.ERROR_404);
+        }
         command.execute(req, resp);
-
     }
 }

@@ -42,7 +42,7 @@ public class ActionAdminCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("Error while changing user role.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

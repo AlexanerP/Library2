@@ -57,7 +57,7 @@ public class ShowCatalogByPageCommand implements Command {
             req.getRequestDispatcher(PathJsp.BOOK_CATALOG_BY_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("An error occurred while browsing the book catalog.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

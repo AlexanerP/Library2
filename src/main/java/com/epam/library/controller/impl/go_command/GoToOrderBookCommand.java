@@ -5,9 +5,7 @@ import com.epam.library.controller.CommandType;
 import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
 import com.epam.library.entity.dto.BookDto;
-import com.epam.library.entity.Library;
 import com.epam.library.service.BookDtoService;
-import com.epam.library.service.LibraryService;
 import com.epam.library.service.ServiceException;
 import com.epam.library.service.ServiceFactory;
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class GoToOrderBookCommand implements Command {
@@ -51,7 +48,7 @@ public class GoToOrderBookCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("An error occurred while preparing to order the book.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

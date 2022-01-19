@@ -54,7 +54,7 @@ public class UpdateUserCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("An error occurred while updating the user's personal data.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

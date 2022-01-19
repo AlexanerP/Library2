@@ -316,28 +316,4 @@ public class UserDaoImpl extends DaoHelper implements UserDao {
         }
         return countUsers;
     }
-
-    @Override
-    public List<User> getUsersByPeriod(LocalDate start, LocalDate finish) {
-        logger.info("Getting users by period.");
-        List<User> users = new ArrayList<>();
-        PreparedStatement prStatement = null;
-        ResultSet resultSet = null;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection()) {
-            prStatement = createPreparedStatement(connection, GET_COUNT_USER_BY_PERIOD_QUERY, start, finish);
-            resultSet = prStatement.executeQuery();
-            UserMapper mapper = new UserMapper();
-            while (resultSet.next()) {
-                users.add(mapper.map(resultSet));
-            }
-        } catch (SQLException sqlE) {
-            logger.error("Users by period not received.");
-            throw new DaoException(sqlE);
-        } finally {
-            closeResultSet(resultSet);
-            closePreparedStatement(prStatement);
-        }
-        logger.info("User list  by period received.");
-        return users;
-    }
 }

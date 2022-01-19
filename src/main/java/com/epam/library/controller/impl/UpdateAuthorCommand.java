@@ -44,7 +44,7 @@ public class UpdateAuthorCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("Error while updating the author.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

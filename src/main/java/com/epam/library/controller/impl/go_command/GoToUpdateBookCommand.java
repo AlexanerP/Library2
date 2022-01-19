@@ -4,8 +4,6 @@ import com.epam.library.controller.Command;
 import com.epam.library.controller.CommandType;
 import com.epam.library.controller.Constant;
 import com.epam.library.controller.PathJsp;
-import com.epam.library.entity.Library;
-import com.epam.library.entity.LibraryStatus;
 import com.epam.library.entity.dto.BookDto;
 import com.epam.library.service.*;
 import org.slf4j.Logger;
@@ -15,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class GoToUpdateBookCommand implements Command {
@@ -38,7 +35,7 @@ public class GoToUpdateBookCommand implements Command {
             }
         }catch (ServiceException e) {
             logger.error("Book for update not received.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

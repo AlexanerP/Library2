@@ -42,7 +42,7 @@ public class GoToMainPageCommand implements Command {
             req.getRequestDispatcher(PathJsp.MAIN_PAGE).forward(req, resp);
         }catch (ServiceException e) {
             logger.error("Error while executing the command GoTo Main Command error during command execution", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

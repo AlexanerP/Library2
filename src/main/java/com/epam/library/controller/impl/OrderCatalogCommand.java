@@ -53,7 +53,7 @@ public class OrderCatalogCommand implements Command {
         } catch (ServiceException e) {
             logger.error("Error while working with the order catalog.", e);
             e.printStackTrace();
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

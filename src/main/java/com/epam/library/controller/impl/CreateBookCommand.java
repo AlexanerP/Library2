@@ -52,7 +52,7 @@ public class CreateBookCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("Error while creating book.", e);
-            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR);
+            resp.sendRedirect(CommandType.CONTROLLER_COMMAND + CommandType.ERROR_500);
         }
     }
 }

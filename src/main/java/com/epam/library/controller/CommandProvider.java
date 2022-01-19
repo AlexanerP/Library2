@@ -57,7 +57,8 @@ public final class CommandProvider {
         commands.put(CommandType.WISH_BOOKS_USER_PAGE, new WishBooksUserCommand());  //+
         commands.put(CommandType.LOAN_CARD_USER, new LoanCardUserCommand());
         commands.put(CommandType.CHANGE_LOCALE, new ChangeLocaleCommand());
-        commands.put(CommandType.ERROR, new ErrorCommand());
+        commands.put(CommandType.ERROR_500, new Error500Command());
+        commands.put(CommandType.ERROR_404, new Error404Command());
         commands.put(CommandType.GO_TO_MAIN_PAGE, new GoToMainPageCommand());
         commands.put(CommandType.GO_TO_HOME, new GoToHomeCommand());
         commands.put(CommandType.GO_TO_MESSAGE_PAGE, new GoToMessagePageCommand());
@@ -75,7 +76,6 @@ public final class CommandProvider {
     }
 
     public final Command getCommand(String command) {
-        System.out.println("Command/" + command);
         return commands.get(command);
     }
 }
